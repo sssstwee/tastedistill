@@ -34,7 +34,7 @@ Treat modified, staged, and untracked files as user work. Do not reset, clean, s
 
 ## Coding Guardrails
 
-For review and delivery, apply `../shared-rules/coding-guardrails.md`:
+For review and delivery, apply `../../shared-rules/coding-guardrails.md`:
 
 - Think before coding: identify any hidden assumptions in the diff or release path.
 - Simplicity first: flag unnecessary abstraction, dependencies, or configuration surface.
@@ -43,7 +43,7 @@ For review and delivery, apply `../shared-rules/coding-guardrails.md`:
 
 ## CodeGraph
 
-For review and delivery, apply `../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_impact`, callers/callees, or trace output as risk evidence for non-trivial diffs, not as a substitute for tests, artifacts, CI, or remote-state checks.
+For review and delivery, apply `../../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_impact`, callers/callees, or trace output as risk evidence for non-trivial diffs, not as a substitute for tests, artifacts, CI, or remote-state checks.
 
 ## Review Output
 

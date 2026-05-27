@@ -49,24 +49,20 @@ work -> evidence -> lesson -> durable rule -> better next run
 使用 $codex-distill 从这次已完成任务中提炼可复用经验，并更新我的本地经验档案。
 ```
 
-## 可选增强：CodeGraph
+## 内置 CodeGraph MCP
 
-对于较大的代码仓库，可以接入 [CodeGraph](https://github.com/colbymchenry/codegraph)，让 Codex 使用本地代码知识图谱来理解架构、追踪调用链和分析影响面。
+对于较大的代码仓库，Codex plugin 已内置 [CodeGraph](https://github.com/colbymchenry/codegraph) MCP 注册，让 Codex 可以使用本地代码知识图谱来理解架构、追踪调用链和分析影响面。
 
-单独安装 CodeGraph：
+当本仓库以 Codex plugin 方式安装时，CodeGraph 会在需要 MCP server 时通过 `npx` 启动。用户不需要在安装 plugin 之前先全局安装 CodeGraph。
 
-```bash
-npx @colbymchenry/codegraph
-```
-
-初始化项目：
+每个代码仓库仍然需要一份本地图谱索引。需要图谱能力的项目只需要初始化一次：
 
 ```bash
 cd your-project
-codegraph init -i
+npx -y @colbymchenry/codegraph init -i
 ```
 
-当当前 Codex 客户端能看到 `codegraph_*` MCP tools 时，这些 skills 会优先用 CodeGraph 做仓库探索、排障和影响面分析。若 CodeGraph 不可用，则回退到普通文件搜索和定向读取。
+当当前 Codex 客户端能看到 `codegraph_*` MCP tools 时，这些 skills 会优先用 CodeGraph 做仓库探索、排障和影响面分析。如果你只安装 skills、没有安装 plugin，或 CodeGraph 不可用，则回退到普通文件搜索和定向读取。
 
 ## 工作流
 
@@ -99,16 +95,39 @@ codex-learn -> codex-think -> codex-design -> implementation -> codex-debug -> c
 
 ## 安装方法
 
-### 1. 克隆仓库
+### 方案 A：作为 Codex Plugin 安装
 
-克隆仓库：
+如果你希望 skills 和 CodeGraph MCP 一起生效，优先使用 plugin 安装方式。Plugin 会通过 `npx` 注册本地 CodeGraph MCP server，因此用户不需要在安装本项目之前先全局安装 CodeGraph。
+
+在 Codex Desktop 中，把这个仓库添加为插件市场：
+
+```text
+来源：sssstwee/codex-self-learning-skills
+Git 引用：main
+稀疏路径：留空
+```
+
+然后从该 marketplace 中安装 `Codex Self-Learning Skills`。
+
+安装 plugin 后，重启 Codex。每个需要代码图谱能力的仓库只需要初始化一次本地索引：
+
+```bash
+cd your-project
+npx -y @colbymchenry/codegraph init -i
+```
+
+当 `codegraph_*` MCP tools 可用时，Codex 会使用 CodeGraph。若当前项目还没有初始化，skills 会先询问再创建 `.codegraph/`。
+
+### 方案 B：只安装 Skills
+
+如果你只想安装 skills，不希望 plugin 注册 MCP tools，可以使用这个方式。
 
 ```bash
 git clone https://github.com/sssstwee/codex-self-learning-skills.git
 cd codex-self-learning-skills
 ```
 
-### 2. 确认 Codex skills 目录
+#### 1. 确认 Codex skills 目录
 
 默认安装目录通常是：
 
@@ -116,7 +135,7 @@ cd codex-self-learning-skills
 mkdir -p "$HOME/.codex/skills"
 ```
 
-### 3. 安装全部 skills
+#### 2. 安装全部 skills
 
 推荐使用 symlink，方便后续 `git pull` 更新后自动生效。
 
@@ -127,13 +146,13 @@ for skill in codex-learn codex-think codex-design codex-debug codex-ship codex-d
 done
 ```
 
-### 4. 只安装单个 skill
+#### 3. 只安装单个 skill
 
 ```bash
 ln -s "$PWD/skills/codex-debug" "$HOME/.codex/skills/codex-debug"
 ```
 
-### 5. 验证安装
+#### 4. 验证安装
 
 重新打开 Codex 后，在输入框中尝试输入：
 
@@ -143,7 +162,7 @@ ln -s "$PWD/skills/codex-debug" "$HOME/.codex/skills/codex-debug"
 
 你应该能看到 `Codex Learn`、`Codex Think`、`Codex Design`、`Codex Debug`、`Codex Ship`、`Codex Distill`。
 
-### 6. 更新
+#### 5. 更新
 
 ```bash
 cd /path/to/codex-self-learning-skills
@@ -152,7 +171,7 @@ git pull
 
 如果使用 symlink 安装，通常不需要重新复制文件；重启 Codex 或刷新 skills 后即可读取更新。
 
-### 7. 卸载
+#### 6. 卸载
 
 ```bash
 for skill in codex-learn codex-think codex-design codex-debug codex-ship codex-distill; do
@@ -163,6 +182,11 @@ done
 ## 目录结构
 
 ```text
+.codex-plugin/
+  plugin.json
+.claude-plugin/
+  marketplace.json
+.mcp.json
 skills/
   codex-learn/
   codex-think/
@@ -170,12 +194,12 @@ skills/
   codex-debug/
   codex-ship/
   codex-distill/
-  shared-rules/
-    anti-patterns.md
-    codegraph.md
-    coding-guardrails.md
-    routing.md
-    self-learning-loop.md
+shared-rules/
+  anti-patterns.md
+  codegraph.md
+  coding-guardrails.md
+  routing.md
+  self-learning-loop.md
 ```
 
 ## 致谢

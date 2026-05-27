@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "codegraph": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@colbymchenry/codegraph",
+        "serve",
+        "--mcp"
+      ],
+      "note": "Local CodeGraph MCP server for repository structure, call-flow tracing, symbol search, and impact analysis. Project indexes live in each repository's .codegraph/ directory. If a project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`."
+    }
+  }
+}

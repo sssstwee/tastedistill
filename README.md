@@ -49,24 +49,20 @@ Then keep improving it over time:
 Use $codex-distill to extract reusable lessons from this completed task and update my local experience profile.
 ```
 
-## Optional: CodeGraph
+## Built-In CodeGraph MCP
 
-For larger repositories, you can connect [CodeGraph](https://github.com/colbymchenry/codegraph) to give Codex a local code knowledge graph for architecture lookup, call-flow tracing, and impact analysis.
+For larger repositories, the Codex plugin includes [CodeGraph](https://github.com/colbymchenry/codegraph) MCP registration so Codex can use a local code knowledge graph for architecture lookup, call-flow tracing, and impact analysis.
 
-Install CodeGraph separately:
+When this repository is installed as a Codex plugin, CodeGraph is launched through `npx` when the MCP server is needed. Users do not need to install CodeGraph globally before installing the plugin.
 
-```bash
-npx @colbymchenry/codegraph
-```
-
-Then initialize a project:
+Each repository still needs a local graph index. Initialize it once in the project where you want graph-based code intelligence:
 
 ```bash
 cd your-project
-codegraph init -i
+npx -y @colbymchenry/codegraph init -i
 ```
 
-When `codegraph_*` MCP tools are available in your current Codex client, these skills will prefer CodeGraph for repository exploration, debugging, and impact analysis. If CodeGraph is unavailable, the skills fall back to normal file search and targeted reads.
+When `codegraph_*` MCP tools are available in your current Codex client, these skills will prefer CodeGraph for repository exploration, debugging, and impact analysis. If you install the skills without the plugin, or if CodeGraph is unavailable, the skills fall back to normal file search and targeted reads.
 
 ## Workflow
 
@@ -99,16 +95,39 @@ codex-learn -> codex-think -> codex-design -> implementation -> codex-debug -> c
 
 ## Installation
 
-### 1. Clone
+### Option A: Install As A Codex Plugin
 
-Clone the repository:
+Use the plugin install path when you want the skills and CodeGraph MCP support together. The plugin registers CodeGraph as a local MCP server through `npx`, so users do not need to install CodeGraph separately before installing this project.
+
+In Codex Desktop, add this repository as a plugin marketplace:
+
+```text
+Source: sssstwee/codex-self-learning-skills
+Git ref: main
+Sparse path: leave empty
+```
+
+Then install `Codex Self-Learning Skills` from that marketplace.
+
+After installing the plugin, restart Codex. In each repository where you want graph-based code intelligence, initialize the local index once:
+
+```bash
+cd your-project
+npx -y @colbymchenry/codegraph init -i
+```
+
+Codex will use CodeGraph when `codegraph_*` MCP tools are available. If a project is not initialized yet, the skills will ask before creating `.codegraph/`.
+
+### Option B: Install Skills Only
+
+Use this path when you only want the skills and do not want the plugin to register MCP tools.
 
 ```bash
 git clone https://github.com/sssstwee/codex-self-learning-skills.git
 cd codex-self-learning-skills
 ```
 
-### 2. Check the Codex Skills Directory
+#### 1. Check the Codex Skills Directory
 
 The default install directory is usually:
 
@@ -116,7 +135,7 @@ The default install directory is usually:
 mkdir -p "$HOME/.codex/skills"
 ```
 
-### 3. Install All Skills
+#### 2. Install All Skills
 
 Symlinks are recommended so updates from `git pull` are picked up automatically.
 
@@ -127,13 +146,13 @@ for skill in codex-learn codex-think codex-design codex-debug codex-ship codex-d
 done
 ```
 
-### 4. Install One Skill
+#### 3. Install One Skill
 
 ```bash
 ln -s "$PWD/skills/codex-debug" "$HOME/.codex/skills/codex-debug"
 ```
 
-### 5. Verify
+#### 4. Verify
 
 After reopening Codex, type:
 
@@ -143,7 +162,7 @@ After reopening Codex, type:
 
 You should see `Codex Learn`, `Codex Think`, `Codex Design`, `Codex Debug`, `Codex Ship`, and `Codex Distill`.
 
-### 6. Update
+#### 5. Update
 
 ```bash
 cd /path/to/codex-self-learning-skills
@@ -152,7 +171,7 @@ git pull
 
 If installed via symlinks, you usually do not need to copy files again. Restart Codex or reload skills to pick up changes.
 
-### 7. Uninstall
+#### 6. Uninstall
 
 ```bash
 for skill in codex-learn codex-think codex-design codex-debug codex-ship codex-distill; do
@@ -163,6 +182,11 @@ done
 ## Repository Layout
 
 ```text
+.codex-plugin/
+  plugin.json
+.claude-plugin/
+  marketplace.json
+.mcp.json
 skills/
   codex-learn/
   codex-think/
@@ -170,12 +194,12 @@ skills/
   codex-debug/
   codex-ship/
   codex-distill/
-  shared-rules/
-    anti-patterns.md
-    codegraph.md
-    coding-guardrails.md
-    routing.md
-    self-learning-loop.md
+shared-rules/
+  anti-patterns.md
+  codegraph.md
+  coding-guardrails.md
+  routing.md
+  self-learning-loop.md
 ```
 
 ## Acknowledgements

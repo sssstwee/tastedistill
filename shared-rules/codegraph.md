@@ -25,7 +25,7 @@ Use this rule when CodeGraph MCP tools are available in the current agent sessio
 ## Fallbacks
 
 - If `codegraph_*` tools are not available, use normal repository search and targeted file reads.
-- If the project is not initialized, ask before running `codegraph init -i`.
+- If the project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`.
 - If CodeGraph reports stale or pending files, inspect `codegraph_status` and read the named files directly before editing.
 - For a precise user-provided file and line, read that file directly; CodeGraph is optional context, not a replacement.
 

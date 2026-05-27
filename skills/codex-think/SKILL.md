@@ -24,7 +24,7 @@ Use this skill when the main work is judgment, scope, or plan design.
 
 ## Coding Guardrails
 
-For implementation plans, apply `../shared-rules/coding-guardrails.md`:
+For implementation plans, apply `../../shared-rules/coding-guardrails.md`:
 
 - Think before coding: surface assumptions that affect scope, behavior, cost, or rollback.
 - Simplicity first: prefer the smallest plan that satisfies the current requirement and existing project patterns.
@@ -33,7 +33,7 @@ For implementation plans, apply `../shared-rules/coding-guardrails.md`:
 
 ## CodeGraph
 
-For plans that change existing code, apply `../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_context` to inspect current patterns and `codegraph_impact` for symbols likely to change before recommending architecture, file targets, or risk level.
+For plans that change existing code, apply `../../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_context` to inspect current patterns and `codegraph_impact` for symbols likely to change before recommending architecture, file targets, or risk level.
 
 ## Output Shape
 

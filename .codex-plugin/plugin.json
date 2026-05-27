@@ -1,0 +1,42 @@
+{
+  "name": "codex-self-learning-skills",
+  "version": "0.1.0",
+  "description": "Codex self-learning workflows with built-in CodeGraph MCP support.",
+  "author": {
+    "name": "sssstwee",
+    "url": "https://github.com/sssstwee"
+  },
+  "homepage": "https://github.com/sssstwee/codex-self-learning-skills",
+  "repository": "https://github.com/sssstwee/codex-self-learning-skills",
+  "license": "MIT",
+  "keywords": [
+    "codex",
+    "skills",
+    "self-learning",
+    "codegraph",
+    "workflow",
+    "debugging",
+    "delivery"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Codex Self-Learning Skills",
+    "shortDescription": "Self-learning workflows with CodeGraph MCP support",
+    "longDescription": "Codex Self-Learning Skills provides staged workflows for learning, planning, design, debugging, delivery, and experience distillation. When installed as a Codex plugin, it registers CodeGraph as a local MCP server for repository exploration, call-flow tracing, and impact analysis.",
+    "developerName": "sssstwee",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/sssstwee/codex-self-learning-skills",
+    "defaultPrompt": [
+      "Initialize my local Codex personalization",
+      "Analyze this repo and create an implementation plan",
+      "Debug this failure and verify the smallest fix"
+    ],
+    "brandColor": "#111827"
+  }
+}

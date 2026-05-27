@@ -11,9 +11,9 @@ Use the narrowest skill that matches the task.
 | review, merge, release, publish, PR, issue follow-through | `codex-ship` |
 | extract lessons, update rules, audit skill health | `codex-distill` |
 
-Use `skills/shared-rules/self-learning-loop.md` after meaningful work produces a reusable lesson.
-Use `skills/shared-rules/coding-guardrails.md` for coding, refactoring, debugging, review, and implementation handoff.
-Use `skills/shared-rules/codegraph.md` when `codegraph_*` tools are available and the task involves architecture lookup, call flow, impact analysis, or large-repo exploration.
+Use `shared-rules/self-learning-loop.md` after meaningful work produces a reusable lesson.
+Use `shared-rules/coding-guardrails.md` for coding, refactoring, debugging, review, and implementation handoff.
+Use `shared-rules/codegraph.md` when `codegraph_*` tools are available and the task involves architecture lookup, call flow, impact analysis, or large-repo exploration.
 
 When two skills match, prefer the one closest to the user's starting point:
 

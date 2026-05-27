@@ -24,7 +24,7 @@ Promote a lesson only when it has:
 | Lesson type | Destination |
 |---|---|
 | Stage-specific behavior | The matching skill's `SKILL.md` |
-| Cross-stage behavior | `skills/shared-rules/` |
+| Cross-stage behavior | `shared-rules/` |
 | Repo-specific behavior | The target repo's own public docs or agent instructions |
 | Useful but unproven behavior | Candidate note, not a shipped rule |
 | Private context | Keep outside the public repository |

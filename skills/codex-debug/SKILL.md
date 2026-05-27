@@ -25,7 +25,7 @@ Use this skill when the task starts from a symptom.
 
 ## Coding Guardrails
 
-For fixes, apply `../shared-rules/coding-guardrails.md`:
+For fixes, apply `../../shared-rules/coding-guardrails.md`:
 
 - Think before coding: do not edit until the root-cause hypothesis is specific and evidence-backed.
 - Simplicity first: fix the cause directly; avoid broad rewrites, new abstractions, or speculative compatibility.
@@ -34,7 +34,7 @@ For fixes, apply `../shared-rules/coding-guardrails.md`:
 
 ## CodeGraph
 
-For root-cause analysis, apply `../shared-rules/codegraph.md` when `codegraph_*` tools are available. Prefer `codegraph_trace` for "how does X reach Y", `codegraph_callers` / `codegraph_callees` for one-hop flow, `codegraph_context` for nearby implementation context, and direct file reads before editing.
+For root-cause analysis, apply `../../shared-rules/codegraph.md` when `codegraph_*` tools are available. Prefer `codegraph_trace` for "how does X reach Y", `codegraph_callers` / `codegraph_callees` for one-hop flow, `codegraph_context` for nearby implementation context, and direct file reads before editing.
 
 ## Stop Rules
 
