@@ -13,7 +13,6 @@ A Codex-native self-learning loop for turning repeated development work into reu
 - Turn repeated development lessons, mistakes, preferences, and verification habits into reusable skill behavior.
 - Split behavior by engineering stage instead of relying on one oversized global prompt.
 - Make every stage evidence-oriented, with clear outcome contracts and validation expectations.
-- Treat external inspiration as attribution, while keeping the project identity focused on Codex self-learning and continuous evolution.
 
 ## Codex-Native Direction
 
@@ -136,19 +135,6 @@ skills/
 scripts/
   scan-public-safety.sh
 ```
-
-## Pre-Publish Check
-
-Run the safety scan before publishing changes. This protects the repository itself; it does not prevent users from combining the installed skills with their local Codex memory or private project instructions at runtime.
-
-```bash
-bash scripts/scan-public-safety.sh
-```
-
-Current policy:
-
-- `README.md` and `README.zh-CN.md` may contain attribution and acknowledgements.
-- The public `skills/` files should not contain personal data, machine-specific paths, private project facts, credentials, or source-brand markers.
 
 ## Acknowledgements
 
