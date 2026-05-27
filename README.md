@@ -9,8 +9,8 @@ A Codex-native self-learning loop for turning repeated development work into reu
 
 ## Goals
 
-- Help Codex convert repeated development lessons, mistakes, preferences, and verification habits into reusable skills.
-- Keep the repository generic, without personal memory, machine-specific paths, project-private rules, or credentials.
+- Help Codex use your accumulated memory, preferences, project context, and task evidence more consistently across future work.
+- Turn repeated development lessons, mistakes, preferences, and verification habits into reusable skill behavior.
 - Split behavior by engineering stage instead of relying on one oversized global prompt.
 - Make every stage evidence-oriented, with clear outcome contracts and validation expectations.
 - Treat external inspiration as attribution, while keeping the project identity focused on Codex self-learning and continuous evolution.
@@ -23,9 +23,9 @@ This repository is designed around a feedback loop:
 work -> evidence -> lesson -> durable rule -> better next run
 ```
 
-The skills are intentionally small. Each one defines a phase contract, expected evidence, and failure boundaries. Codex still performs the implementation work directly; the skills shape when to research, when to decide, when to verify, and when to update future behavior.
+The skills are intentionally small. Each one defines a phase contract, expected evidence, and failure boundaries. At runtime, they are meant to work together with your local Codex memory, project instructions, repository files, logs, tests, browser state, and current task context. Codex still performs the implementation work directly; the skills shape when to research, when to decide, when to verify, and when to update future behavior.
 
-`codex-distill` is the differentiating layer. It turns completed work, failed attempts, user corrections, logs, diffs, and verification results into durable rules only when they are reusable, scoped, and safe to publish.
+`codex-distill` is the differentiating layer. It turns completed work, failed attempts, user corrections, logs, diffs, and verification results into durable rules. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
 
 ## Workflow
 
@@ -139,7 +139,7 @@ scripts/
 
 ## Pre-Publish Check
 
-Run the safety scan before publishing changes:
+Run the safety scan before publishing changes. This protects the repository itself; it does not prevent users from combining the installed skills with their local Codex memory or private project instructions at runtime.
 
 ```bash
 bash scripts/scan-public-safety.sh
@@ -148,7 +148,7 @@ bash scripts/scan-public-safety.sh
 Current policy:
 
 - `README.md` and `README.zh-CN.md` may contain attribution and acknowledgements.
-- `skills/` stays generic and should not contain personal data, machine-specific paths, or source-brand markers.
+- The public `skills/` files should not contain personal data, machine-specific paths, private project facts, credentials, or source-brand markers.
 
 ## Acknowledgements
 
