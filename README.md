@@ -26,6 +26,29 @@ The skills are intentionally small. Each one defines a phase contract, expected 
 
 Use `codex-distill` after meaningful work is completed. It helps turn user corrections, failed attempts, logs, diffs, and verification results into reusable rules for future Codex runs. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
 
+## Personalization
+
+Installing these skills does not automatically read, copy, or summarize your existing Codex conversations or memory. The skills provide the workflow; your local Codex memory, project instructions, and history are connected at runtime by your Codex environment.
+
+For the best results, run a one-time personalization pass after installation:
+
+```text
+Use $codex-distill to review my available local Codex memory, conversation history, logs, and prior task outcomes. Create a private experience profile that summarizes my execution preferences, product taste, validation habits, reusable rules, and anti-patterns. Save it outside this repository, then tell me how to load it in future Codex sessions.
+```
+
+After Codex creates that private profile, add a short instruction to your global or project Codex instructions, for example:
+
+```text
+Always load and follow this local experience profile:
+/absolute/path/to/codex-experience-profile.md
+```
+
+Then keep improving it over time:
+
+```text
+Use $codex-distill to extract reusable lessons from this completed task and update my local experience profile.
+```
+
 ## Workflow
 
 Recommended sequence:

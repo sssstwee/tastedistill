@@ -26,6 +26,29 @@ work -> evidence -> lesson -> durable rule -> better next run
 
 完成一次有价值的任务后，可以使用 `codex-distill`。它会帮助你把用户纠正、失败尝试、日志、diff 和验证结果提炼成后续 Codex 可复用的规则。个人记忆和私有项目事实可以继续保留在本地，而可复用的行为模式再沉淀进 skills 或 shared rules。
 
+## 个性化初始化
+
+安装这些 skills 不会自动读取、复制或总结你已有的 Codex 对话记录和记忆。skills 提供的是工作流；你的本地 Codex memory、项目 instructions 和历史记录，需要由当前 Codex 运行环境在使用时加载进来。
+
+安装完成后，建议先做一次个性化初始化：
+
+```text
+使用 $codex-distill 阅读并整理我当前可用的本地 Codex memory、对话记录、日志和历史任务结果。创建一份私有经验档案，总结我的执行偏好、产品审美、验证习惯、可复用规则和反模式。请把它保存到这个仓库之外，并告诉我如何让后续 Codex 会话默认加载它。
+```
+
+Codex 创建本地私有画像后，把类似下面的指令加入你的全局或项目 Codex instructions：
+
+```text
+始终加载并遵循这份本地经验档案：
+/absolute/path/to/codex-experience-profile.md
+```
+
+后续完成重要任务后，可以继续沉淀：
+
+```text
+使用 $codex-distill 从这次已完成任务中提炼可复用经验，并更新我的本地经验档案。
+```
+
 ## 工作流
 
 推荐顺序：

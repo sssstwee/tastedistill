@@ -1,6 +1,6 @@
 ---
 name: codex-distill
-description: Extract reusable lessons from completed work, failed attempts, user corrections, logs, diffs, tests, and project outcomes, then update durable skills or rules. Use when asked to learn from experience, improve skills, refine agent behavior, audit skill health, or turn repeated mistakes into guidance.
+description: Extract reusable lessons from completed work, failed attempts, user corrections, logs, diffs, tests, project outcomes, local Codex memory, and conversation history, then update durable skills or rules. Use when asked to learn from experience, personalize Codex from prior work, improve skills, refine agent behavior, audit skill health, or turn repeated mistakes into guidance.
 ---
 
 # Distill: Improve The Next Run
@@ -20,6 +20,21 @@ work -> evidence -> lesson -> durable rule -> better next run
 ```
 
 Distillation is not a transcript summary. It turns repeated, verified behavior into future execution guidance. A lesson should explain when Codex should behave differently next time, what evidence supports the rule, and where the rule belongs.
+
+## Local Personalization Bootstrap
+
+Use this mode when the user asks to initialize these skills from their existing Codex memory, conversation history, logs, or prior task outcomes.
+
+Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. First identify what local memory/history sources are available in the current Codex environment, then ask before reading broad personal history.
+
+Recommended output:
+
+- a private experience profile saved outside this public skill repository
+- a short instruction snippet the user can add to their global or project Codex instructions so future sessions load that profile
+- a summary of what was distilled: execution habits, preferences, project rules, validation habits, and anti-patterns
+- a list of sources that were unavailable or intentionally skipped
+
+Keep personal facts, private project details, raw transcripts, and machine-specific paths in the user's local profile or project instructions. Promote only reusable behavior into this skill or shared rules.
 
 ## Workflow
 
