@@ -142,14 +142,14 @@ mkdir -p "$HOME/.codex/skills"
 ```bash
 for skill in codex-learn codex-think codex-design codex-debug codex-ship codex-distill; do
   rm -f "$HOME/.codex/skills/$skill"
-  ln -s "$PWD/skills/$skill" "$HOME/.codex/skills/$skill"
+  ln -s "$PWD/plugins/codex-self-learning-skills/skills/$skill" "$HOME/.codex/skills/$skill"
 done
 ```
 
 #### 3. 只安装单个 skill
 
 ```bash
-ln -s "$PWD/skills/codex-debug" "$HOME/.codex/skills/codex-debug"
+ln -s "$PWD/plugins/codex-self-learning-skills/skills/codex-debug" "$HOME/.codex/skills/codex-debug"
 ```
 
 #### 4. 验证安装
@@ -182,24 +182,27 @@ done
 ## 目录结构
 
 ```text
-.codex-plugin/
-  plugin.json
-.claude-plugin/
-  marketplace.json
-.mcp.json
-skills/
-  codex-learn/
-  codex-think/
-  codex-design/
-  codex-debug/
-  codex-ship/
-  codex-distill/
-shared-rules/
-  anti-patterns.md
-  codegraph.md
-  coding-guardrails.md
-  routing.md
-  self-learning-loop.md
+.agents/
+  plugins/
+    marketplace.json
+plugins/
+  codex-self-learning-skills/
+    .codex-plugin/
+      plugin.json
+    .mcp.json
+    skills/
+      codex-learn/
+      codex-think/
+      codex-design/
+      codex-debug/
+      codex-ship/
+      codex-distill/
+    shared-rules/
+      anti-patterns.md
+      codegraph.md
+      coding-guardrails.md
+      routing.md
+      self-learning-loop.md
 ```
 
 ## 致谢
