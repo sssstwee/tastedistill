@@ -1,0 +1,5 @@
+interface:
+  display_name: "Codex Distill"
+  short_description: "Experience distillation, durable rule extraction, and skill health checks"
+  default_prompt: "Use $codex-distill to extract reusable lessons and update durable skill guidance."
+

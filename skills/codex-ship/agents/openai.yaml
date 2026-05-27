@@ -1,0 +1,5 @@
+interface:
+  display_name: "Codex Ship"
+  short_description: "Delivery preflight, acceptance verification, release readiness, and follow-through"
+  default_prompt: "Use $codex-ship to review readiness, verify acceptance, and prepare or complete delivery."
+

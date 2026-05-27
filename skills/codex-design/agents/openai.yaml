@@ -1,0 +1,5 @@
+interface:
+  display_name: "Codex Design"
+  short_description: "Product design, interaction principles, UI execution, and visual verification"
+  default_prompt: "Use $codex-design to define the interface direction and execute UI work with visual verification."
+

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Codex Learn"
+  short_description: "Research, source synthesis, domain learning, and structured notes"
+  default_prompt: "Use $codex-learn to research the topic, synthesize sources, and produce structured findings."
+

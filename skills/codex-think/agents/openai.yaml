@@ -1,0 +1,5 @@
+interface:
+  display_name: "Codex Think"
+  short_description: "Decision making, architecture tradeoffs, planning, and risk framing"
+  default_prompt: "Use $codex-think to turn this idea into a decision-ready plan with tradeoffs and verification."
+
