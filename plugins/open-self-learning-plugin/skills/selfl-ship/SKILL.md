@@ -1,5 +1,5 @@
 ---
-name: codex-ship
+name: selfl-ship
 description: Review implemented work, verify acceptance criteria, prepare delivery, inspect release readiness, handle PR or issue follow-through, and confirm shipped state. Use when work is ready for review, merge, release, publish, push, or handoff. Not for root-cause debugging.
 ---
 

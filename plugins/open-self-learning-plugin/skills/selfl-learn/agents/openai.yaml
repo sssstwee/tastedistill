@@ -1,0 +1,5 @@
+interface:
+  display_name: "selfL Learn"
+  short_description: "Research, source synthesis, domain learning, and structured notes"
+  default_prompt: "Use $selfl-learn to research the topic, synthesize sources, and produce structured findings."
+

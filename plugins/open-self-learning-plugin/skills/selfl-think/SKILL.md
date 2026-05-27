@@ -1,6 +1,6 @@
 ---
-name: codex-think
-description: Turn rough ideas, product questions, architecture choices, implementation options, and tradeoffs into decision-ready plans. Use when the user asks what to build, whether an approach is worth it, how to structure a solution, or what plan Codex should execute. Not for debugging an already broken behavior.
+name: selfl-think
+description: Turn rough ideas, product questions, architecture choices, implementation options, and tradeoffs into decision-ready plans. Use when the user asks what to build, whether an approach is worth it, how to structure a solution, or what plan the agent should execute. Not for debugging an already broken behavior.
 ---
 
 # Think: Decide Before Building

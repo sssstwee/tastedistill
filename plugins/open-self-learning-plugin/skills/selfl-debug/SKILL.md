@@ -1,5 +1,5 @@
 ---
-name: codex-debug
+name: selfl-debug
 description: Diagnose failures, broken behavior, regressions, test failures, runtime errors, stale state, rendering bugs, and repeated failed fixes. Use when something does not work, used to work, crashes, fails tests, or needs root-cause proof. Not for product planning or release readiness.
 ---
 

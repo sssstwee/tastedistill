@@ -1,5 +1,5 @@
 ---
-name: codex-design
+name: selfl-design
 description: Define product direction, interaction principles, UI structure, visual execution rules, and screenshot-based polish before or during frontend implementation. Use when the task involves UI, product design, interaction behavior, visual quality, or design-system consistency. Not for backend-only logic.
 ---
 

@@ -1,14 +1,14 @@
 {
-  "name": "codex-self-learning-skills",
+  "name": "open-self-learning-plugin",
   "interface": {
-    "displayName": "Codex Self-Learning Skills"
+    "displayName": "selfL"
   },
   "plugins": [
     {
-      "name": "codex-self-learning-skills",
+      "name": "open-self-learning-plugin",
       "source": {
         "source": "local",
-        "path": "./plugins/codex-self-learning-skills"
+        "path": "./plugins/open-self-learning-plugin"
       },
       "policy": {
         "installation": "AVAILABLE",

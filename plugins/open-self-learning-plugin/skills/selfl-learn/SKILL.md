@@ -1,5 +1,5 @@
 ---
-name: codex-learn
+name: selfl-learn
 description: Research unfamiliar domains, source materials, repositories, documents, or problem spaces and turn them into structured understanding before planning or implementation. Use when the task asks for deep research, source synthesis, domain learning, evidence mapping, or study notes. Not for one-off link fetching or simple copy editing.
 ---
 

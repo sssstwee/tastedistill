@@ -4,12 +4,12 @@ Use the narrowest skill that matches the task.
 
 | Trigger | Skill |
 |---|---|
-| unfamiliar domain, source synthesis, research memo | `codex-learn` |
-| product judgment, architecture tradeoff, plan | `codex-think` |
-| UI, interaction, product surface, visual quality | `codex-design` |
-| error, crash, regression, failing test, broken behavior | `codex-debug` |
-| review, merge, release, publish, PR, issue follow-through | `codex-ship` |
-| extract lessons, update rules, audit skill health | `codex-distill` |
+| unfamiliar domain, source synthesis, research memo | `selfl-learn` |
+| product judgment, architecture tradeoff, plan | `selfl-think` |
+| UI, interaction, product surface, visual quality | `selfl-design` |
+| error, crash, regression, failing test, broken behavior | `selfl-debug` |
+| review, merge, release, publish, PR, issue follow-through | `selfl-ship` |
+| extract lessons, update rules, audit skill health | `selfl-distill` |
 
 Use `shared-rules/self-learning-loop.md` after meaningful work produces a reusable lesson.
 Use `shared-rules/coding-guardrails.md` for coding, refactoring, debugging, review, and implementation handoff.

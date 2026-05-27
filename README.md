@@ -1,20 +1,20 @@
-# Codex Self-Learning Skills
+# selfL: Self-Learning Plugin
 
 <p>
   <a href="./README.md"><img alt="English" src="https://img.shields.io/badge/English-current-111827?style=for-the-badge"></a>
   <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-switch-2563eb?style=for-the-badge"></a>
 </p>
 
-A Codex-native self-learning loop for turning repeated development work into reusable agent behavior: research, decide, design, implement, debug, ship, and distill.
+selfL is an agent-oriented self-learning loop for turning repeated development work into reusable behavior: research, decide, design, implement, debug, ship, and distill.
 
 ## Goals
 
-- Help Codex use your accumulated memory, preferences, project context, and task evidence more consistently across future work.
+- Help coding agents use your accumulated memory, preferences, project context, and task evidence more consistently across future work.
 - Turn repeated development lessons, mistakes, preferences, and verification habits into reusable skill behavior.
 - Split behavior by engineering stage instead of relying on one oversized global prompt.
 - Make every stage evidence-oriented, with clear outcome contracts and validation expectations.
 
-## Codex-Native Direction
+## Agent-Native Direction
 
 This repository is designed around a feedback loop:
 
@@ -22,21 +22,21 @@ This repository is designed around a feedback loop:
 work -> evidence -> lesson -> durable rule -> better next run
 ```
 
-The skills are intentionally small. Each one defines a phase contract, expected evidence, and failure boundaries. At runtime, they are meant to work together with your local Codex memory, project instructions, repository files, logs, tests, browser state, and current task context. Codex still performs the implementation work directly; the skills shape when to research, when to decide, when to verify, and when to update future behavior.
+The skills are intentionally small. Each one defines a phase contract, expected evidence, and failure boundaries. At runtime, they are meant to work together with local agent memory, project instructions, repository files, logs, tests, browser state, and current task context. The active coding agent still performs the implementation work directly; the skills shape when to research, when to decide, when to verify, and when to update future behavior.
 
-Use `codex-distill` after meaningful work is completed. It helps turn user corrections, failed attempts, logs, diffs, and verification results into reusable rules for future Codex runs. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
+Use `selfl-distill` after meaningful work is completed. It helps turn user corrections, failed attempts, logs, diffs, and verification results into reusable rules for future agent runs. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
 
 ## Personalization
 
-Installing these skills does not automatically read, copy, or summarize your existing Codex conversations or memory. Skill installation only makes the workflow available. Reading personal history and editing local instructions should happen only after you explicitly run `codex-distill`.
+Installing these skills does not automatically read, copy, or summarize your existing Codex or agent conversations and memory. Skill installation only makes the workflow available. Reading personal history and editing local instructions should happen only after you explicitly run `selfl-distill`.
 
-For the best results, run `codex-distill` once after installation and let it complete the setup:
+For the best results, run `selfl-distill` once after installation and let it complete the setup:
 
 ```text
-Use $codex-distill to initialize my local personalization. Review my available local Codex memory, conversation history, logs, and prior task outcomes. Create a private experience profile outside this repository, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then wire it into my global or project Codex instructions so future sessions can load it by default. Ask before reading broad personal history or editing instruction files.
+Use $selfl-distill to initialize my local personalization. Review my available local agent memory, conversation history, logs, and prior task outcomes. Create a private experience profile outside this repository, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then wire it into my global or project agent instructions so future sessions can load it by default. Ask before reading broad personal history or editing instruction files.
 ```
 
-`codex-distill` should handle the whole bootstrap:
+`selfl-distill` should handle the whole bootstrap:
 
 - find available local memory/history sources
 - create the private experience profile outside this repository
@@ -46,12 +46,12 @@ Use $codex-distill to initialize my local personalization. Review my available l
 Then keep improving it over time:
 
 ```text
-Use $codex-distill to extract reusable lessons from this completed task and update my local experience profile.
+Use $selfl-distill to extract reusable lessons from this completed task and update my local experience profile.
 ```
 
 ## Built-In CodeGraph MCP
 
-For larger repositories, the Codex plugin includes [CodeGraph](https://github.com/colbymchenry/codegraph) MCP registration so Codex can use a local code knowledge graph for architecture lookup, call-flow tracing, and impact analysis.
+For larger repositories, the Codex plugin includes [CodeGraph](https://github.com/colbymchenry/codegraph) MCP registration so the agent can use a local code knowledge graph for architecture lookup, call-flow tracing, and impact analysis.
 
 When this repository is installed as a Codex plugin, CodeGraph is launched through `npx` when the MCP server is needed. Users do not need to install CodeGraph globally before installing the plugin.
 
@@ -69,29 +69,29 @@ When `codegraph_*` MCP tools are available in your current Codex client, these s
 Recommended sequence:
 
 ```text
-codex-learn -> codex-think -> codex-design -> implementation -> codex-debug -> codex-ship -> codex-distill
+selfl-learn -> selfl-think -> selfl-design -> implementation -> selfl-debug -> selfl-ship -> selfl-distill
 ```
 
 | Stage | Skill | Purpose |
 |---|---|---|
-| Learn | `codex-learn` | Research unfamiliar domains, synthesize materials, and build a fact base. |
-| Think | `codex-think` | Make product or architecture decisions, define scope, and produce an execution plan. |
-| Design | `codex-design` | Handle product direction, interaction principles, UI structure, and visual verification. |
-| Implement | Codex implementation | Use Codex's native engineering capability to build the change. |
-| Debug | `codex-debug` | Reproduce issues, prove root cause, make minimal fixes, and verify regressions. |
-| Ship | `codex-ship` | Review readiness, acceptance, release, and PR/issue follow-through. |
-| Distill | `codex-distill` | Extract reusable rules from completed work and update durable guidance. |
+| Learn | `selfl-learn` | Research unfamiliar domains, synthesize materials, and build a fact base. |
+| Think | `selfl-think` | Make product or architecture decisions, define scope, and produce an execution plan. |
+| Design | `selfl-design` | Handle product direction, interaction principles, UI structure, and visual verification. |
+| Implement | Agent implementation | Use the active coding agent's engineering capability to build the change. |
+| Debug | `selfl-debug` | Reproduce issues, prove root cause, make minimal fixes, and verify regressions. |
+| Ship | `selfl-ship` | Review readiness, acceptance, release, and PR/issue follow-through. |
+| Distill | `selfl-distill` | Extract reusable rules from completed work and update durable guidance. |
 
 ## Skills
 
 | Skill | Purpose |
 |---|---|
-| `codex-learn` | Research unfamiliar domains and structure source material before decisions. |
-| `codex-think` | Turn rough ideas into decision-ready plans with tradeoffs and risks. |
-| `codex-design` | Define product, interaction, and UI execution rules before visual implementation. |
-| `codex-debug` | Diagnose failures with reproducible evidence and minimal fixes. |
-| `codex-ship` | Review readiness, acceptance, release, and delivery follow-through. |
-| `codex-distill` | Convert completed work into reusable rules that improve future Codex runs. |
+| `selfl-learn` | Research unfamiliar domains and structure source material before decisions. |
+| `selfl-think` | Turn rough ideas into decision-ready plans with tradeoffs and risks. |
+| `selfl-design` | Define product, interaction, and UI execution rules before visual implementation. |
+| `selfl-debug` | Diagnose failures with reproducible evidence and minimal fixes. |
+| `selfl-ship` | Review readiness, acceptance, release, and delivery follow-through. |
+| `selfl-distill` | Convert completed work into reusable rules that improve future agent runs. |
 
 ## Installation
 
@@ -102,12 +102,12 @@ Use the plugin install path when you want the skills and CodeGraph MCP support t
 In Codex Desktop, add this repository as a plugin marketplace:
 
 ```text
-Source: sssstwee/codex-self-learning-skills
+Source: sssstwee/open-self-learning-plugin
 Git ref: main
 Sparse path: leave empty
 ```
 
-Then install `Codex Self-Learning Skills` from that marketplace.
+Then install `selfL` from that marketplace.
 
 After installing the plugin, restart Codex. In each repository where you want graph-based code intelligence, initialize the local index once:
 
@@ -123,8 +123,8 @@ Codex will use CodeGraph when `codegraph_*` MCP tools are available. If a projec
 Use this path when you only want the skills and do not want the plugin to register MCP tools.
 
 ```bash
-git clone https://github.com/sssstwee/codex-self-learning-skills.git
-cd codex-self-learning-skills
+git clone https://github.com/sssstwee/open-self-learning-plugin.git
+cd open-self-learning-plugin
 ```
 
 #### 1. Check the Codex Skills Directory
@@ -140,16 +140,16 @@ mkdir -p "$HOME/.codex/skills"
 Symlinks are recommended so updates from `git pull` are picked up automatically.
 
 ```bash
-for skill in codex-learn codex-think codex-design codex-debug codex-ship codex-distill; do
+for skill in selfl-learn selfl-think selfl-design selfl-debug selfl-ship selfl-distill; do
   rm -f "$HOME/.codex/skills/$skill"
-  ln -s "$PWD/plugins/codex-self-learning-skills/skills/$skill" "$HOME/.codex/skills/$skill"
+  ln -s "$PWD/plugins/open-self-learning-plugin/skills/$skill" "$HOME/.codex/skills/$skill"
 done
 ```
 
 #### 3. Install One Skill
 
 ```bash
-ln -s "$PWD/plugins/codex-self-learning-skills/skills/codex-debug" "$HOME/.codex/skills/codex-debug"
+ln -s "$PWD/plugins/open-self-learning-plugin/skills/selfl-debug" "$HOME/.codex/skills/selfl-debug"
 ```
 
 #### 4. Verify
@@ -157,15 +157,15 @@ ln -s "$PWD/plugins/codex-self-learning-skills/skills/codex-debug" "$HOME/.codex
 After reopening Codex, type:
 
 ```text
-/codex
+/selfl
 ```
 
-You should see `Codex Learn`, `Codex Think`, `Codex Design`, `Codex Debug`, `Codex Ship`, and `Codex Distill`.
+You should see `selfL Learn`, `selfL Think`, `selfL Design`, `selfL Debug`, `selfL Ship`, and `selfL Distill`.
 
 #### 5. Update
 
 ```bash
-cd /path/to/codex-self-learning-skills
+cd /path/to/open-self-learning-plugin
 git pull
 ```
 
@@ -174,7 +174,7 @@ If installed via symlinks, you usually do not need to copy files again. Restart 
 #### 6. Uninstall
 
 ```bash
-for skill in codex-learn codex-think codex-design codex-debug codex-ship codex-distill; do
+for skill in selfl-learn selfl-think selfl-design selfl-debug selfl-ship selfl-distill; do
   rm -f "$HOME/.codex/skills/$skill"
 done
 ```
@@ -186,17 +186,17 @@ done
   plugins/
     marketplace.json
 plugins/
-  codex-self-learning-skills/
+  open-self-learning-plugin/
     .codex-plugin/
       plugin.json
     .mcp.json
     skills/
-      codex-learn/
-      codex-think/
-      codex-design/
-      codex-debug/
-      codex-ship/
-      codex-distill/
+      selfl-learn/
+      selfl-think/
+      selfl-design/
+      selfl-debug/
+      selfl-ship/
+      selfl-distill/
     shared-rules/
       anti-patterns.md
       codegraph.md

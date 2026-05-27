@@ -1,0 +1,42 @@
+{
+  "name": "open-self-learning-plugin",
+  "version": "0.1.0",
+  "description": "Agent self-learning workflows with built-in CodeGraph MCP support.",
+  "author": {
+    "name": "sssstwee",
+    "url": "https://github.com/sssstwee"
+  },
+  "homepage": "https://github.com/sssstwee/open-self-learning-plugin",
+  "repository": "https://github.com/sssstwee/open-self-learning-plugin",
+  "license": "MIT",
+  "keywords": [
+    "agent",
+    "skills",
+    "self-learning",
+    "codegraph",
+    "workflow",
+    "debugging",
+    "delivery"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "selfL",
+    "shortDescription": "Self-learning workflows with CodeGraph MCP support",
+    "longDescription": "selfL provides staged self-learning workflows for learning, planning, design, debugging, delivery, and experience distillation. In Codex, it registers CodeGraph as a local MCP server for repository exploration, call-flow tracing, and impact analysis.",
+    "developerName": "sssstwee",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/sssstwee/open-self-learning-plugin",
+    "defaultPrompt": [
+      "Initialize my local agent personalization",
+      "Analyze this repo and create an implementation plan",
+      "Debug this failure and verify the smallest fix"
+    ],
+    "brandColor": "#111827"
+  }
+}
