@@ -28,20 +28,20 @@ Use `codex-distill` after meaningful work is completed. It helps turn user corre
 
 ## Personalization
 
-Installing these skills does not automatically read, copy, or summarize your existing Codex conversations or memory. The skills provide the workflow; your local Codex memory, project instructions, and history are connected at runtime by your Codex environment.
+Installing these skills does not automatically read, copy, or summarize your existing Codex conversations or memory. Skill installation only makes the workflow available. Reading personal history and editing local instructions should happen only after you explicitly run `codex-distill`.
 
-For the best results, run a one-time personalization pass after installation:
-
-```text
-Use $codex-distill to review my available local Codex memory, conversation history, logs, and prior task outcomes. Create a private experience profile that summarizes my execution preferences, product taste, validation habits, reusable rules, and anti-patterns. Save it outside this repository, then tell me how to load it in future Codex sessions.
-```
-
-After Codex creates that private profile, add a short instruction to your global or project Codex instructions, for example:
+For the best results, run `codex-distill` once after installation and let it complete the setup:
 
 ```text
-Always load and follow this local experience profile:
-/absolute/path/to/codex-experience-profile.md
+Use $codex-distill to initialize my local personalization. Review my available local Codex memory, conversation history, logs, and prior task outcomes. Create a private experience profile outside this repository, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then wire it into my global or project Codex instructions so future sessions can load it by default. Ask before reading broad personal history or editing instruction files.
 ```
+
+`codex-distill` should handle the whole bootstrap:
+
+- find available local memory/history sources
+- create the private experience profile outside this repository
+- add or propose the instruction entry that loads the profile in future sessions
+- report what was loaded, what was skipped, and where the profile was saved
 
 Then keep improving it over time:
 

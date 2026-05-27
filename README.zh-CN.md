@@ -28,20 +28,20 @@ work -> evidence -> lesson -> durable rule -> better next run
 
 ## 个性化初始化
 
-安装这些 skills 不会自动读取、复制或总结你已有的 Codex 对话记录和记忆。skills 提供的是工作流；你的本地 Codex memory、项目 instructions 和历史记录，需要由当前 Codex 运行环境在使用时加载进来。
+安装这些 skills 不会自动读取、复制或总结你已有的 Codex 对话记录和记忆。安装只是让工作流可用；读取个人历史和修改本地 instructions 应该发生在你明确运行 `codex-distill` 之后。
 
-安装完成后，建议先做一次个性化初始化：
-
-```text
-使用 $codex-distill 阅读并整理我当前可用的本地 Codex memory、对话记录、日志和历史任务结果。创建一份私有经验档案，总结我的执行偏好、产品审美、验证习惯、可复用规则和反模式。请把它保存到这个仓库之外，并告诉我如何让后续 Codex 会话默认加载它。
-```
-
-Codex 创建本地私有画像后，把类似下面的指令加入你的全局或项目 Codex instructions：
+安装完成后，建议运行一次 `codex-distill`，让它完成初始化：
 
 ```text
-始终加载并遵循这份本地经验档案：
-/absolute/path/to/codex-experience-profile.md
+使用 $codex-distill 初始化我的本地个性化配置。阅读并整理我当前可用的本地 Codex memory、对话记录、日志和历史任务结果。请在这个仓库之外创建一份私有经验档案，总结我的执行偏好、产品审美、验证习惯、可复用规则和反模式，并把它接入我的全局或项目 Codex instructions，让后续会话可以默认加载。读取大范围个人历史或修改 instructions 文件前先确认。
 ```
+
+`codex-distill` 应该处理完整 bootstrap：
+
+- 发现当前可用的本地 memory / history 来源
+- 在仓库之外创建私有经验档案
+- 添加或给出可加载该档案的 instructions 入口
+- 报告读取了哪些来源、跳过了哪些来源、档案保存在哪里
 
 后续完成重要任务后，可以继续沉淀：
 

@@ -25,12 +25,21 @@ Distillation is not a transcript summary. It turns repeated, verified behavior i
 
 Use this mode when the user asks to initialize these skills from their existing Codex memory, conversation history, logs, or prior task outcomes.
 
-Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. First identify what local memory/history sources are available in the current Codex environment, then ask before reading broad personal history.
+Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. Running `codex-distill` once after installation should perform the whole bootstrap, but it must ask before reading broad personal history or editing global/project instruction files.
+
+Bootstrap flow:
+
+1. Identify available local memory/history sources in the current Codex environment.
+2. Ask for confirmation before broad history reads or instruction-file edits.
+3. Create a private experience profile outside this public skill repository.
+4. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
+5. Add the profile-loading instruction to the appropriate global or project Codex instruction surface when the user authorizes it. If no writable instruction surface is available, output the exact snippet to add.
+6. Report what was loaded, what was skipped, what was written, and how future sessions will load the profile.
 
 Recommended output:
 
 - a private experience profile saved outside this public skill repository
-- a short instruction snippet the user can add to their global or project Codex instructions so future sessions load that profile
+- a loaded instruction entry, or a short instruction snippet the user can add to global or project Codex instructions when automatic wiring is unavailable
 - a summary of what was distilled: execution habits, preferences, project rules, validation habits, and anti-patterns
 - a list of sources that were unavailable or intentionally skipped
 
