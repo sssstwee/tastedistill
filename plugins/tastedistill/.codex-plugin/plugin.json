@@ -1,0 +1,42 @@
+{
+  "name": "tastedistill",
+  "version": "0.2.0",
+  "description": "Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.",
+  "author": {
+    "name": "sssstwee",
+    "url": "https://github.com/sssstwee"
+  },
+  "homepage": "https://github.com/sssstwee/tastedistill",
+  "repository": "https://github.com/sssstwee/tastedistill",
+  "license": "MIT",
+  "keywords": [
+    "agent",
+    "skills",
+    "taste-distillation",
+    "codegraph",
+    "workflow",
+    "debugging",
+    "delivery"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "TasteDistill",
+    "shortDescription": "Portable taste distillation for coding agents",
+    "longDescription": "TasteDistill provides a portable engineering profile and staged taste-distillation workflows for Codex, Claude Code, and Hermes. It keeps user and project experience under ~/.tastedistill, avoids overwriting host memory by default, and uses CodeGraph when the current host exposes compatible repository-intelligence tools.",
+    "developerName": "sssstwee",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/sssstwee/tastedistill",
+    "defaultPrompt": [
+      "Initialize my local agent personalization",
+      "Analyze this repo and create an implementation plan",
+      "Debug this failure and verify the smallest fix"
+    ],
+    "brandColor": "#111827"
+  }
+}

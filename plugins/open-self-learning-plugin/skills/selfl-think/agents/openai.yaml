@@ -1,5 +1,0 @@
-interface:
-  display_name: "selfL Think"
-  short_description: "Decision making, architecture tradeoffs, planning, and risk framing"
-  default_prompt: "Use $selfl-think to turn this idea into a decision-ready plan with tradeoffs and verification."
-

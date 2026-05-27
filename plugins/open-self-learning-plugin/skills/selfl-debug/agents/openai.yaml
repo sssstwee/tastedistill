@@ -1,5 +1,0 @@
-interface:
-  display_name: "selfL Debug"
-  short_description: "Root-cause diagnosis, regressions, runtime evidence, and minimal fixes"
-  default_prompt: "Use $selfl-debug to reproduce the failure, prove root cause, apply a minimal fix, and verify it."
-

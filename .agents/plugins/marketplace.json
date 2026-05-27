@@ -1,14 +1,14 @@
 {
-  "name": "open-self-learning-plugin",
+  "name": "tastedistill",
   "interface": {
-    "displayName": "selfL"
+    "displayName": "TasteDistill"
   },
   "plugins": [
     {
-      "name": "open-self-learning-plugin",
+      "name": "tastedistill",
       "source": {
         "source": "local",
-        "path": "./plugins/open-self-learning-plugin"
+        "path": "./plugins/tastedistill"
       },
       "policy": {
         "installation": "AVAILABLE",

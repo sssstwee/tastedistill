@@ -1,0 +1,5 @@
+interface:
+  display_name: "TasteDistill Ship"
+  short_description: "Delivery preflight, acceptance verification, release readiness, and follow-through"
+  default_prompt: "Use $tastedistill-ship to review readiness, verify acceptance, and prepare or complete delivery."
+

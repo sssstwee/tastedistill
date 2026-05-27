@@ -1,11 +1,11 @@
-# selfL: Self-Learning Plugin
+# TasteDistill
 
 <p>
   <a href="./README.md"><img alt="English" src="https://img.shields.io/badge/English-current-111827?style=for-the-badge"></a>
   <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-switch-2563eb?style=for-the-badge"></a>
 </p>
 
-selfL is a portable self-learning harness for coding agents. It turns repeated development work into reusable behavior across Codex, Claude Code, and Hermes: research, decide, design, implement, debug, ship, and distill.
+TasteDistill is a portable taste distillation layer for coding agents. It turns your development experience, product taste, interaction principles, validation habits, and project rules into reusable behavior across Codex, Claude Code, and Hermes.
 
 ## Goals
 
@@ -17,18 +17,18 @@ selfL is a portable self-learning harness for coding agents. It turns repeated d
 
 ## Portable Harness
 
-selfL does not replace your host agent. Codex, Claude Code, and Hermes remain the execution runtimes. selfL provides a local, portable profile and harness layer that those agents can reference.
+TasteDistill does not replace your host agent. Codex, Claude Code, and Hermes remain the execution runtimes. TasteDistill provides a local, portable profile and harness layer that those agents can reference.
 
 ```text
-selfL is the source of truth
+TasteDistill is the source of truth
 host agent is the execution runtime
-adapter lets the host read selfL
+adapter lets the host read TasteDistill
 ```
 
 The default local profile layout is:
 
 ```text
-$HOME/.selfl/
+$HOME/.tastedistill/
   manifest.json
   profile.md
   profile.json
@@ -54,19 +54,19 @@ $HOME/.selfl/
 
 ## Host Compatibility
 
-selfL v1 supports Codex, Claude Code, and Hermes with different adapter behavior.
+TasteDistill v1 supports Codex, Claude Code, and Hermes with different adapter behavior.
 
 | Host | Behavior | Default write policy |
 |---|---|---|
-| Codex | Full adapter. Explicit `@selfL` or `selfl-*` use can create `~/.selfl`, create project profiles, and initialize CodeGraph for the current Git repository. | May write under `~/.selfl`, current repo `.codegraph/`, and `.git/info/exclude`. Does not rewrite `AGENTS.md` by default. |
-| Claude Code | Reference adapter. selfL generates a snippet that can import or reference `~/.selfl/profile.md` and `~/.selfl/harness.md`. | Does not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
-| Hermes | External profile adapter. selfL generates a snippet for using `~/.selfl` as an external engineering preference source. | Does not write `~/.hermes/SOUL.md`, `~/.hermes/memories/*`, `~/.hermes/skills/*`, config, or `.env` unless explicitly requested. |
+| Codex | Plugin adapter. Explicit `@TasteDistill` or `tastedistill-*` use can create `~/.tastedistill`, create project profiles, and initialize CodeGraph for the current Git repository when CodeGraph tools are available. | May write under `~/.tastedistill`, current repo `.codegraph/`, and `.git/info/exclude`. Does not rewrite `AGENTS.md` by default. |
+| Claude Code | Reference adapter. TasteDistill generates a snippet that can import or reference `~/.tastedistill/profile.md` and `~/.tastedistill/harness.md`. | Does not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
+| Hermes | External profile adapter. TasteDistill generates a snippet for using `~/.tastedistill` as an external engineering preference source. | Does not write `~/.hermes/SOUL.md`, `~/.hermes/memories/*`, `~/.hermes/skills/*`, config, or `.env` unless explicitly requested. |
 
 This avoids the main integration conflicts:
 
 - no automatic writes to host memory
 - no replacement of host identity or system instructions
-- no full-copy sync of the selfL profile into every host
+- no full-copy sync of the TasteDistill profile into every host
 - no bypassing host permissions, sandboxing, or approval policy
 
 ## Agent-Native Direction
@@ -79,26 +79,26 @@ work -> evidence -> lesson -> durable rule -> better next run
 
 The skills are intentionally small. Each one defines a phase contract, expected evidence, and failure boundaries. At runtime, they are meant to work together with local agent memory, project instructions, repository files, logs, tests, browser state, and current task context. The active coding agent still performs the implementation work directly; the skills shape when to research, when to decide, when to verify, and when to update future behavior.
 
-Use `selfl-distill` after meaningful work is completed. It helps turn user corrections, failed attempts, logs, diffs, and verification results into reusable rules for future agent runs. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
+Use `tastedistill-distill` after meaningful work is completed. It helps turn user corrections, failed attempts, logs, diffs, and verification results into reusable rules for future agent runs. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
 
 ## Personalization
 
-Installing these skills does not automatically read, copy, or summarize your existing Codex, Claude Code, Hermes, or other agent conversations and memory. The first explicit `@selfL` or `selfl-*` invocation performs an idempotent personalization bootstrap check. If no local selfL profile exists yet, selfL runs the `selfl-distill` bootstrap before continuing with the requested skill.
+Installing these skills does not automatically read, copy, or summarize your existing Codex, Claude Code, Hermes, or other agent conversations and memory. The first explicit `@TasteDistill` or `tastedistill-*` invocation performs an idempotent personalization bootstrap check. If no local TasteDistill profile exists yet, TasteDistill runs the `tastedistill-distill` bootstrap before continuing with the requested skill.
 
 The default private profile lives outside this repository:
 
 ```text
-$HOME/.selfl/profile.md
-$HOME/.selfl/harness.md
-$HOME/.selfl/bootstrap.json
+$HOME/.tastedistill/profile.md
+$HOME/.tastedistill/harness.md
+$HOME/.tastedistill/bootstrap.json
 ```
 
-If you already have durable host-specific experience files, selfL treats them as sources, not targets to overwrite. For example, a Codex experience document can seed the selfL profile without forcing a new broad transcript sweep.
+If you already have durable host-specific experience files, TasteDistill treats them as sources, not targets to overwrite. For example, a Codex experience document can seed the TasteDistill profile without forcing a new broad transcript sweep.
 
 You can also run the bootstrap directly:
 
 ```text
-Use $selfl-distill to initialize my local selfL profile. Review my available local agent memory, conversation history, logs, and prior task outcomes. Create a private portable engineering profile under ~/.selfl, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then generate Codex, Claude Code, and Hermes adapter snippets. Ask before reading broad personal history or editing host instruction files.
+Use $tastedistill-distill to initialize my local TasteDistill profile. Review my available local agent memory, conversation history, logs, and prior task outcomes. Create a private portable engineering profile under ~/.tastedistill, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then generate Codex, Claude Code, and Hermes adapter snippets. Ask before reading broad personal history or editing host instruction files.
 ```
 
 The bootstrap should handle:
@@ -111,16 +111,16 @@ The bootstrap should handle:
 Then keep improving it over time:
 
 ```text
-Use $selfl-distill to extract reusable lessons from this completed task and update my local selfL profile or project harness.
+Use $tastedistill-distill to extract reusable lessons from this completed task and update my local TasteDistill profile or project harness.
 ```
 
 ## Built-In CodeGraph MCP
 
-For larger repositories, the Codex plugin includes [CodeGraph](https://github.com/colbymchenry/codegraph) MCP registration so the agent can use a local code knowledge graph for architecture lookup, call-flow tracing, and impact analysis.
+For larger repositories, TasteDistill can use [CodeGraph](https://github.com/colbymchenry/codegraph) as a local code knowledge graph for architecture lookup, call-flow tracing, and impact analysis.
 
-When this repository is installed as a Codex plugin, CodeGraph is launched through `npx` when the MCP server is needed. Users do not need to install CodeGraph globally before installing the plugin.
+When this repository is installed as a Codex plugin, CodeGraph is launched through `npx` when the MCP server is needed. Users do not need to install CodeGraph globally before installing the plugin. Other hosts can follow the same CodeGraph rules when they expose compatible MCP/tools.
 
-Each repository still needs a local graph index. When you explicitly call the selfL plugin or any selfL skill from inside a Git repository, selfL performs an idempotent CodeGraph bootstrap check for the current repository. If the index is missing, it initializes it automatically before broad repository work.
+Each repository still needs a local graph index. When you explicitly call the TasteDistill plugin or any TasteDistill skill from inside a Git repository, TasteDistill performs an idempotent CodeGraph bootstrap check for the current repository. If the index is missing, it initializes it automatically before broad repository work.
 
 Manual initialization is also supported:
 
@@ -129,69 +129,69 @@ cd your-project
 npx -y @colbymchenry/codegraph init -i
 ```
 
-When `codegraph_*` MCP tools are available in your current Codex client, these skills will prefer CodeGraph for repository exploration, debugging, and impact analysis. If the current repository has no CodeGraph index yet, explicit selfL use is treated as permission to initialize only that repository and keep `.codegraph/` local via `.git/info/exclude`. If you install the skills without the plugin, run selfL outside a Git repository, or if CodeGraph is unavailable, the skills fall back to normal file search and targeted reads.
+When `codegraph_*` MCP tools are available in the current host, these skills will prefer CodeGraph for repository exploration, debugging, and impact analysis. If the current repository has no CodeGraph index yet, explicit TasteDistill use is treated as permission to initialize only that repository and keep `.codegraph/` local via `.git/info/exclude`. If you install the skills without the plugin, run TasteDistill outside a Git repository, or if CodeGraph is unavailable, the skills fall back to normal file search and targeted reads.
 
 ## Workflow
 
 Recommended sequence:
 
 ```text
-selfl-learn -> selfl-think -> selfl-design -> implementation -> selfl-debug -> selfl-ship -> selfl-distill
+tastedistill-learn -> tastedistill-think -> tastedistill-design -> implementation -> tastedistill-debug -> tastedistill-ship -> tastedistill-distill
 ```
 
 | Stage | Skill | Purpose |
 |---|---|---|
-| Learn | `selfl-learn` | Research unfamiliar domains, synthesize materials, and build a fact base. |
-| Think | `selfl-think` | Make product or architecture decisions, define scope, and produce an execution plan. |
-| Design | `selfl-design` | Handle product direction, interaction principles, UI structure, and visual verification. |
+| Learn | `tastedistill-learn` | Research unfamiliar domains, synthesize materials, and build a fact base. |
+| Think | `tastedistill-think` | Make product or architecture decisions, define scope, and produce an execution plan. |
+| Design | `tastedistill-design` | Handle product direction, interaction principles, UI structure, and visual verification. |
 | Implement | Agent implementation | Use the active coding agent's engineering capability to build the change. |
-| Debug | `selfl-debug` | Reproduce issues, prove root cause, make minimal fixes, and verify regressions. |
-| Ship | `selfl-ship` | Review readiness, acceptance, release, and PR/issue follow-through. |
-| Distill | `selfl-distill` | Extract reusable rules from completed work and update durable guidance. |
+| Debug | `tastedistill-debug` | Reproduce issues, prove root cause, make minimal fixes, and verify regressions. |
+| Ship | `tastedistill-ship` | Review readiness, acceptance, release, and PR/issue follow-through. |
+| Distill | `tastedistill-distill` | Extract reusable rules from completed work and update durable guidance. |
 
 ## Skills
 
 | Skill | Purpose |
 |---|---|
-| `selfl-learn` | Research unfamiliar domains and structure source material before decisions. |
-| `selfl-think` | Turn rough ideas into decision-ready plans with tradeoffs and risks. |
-| `selfl-design` | Define product, interaction, and UI execution rules before visual implementation. |
-| `selfl-debug` | Diagnose failures with reproducible evidence and minimal fixes. |
-| `selfl-ship` | Review readiness, acceptance, release, and delivery follow-through. |
-| `selfl-distill` | Convert completed work into reusable rules that improve future agent runs. |
+| `tastedistill-learn` | Research unfamiliar domains and structure source material before decisions. |
+| `tastedistill-think` | Turn rough ideas into decision-ready plans with tradeoffs and risks. |
+| `tastedistill-design` | Define product, interaction, and UI execution rules before visual implementation. |
+| `tastedistill-debug` | Diagnose failures with reproducible evidence and minimal fixes. |
+| `tastedistill-ship` | Review readiness, acceptance, release, and delivery follow-through. |
+| `tastedistill-distill` | Convert completed work into reusable rules that improve future agent runs. |
 
 ## Installation
 
 ### Option A: Install As A Codex Plugin
 
-Use the plugin install path when you want the skills and CodeGraph MCP support together. The plugin registers CodeGraph as a local MCP server through `npx`, so users do not need to install CodeGraph separately before installing this project.
+Use the plugin install path when you want the skills and CodeGraph MCP support together in Codex. The plugin registers CodeGraph as a local MCP server through `npx`, so users do not need to install CodeGraph separately before installing this project.
 
 In Codex Desktop, add this repository as a plugin marketplace:
 
 ```text
-Source: sssstwee/open-self-learning-plugin
+Source: sssstwee/tastedistill
 Git ref: main
 Sparse path: leave empty
 ```
 
-Then install `selfL` from that marketplace.
+Then install `TasteDistill` from that marketplace.
 
-After installing the plugin, restart Codex. In each repository where you want graph-based code intelligence, explicitly call `@selfL` or a `selfl-*` skill once. selfL will check the local index and initialize it if needed. You can also initialize it manually:
+After installing the plugin, restart Codex. In each repository where you want graph-based code intelligence, explicitly call `@TasteDistill` or a `tastedistill-*` skill once. TasteDistill will check the local index and initialize it if needed. You can also initialize it manually:
 
 ```bash
 cd your-project
 npx -y @colbymchenry/codegraph init -i
 ```
 
-Codex will use CodeGraph when `codegraph_*` MCP tools are available. If a project is not initialized yet and you explicitly invoked selfL, the skills may create `.codegraph/` for the current repository and keep it out of Git via `.git/info/exclude`.
+TasteDistill will use CodeGraph when `codegraph_*` MCP tools are available. If a project is not initialized yet and you explicitly invoked TasteDistill, the skills may create `.codegraph/` for the current repository and keep it out of Git via `.git/info/exclude`.
 
 ### Option B: Install Skills Only
 
 Use this path when you only want the skills and do not want the plugin to register MCP tools.
 
 ```bash
-git clone https://github.com/sssstwee/open-self-learning-plugin.git
-cd open-self-learning-plugin
+git clone https://github.com/sssstwee/tastedistill.git
+cd tastedistill
 ```
 
 #### 1. Check the Codex Skills Directory
@@ -207,16 +207,16 @@ mkdir -p "$HOME/.codex/skills"
 Symlinks are recommended so updates from `git pull` are picked up automatically.
 
 ```bash
-for skill in selfl-learn selfl-think selfl-design selfl-debug selfl-ship selfl-distill; do
+for skill in tastedistill-learn tastedistill-think tastedistill-design tastedistill-debug tastedistill-ship tastedistill-distill; do
   rm -f "$HOME/.codex/skills/$skill"
-  ln -s "$PWD/plugins/open-self-learning-plugin/skills/$skill" "$HOME/.codex/skills/$skill"
+  ln -s "$PWD/plugins/tastedistill/skills/$skill" "$HOME/.codex/skills/$skill"
 done
 ```
 
 #### 3. Install One Skill
 
 ```bash
-ln -s "$PWD/plugins/open-self-learning-plugin/skills/selfl-debug" "$HOME/.codex/skills/selfl-debug"
+ln -s "$PWD/plugins/tastedistill/skills/tastedistill-debug" "$HOME/.codex/skills/tastedistill-debug"
 ```
 
 #### 4. Verify
@@ -224,15 +224,15 @@ ln -s "$PWD/plugins/open-self-learning-plugin/skills/selfl-debug" "$HOME/.codex/
 After reopening Codex, type:
 
 ```text
-/selfl
+/tastedistill
 ```
 
-You should see `selfL Learn`, `selfL Think`, `selfL Design`, `selfL Debug`, `selfL Ship`, and `selfL Distill`.
+You should see `TasteDistill Learn`, `TasteDistill Think`, `TasteDistill Design`, `TasteDistill Debug`, `TasteDistill Ship`, and `TasteDistill Distill`.
 
 #### 5. Update
 
 ```bash
-cd /path/to/open-self-learning-plugin
+cd /path/to/tastedistill
 git pull
 ```
 
@@ -241,7 +241,7 @@ If installed via symlinks, you usually do not need to copy files again. Restart 
 #### 6. Uninstall
 
 ```bash
-for skill in selfl-learn selfl-think selfl-design selfl-debug selfl-ship selfl-distill; do
+for skill in tastedistill-learn tastedistill-think tastedistill-design tastedistill-debug tastedistill-ship tastedistill-distill; do
   rm -f "$HOME/.codex/skills/$skill"
 done
 ```
@@ -253,17 +253,17 @@ done
   plugins/
     marketplace.json
 plugins/
-  open-self-learning-plugin/
+  tastedistill/
     .codex-plugin/
       plugin.json
     .mcp.json
     skills/
-      selfl-learn/
-      selfl-think/
-      selfl-design/
-      selfl-debug/
-      selfl-ship/
-      selfl-distill/
+      tastedistill-learn/
+      tastedistill-think/
+      tastedistill-design/
+      tastedistill-debug/
+      tastedistill-ship/
+      tastedistill-distill/
     shared-rules/
       anti-patterns.md
       codegraph.md
@@ -272,7 +272,7 @@ plugins/
       personalization.md
       portable-profile.md
       routing.md
-      self-learning-loop.md
+      taste-distillation-loop.md
 ```
 
 ## Acknowledgements
