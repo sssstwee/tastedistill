@@ -5,7 +5,7 @@
   <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-switch-2563eb?style=for-the-badge"></a>
 </p>
 
-A self-learning skill set for Codex. It turns repeated development work into a reusable engineering loop: research, decide, design, implement, debug, ship, and distill.
+A Codex-native self-learning loop for turning repeated development work into reusable agent behavior: research, decide, design, implement, debug, ship, and distill.
 
 ## Goals
 
@@ -13,6 +13,19 @@ A self-learning skill set for Codex. It turns repeated development work into a r
 - Keep the repository generic, without personal memory, machine-specific paths, project-private rules, or credentials.
 - Split behavior by engineering stage instead of relying on one oversized global prompt.
 - Make every stage evidence-oriented, with clear outcome contracts and validation expectations.
+- Treat external inspiration as attribution, while keeping the project identity focused on Codex self-learning and continuous evolution.
+
+## Codex-Native Direction
+
+This repository is designed around a feedback loop:
+
+```text
+work -> evidence -> lesson -> durable rule -> better next run
+```
+
+The skills are intentionally small. Each one defines a phase contract, expected evidence, and failure boundaries. Codex still performs the implementation work directly; the skills shape when to research, when to decide, when to verify, and when to update future behavior.
+
+`codex-distill` is the differentiating layer. It turns completed work, failed attempts, user corrections, logs, diffs, and verification results into durable rules only when they are reusable, scoped, and safe to publish.
 
 ## Workflow
 
@@ -41,7 +54,7 @@ codex-learn -> codex-think -> codex-design -> implementation -> codex-debug -> c
 | `codex-design` | Define product, interaction, and UI execution rules before visual implementation. |
 | `codex-debug` | Diagnose failures with reproducible evidence and minimal fixes. |
 | `codex-ship` | Review readiness, acceptance, release, and delivery follow-through. |
-| `codex-distill` | Extract reusable lessons from completed work and update durable rules. |
+| `codex-distill` | Convert completed work into reusable rules that improve future Codex runs. |
 
 ## Installation
 
@@ -117,6 +130,9 @@ skills/
   codex-ship/
   codex-distill/
   shared-rules/
+    anti-patterns.md
+    routing.md
+    self-learning-loop.md
 scripts/
   scan-public-safety.sh
 ```
@@ -136,4 +152,4 @@ Current policy:
 
 ## Acknowledgements
 
-The staged skill design is inspired by [Waza](https://github.com/tw93/Waza). This repository adapts and optimizes that idea for a Codex self-learning loop, with stronger emphasis on engineering stages, verifiable execution, delivery preflight, and continuous rule distillation from real work.
+The staged skill design is inspired by [Waza](https://github.com/tw93/Waza). This repository adapts and evolves that idea for a Codex self-learning loop, with stronger emphasis on evidence-driven execution, delivery preflight, and continuous rule distillation from real work.

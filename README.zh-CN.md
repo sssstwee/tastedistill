@@ -5,7 +5,7 @@
   <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-%E5%BD%93%E5%89%8D-111827?style=for-the-badge"></a>
 </p>
 
-一组面向 Codex 的自学习技能模板，用来把开发过程拆成可研究、可判断、可设计、可调试、可交付、可复盘的工程闭环。
+一套 Codex-native 的自学习闭环，用来把重复开发过程沉淀成可复用的 agent 行为：研究、判断、设计、实施、调试、交付、复盘。
 
 ## 设计目标
 
@@ -13,6 +13,19 @@
 - 保持内容通用，不包含个人记忆、本机路径、项目私有规则或密钥。
 - 按工程阶段拆分技能，避免一个巨大的全局提示吞掉所有上下文。
 - 让每个阶段都围绕证据、结果契约和验证方式运行。
+- 将外部思想来源保留为致谢，而项目自身定位聚焦在 Codex 自学习与持续进化。
+
+## Codex 原生方向
+
+本仓库围绕一个反馈闭环设计：
+
+```text
+work -> evidence -> lesson -> durable rule -> better next run
+```
+
+每个 skill 都刻意保持小而清晰：定义阶段契约、所需证据和失败边界。真正的代码实施仍由 Codex 原生工程能力完成；skills 负责约束什么时候研究、什么时候判断、什么时候验证、什么时候把经验更新为未来可复用行为。
+
+`codex-distill` 是差异化层：它会把已完成工作、失败尝试、用户纠正、日志、diff 和验证结果提炼为 durable rules，但只有当规则可复用、范围明确且适合公开时才会沉淀。
 
 ## 工作流
 
@@ -41,7 +54,7 @@ codex-learn -> codex-think -> codex-design -> implementation -> codex-debug -> c
 | `codex-design` | 定义产品、交互和 UI 执行规则。 |
 | `codex-debug` | 用可复现证据诊断故障并做最小修复。 |
 | `codex-ship` | 审查交付准备、验收、发布和交付收尾。 |
-| `codex-distill` | 从已完成工作中提炼可复用经验并更新规则。 |
+| `codex-distill` | 将已完成工作转化为可复用规则，让后续 Codex 执行持续变好。 |
 
 ## 安装方法
 
@@ -117,6 +130,9 @@ skills/
   codex-ship/
   codex-distill/
   shared-rules/
+    anti-patterns.md
+    routing.md
+    self-learning-loop.md
 scripts/
   scan-public-safety.sh
 ```
@@ -136,4 +152,4 @@ bash scripts/scan-public-safety.sh
 
 ## 致谢
 
-本项目的阶段化技能设计思想来源于 [Waza](https://github.com/tw93/Waza)，并在此基础上针对 Codex 的自学习闭环做了优化：更强调工程阶段拆分、可验证执行、交付前检查、以及从真实任务中持续提炼规则。
+本项目的阶段化技能设计思想来源于 [Waza](https://github.com/tw93/Waza)，并在此基础上面向 Codex 自学习闭环继续演化：更强调证据驱动执行、交付前检查、以及从真实任务中持续提炼规则。
