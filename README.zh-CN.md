@@ -5,168 +5,101 @@
   <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-%E5%BD%93%E5%89%8D-111827?style=for-the-badge"></a>
 </p>
 
-TasteDistill 是面向 coding agent 的可移植品味蒸馏层，用来把你的开发经验、产品审美、交互原则、验证习惯和项目规则沉淀成可跨 Codex、Claude Code、Hermes 复用的工作方式。
+![TasteDistill 让多个 coding agent 共享你的工作方式](./assets/readme/hero-zh.png)
 
-## 设计目标
+TasteDistill 可以理解成一个给 AI 用的“本地经验小本子”。
 
-- 让 coding agent 更稳定地结合你的本地记忆、个人偏好、项目上下文和当前任务证据来完成后续工作。
-- 让你的个人工程档案能在 Codex、Claude Code、Hermes 之间复用，而不是被锁在某一个 agent 的 memory 里。
-- 把重复出现的开发经验、错误、偏好和验证方式沉淀成可复用的 skill 行为。
-- 按工程阶段拆分技能，避免一个巨大的全局提示吞掉所有上下文。
-- 让每个阶段都围绕证据、结果契约和验证方式运行。
+你今天可能用 Codex，明天用 Claude Code，后天又试 Hermes。每个 agent 都能干活，但它们通常不共享对你的理解：你的产品审美、UI 偏好、交付习惯、项目规则、踩坑经验，都容易散落在不同工具和旧对话里。
 
-## 可移植 Harness
+TasteDistill 做的事情很简单：把这些长期经验整理成一个本地档案，让不同 agent 都能读懂。
 
-TasteDistill 不替代宿主 agent。Codex、Claude Code、Hermes 仍然是实际执行任务的运行时；TasteDistill 提供一层本地、可移植的个人工程档案和 harness，让这些 agent 可以引用同一套偏好、规则和项目经验。
+它不替代 Codex、Claude Code 或 Hermes，只是让它们更像“按你的方式工作”。
+
+## 为什么需要它
+
+没有 TasteDistill 时：
+
+- 每开一个新对话，都要重新解释偏好。
+- 一个 agent 学到的经验，另一个 agent 不知道。
+- 很有价值的教训埋在旧聊天记录里。
+- 全局提示词越写越长，最后很难维护。
+
+有了 TasteDistill 后：
+
+- 你的偏好统一放在一个本地 profile 里。
+- Codex、Claude Code、Hermes 可以读同一套工作方式。
+- 每次完成任务后，都可以把经验沉淀下来。
+- 做事流程更清楚：学习、思考、设计、调试、交付、沉淀。
+
+## 它能帮你记住什么
+
+例如这些话，就很适合沉淀进 TasteDistill：
+
+- “我喜欢简洁、细腻、真实可用的 UI，不喜欢装饰感太重的卡片堆叠。”
+- “改代码前先理解当前项目结构，不要上来就乱搜乱改。”
+- “修完 bug 后，要告诉我真实验证结果，而不是只说应该好了。”
+- “不要默认覆盖宿主 agent 的 memory 或项目规范文件。”
+- “个人偏好和私有项目经验留在本机，不要写进公开仓库。”
+
+默认本地档案位置：
 
 ```text
-TasteDistill 是 source of truth
-宿主 agent 是 execution runtime
-adapter 只负责让宿主读取 TasteDistill
+~/.tastedistill/
+  profile.md      # 你的个人偏好、审美、沟通方式、做事习惯
+  harness.md      # agent 应该如何验证、交付、沉淀经验
+  adapters/       # Codex、Claude Code、Hermes 的接入说明
+  projects/       # 项目级经验，放在业务仓库外面
 ```
 
-默认本地档案结构：
+## 工作方式
 
-```text
-$HOME/.tastedistill/
-  manifest.json
-  profile.md
-  profile.json
-  harness.md
-  bootstrap.json
-  sources.json
-  adapters/
-    codex.md
-    claude.md
-    hermes.md
-  projects/
-    <repo-id>/
-      project.md
-      project.json
-      lessons.jsonl
-      sources.json
-```
+![TasteDistill 工作流：学习、思考、设计、调试、交付、沉淀](./assets/readme/workflow-zh.png)
 
-- `profile.md` 保存跨 agent 的个人工程偏好：沟通方式、产品审美、执行习惯、验证习惯。
-- `harness.md` 保存运行契约：上下文加载、工具偏好、权限边界、验证、交付和复盘规则。
-- `adapters/*.md` 保存宿主 agent 的最小接入片段；默认不会自动写入宿主 memory。
-- `projects/<repo-id>/` 保存项目级 harness，位于业务仓库之外。
+TasteDistill 把 agent 工作拆成 6 个很容易理解的阶段：
 
-## 原生宿主支持
-
-TasteDistill v1 已按 Codex、Claude Code、Hermes 的原生安装入口打包。
-
-| 宿主 | 原生入口 | 调用方式 | 默认写入策略 |
+| 阶段 | 什么时候用 | AI 应该做什么 |
 |---|---|---|
-| Codex | `.codex-plugin/plugin.json` 与 `.agents/plugins/marketplace.json` | `@TasteDistill` 或 `tastedistill-*` skills | 可以写入 `~/.tastedistill`、当前仓库 `.codegraph/` 和 `.git/info/exclude`；默认不改 `AGENTS.md`。 |
-| Claude Code | `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json` | `/tastedistill:learn`、`/tastedistill:think`、`/tastedistill:design`、`/tastedistill:debug`、`/tastedistill:ship`、`/tastedistill:distill` | 默认不写 `~/.claude/CLAUDE.md`、项目 `CLAUDE.md`、`.claude/CLAUDE.md` 或 Claude auto memory。 |
-| Hermes | 根目录 `plugin.yaml` 与 `__init__.py` 注册 bundled skills | `skill_view("tastedistill:learn")` 或显式加载插件 skill | 默认不写 `~/.hermes/SOUL.md`、`~/.hermes/memories/*`、`~/.hermes/skills/*`、config 或 `.env`。 |
+| 学习 | 项目、领域、资料不熟 | 先读资料，建立事实，不要瞎猜 |
+| 思考 | 需要方案或判断 | 比较方案，说明取舍，给出路径 |
+| 设计 | 涉及 UI、交互、产品审美 | 按你的品味做，并尽量看真实界面 |
+| 调试 | 出错了、不符合预期 | 复现问题，证明根因，做最小修复 |
+| 交付 | 快完成了 | 做验收、检查边界、准备发布或 PR |
+| 沉淀 | 这次任务有经验可复用 | 把教训写进本地档案，后面继续用 |
 
-这样可以避免主要集成冲突：
+## 第一次使用
 
-- 不自动写宿主 memory
-- 不替换宿主 identity 或系统规则
-- 不把 TasteDistill profile 完整复制到每个宿主里
-- 不绕过宿主权限、sandbox 或审批模型
+安装后，建议先做一次初始化。
 
-## Agent 原生方向
-
-本仓库围绕一个反馈闭环设计：
+在 Codex 里可以直接说：
 
 ```text
-work -> evidence -> lesson -> durable rule -> better next run
+@TasteDistill 初始化我的本地 profile
 ```
 
-每个 skill 都刻意保持小而清晰：定义阶段契约、所需证据和失败边界。运行时，它们应该与你本地的 agent memory、项目 instructions、仓库文件、日志、测试、浏览器状态和当前任务上下文一起工作。真正的代码实施仍由当前 coding agent 完成；skills 负责约束什么时候研究、什么时候判断、什么时候验证、什么时候把经验更新为未来可复用行为。
-
-完成一次有价值的任务后，可以使用 `tastedistill-distill`。它会帮助你把用户纠正、失败尝试、日志、diff 和验证结果提炼成后续 agent 可复用的规则。个人记忆和私有项目事实可以继续保留在本地，而可复用的行为模式再沉淀进 skills 或 shared rules。
-
-## 个性化初始化
-
-安装这些 skills 不会自动读取、复制或总结你已有的 Codex、Claude Code、Hermes 或其他 agent 对话记录和记忆。第一次明确呼叫 `@TasteDistill` 或任意 `tastedistill-*` skill 时，会先做一次幂等的个性化 bootstrap 检查。如果本机还没有 TasteDistill profile，TasteDistill 会先运行 `tastedistill-distill` bootstrap，再继续执行用户请求的 skill。
-
-默认私有档案保存在仓库之外：
+也可以用 distill skill：
 
 ```text
-$HOME/.tastedistill/profile.md
-$HOME/.tastedistill/harness.md
-$HOME/.tastedistill/bootstrap.json
+使用 tastedistill-distill 初始化我的本地 TasteDistill profile。
 ```
 
-如果你已经有稳定的宿主经验文档，TasteDistill 会把它当作来源，而不是覆盖目标。例如已有 Codex 经验文档时，可以用它初始化 TasteDistill profile，而不是重新做一次大范围原始对话扫描。
+第一次初始化时，TasteDistill 应该：
 
-也可以直接运行 bootstrap：
+- 查找你本机已有的 agent memory 或 instruction 文件
+- 读取大范围个人历史前先问你
+- 创建 `~/.tastedistill/profile.md`
+- 创建 `~/.tastedistill/harness.md`
+- 生成 Codex、Claude Code、Hermes 的 adapter 说明
+- 告诉你读取了什么、跳过了什么、保存到了哪里
 
-```text
-使用 $tastedistill-distill 初始化我的本地 TasteDistill profile。阅读并整理我当前可用的本地 agent memory、对话记录、日志和历史任务结果。请在 ~/.tastedistill 下创建一份私有、可移植的工程档案，总结我的执行偏好、产品审美、验证习惯、可复用规则和反模式，并生成 Codex、Claude Code、Hermes adapter 片段。读取大范围个人历史或修改宿主 instructions 文件前先确认。
-```
+它不应该偷偷改写宿主 agent 的 memory。
 
-bootstrap 应该处理：
+## 安装到 Codex Desktop
 
-- 发现当前可用的本地 memory / history 来源
-- 在仓库之外创建私有经验档案和 harness
-- 生成宿主 adapter 片段，但不默认覆盖宿主 memory
-- 报告读取了哪些来源、跳过了哪些来源、档案保存在哪里
+如果你主要用 Codex，推荐用这个方式。它会同时安装 skills 和 CodeGraph 支持。
 
-后续完成重要任务后，可以继续沉淀：
-
-```text
-使用 $tastedistill-distill 从这次已完成任务中提炼可复用经验，并更新我的本地 TasteDistill profile 或项目 harness。
-```
-
-## 内置 CodeGraph MCP
-
-对于较大的代码仓库，TasteDistill 可以使用 [CodeGraph](https://github.com/colbymchenry/codegraph) 作为本地代码知识图谱，让 agent 理解架构、追踪调用链和分析影响面。
-
-当本仓库以 Codex plugin 方式安装时，CodeGraph 会在需要 MCP server 时通过 `npx` 启动。用户不需要在安装 plugin 之前先全局安装 CodeGraph。其他宿主如果暴露兼容的 MCP/tools，也可以遵循同一套 CodeGraph 规则。
-
-每个代码仓库仍然需要一份本地图谱索引。当你在 Git 仓库内明确呼叫 TasteDistill 插件或任意 TasteDistill skill 时，TasteDistill 会先对当前仓库做一次幂等的 CodeGraph bootstrap 检查。如果索引不存在，会在开始大范围仓库工作前自动初始化。
-
-也可以手动初始化：
-
-```bash
-cd your-project
-npx -y @colbymchenry/codegraph init -i
-```
-
-当当前宿主能看到 `codegraph_*` MCP tools 时，这些 skills 会优先用 CodeGraph 做仓库探索、排障和影响面分析。如果当前仓库还没有 CodeGraph 索引，明确使用 TasteDistill 会被视为允许只初始化当前仓库，并通过 `.git/info/exclude` 让 `.codegraph/` 保持本地化。如果你只安装 skills、在 Git 仓库外运行 TasteDistill，或 CodeGraph 不可用，则回退到普通文件搜索和定向读取。
-
-## 工作流
-
-推荐顺序：
-
-```text
-tastedistill-learn -> tastedistill-think -> tastedistill-design -> implementation -> tastedistill-debug -> tastedistill-ship -> tastedistill-distill
-```
-
-| 阶段 | Skill | 用途 |
-|---|---|---|
-| 学习 | `tastedistill-learn` | 研究陌生领域、消化材料、建立事实底座。 |
-| 思考 | `tastedistill-think` | 做产品或架构判断、范围裁剪和执行计划。 |
-| 设计 | `tastedistill-design` | 处理产品方向、交互原则、UI 结构和视觉验证。 |
-| 实施 | Agent implementation | 由当前 coding agent 的工程能力直接实现。 |
-| 调试 | `tastedistill-debug` | 复现问题、定位根因、最小修复、验证回归。 |
-| 交付 | `tastedistill-ship` | 做预交付审查、验收、发布和 PR/issue 收尾。 |
-| 沉淀 | `tastedistill-distill` | 从结果中提炼可复用规则并更新技能。 |
-
-## Skills
-
-| Skill | 用途 |
-|---|---|
-| `tastedistill-learn` | 在决策前研究陌生领域并结构化材料。 |
-| `tastedistill-think` | 把粗略想法变成带取舍和风险的可执行计划。 |
-| `tastedistill-design` | 定义产品、交互和 UI 执行规则。 |
-| `tastedistill-debug` | 用可复现证据诊断故障并做最小修复。 |
-| `tastedistill-ship` | 审查交付准备、验收、发布和交付收尾。 |
-| `tastedistill-distill` | 将已完成工作转化为可复用规则，让后续 agent 执行持续变好。 |
-
-## 安装方法
-
-### 方案 A：作为 Codex Plugin 安装
-
-如果你希望在 Codex 中让 skills 和 CodeGraph MCP 一起生效，优先使用 plugin 安装方式。Plugin 会通过 `npx` 注册本地 CodeGraph MCP server，因此用户不需要在安装本项目之前先全局安装 CodeGraph。
-
-在 Codex Desktop 中，把这个仓库添加为插件市场：
+1. 打开 Codex Desktop。
+2. 进入插件市场管理。
+3. 添加这个仓库作为插件市场：
 
 ```text
 来源：sssstwee/tastedistill
@@ -174,22 +107,30 @@ Git 引用：main
 稀疏路径：留空
 ```
 
-然后从该 marketplace 中安装 `TasteDistill`。
+4. 安装 `TasteDistill`。
+5. 重启 Codex。
+6. 在任意项目里调用：
 
-安装 plugin 后，重启 Codex。每个需要代码图谱能力的仓库，只要明确呼叫一次 `@TasteDistill` 或某个 `tastedistill-*` skill，TasteDistill 就会检查本地索引并在需要时初始化。你也可以手动初始化：
-
-```bash
-cd your-project
-npx -y @colbymchenry/codegraph init -i
+```text
+@TasteDistill 分析这个项目
 ```
 
-当 `codegraph_*` MCP tools 可用时，TasteDistill 会使用 CodeGraph。若当前项目还没有初始化，并且你明确调用了 TasteDistill，skills 可以为当前仓库创建 `.codegraph/`，并通过 `.git/info/exclude` 避免把它提交进 Git。
+也可以单独调用这些 skills：
 
-### 方案 B：作为 Claude Code Plugin 安装
+```text
+tastedistill-learn
+tastedistill-think
+tastedistill-design
+tastedistill-debug
+tastedistill-ship
+tastedistill-distill
+```
 
-Claude Code 使用 `.claude-plugin/marketplace.json` 作为 marketplace，使用 `plugins/tastedistill/.claude-plugin/plugin.json` 作为 plugin manifest。
+## 安装到 Claude Code
 
-添加私有 marketplace：
+Claude Code 使用插件市场命令安装。
+
+添加 marketplace：
 
 ```text
 /plugin marketplace add sssstwee/tastedistill
@@ -201,7 +142,13 @@ Claude Code 使用 `.claude-plugin/marketplace.json` 作为 marketplace，使用
 /plugin install tastedistill@tastedistill
 ```
 
-Claude Code 的 plugin skills 会带命名空间。可用命令：
+如果你的 Claude Code 版本要求直接写插件名，可以用：
+
+```text
+/plugin install tastedistill
+```
+
+然后调用：
 
 ```text
 /tastedistill:learn
@@ -212,19 +159,19 @@ Claude Code 的 plugin skills 会带命名空间。可用命令：
 /tastedistill:distill
 ```
 
-如果仓库是私有 GitHub 仓库，Claude Code 手动安装会使用你已有的 git 凭据；后台更新可以使用 `GITHUB_TOKEN` 或 `GH_TOKEN`。
+TasteDistill 默认不会自动修改 `CLAUDE.md`。它可以生成一段接入说明，由你决定要不要写进去。
 
-### 方案 C：作为 Hermes Plugin 安装
+## 安装到 Hermes
 
-Hermes 使用根目录 `plugin.yaml` 和 `__init__.py`。该 plugin 会把同一批 skills 注册为只读的 bundled plugin skills。
-
-安装并启用：
+Hermes 可以直接从 Git 仓库安装插件。
 
 ```bash
 hermes plugins install sssstwee/tastedistill --enable
 ```
 
-重启 Hermes 后，skills 会以 plugin namespace 暴露：
+安装后重启 Hermes。
+
+skills 会以 TasteDistill 命名空间暴露：
 
 ```text
 tastedistill:learn
@@ -235,119 +182,84 @@ tastedistill:ship
 tastedistill:distill
 ```
 
-Hermes plugins 默认 opt-in。如果安装时没有加 `--enable`，可以运行：
+如果安装时没有加 `--enable`，之后可以手动启用：
 
 ```bash
 hermes plugins enable tastedistill
 ```
 
-### 方案 D：只安装 Codex Skills
+TasteDistill 默认不会改 `SOUL.md`、Hermes memories、配置文件或 `.env`。
 
-如果你只想安装 skills，不希望 plugin 注册 MCP tools，可以使用这个方式。
+## 只安装 Codex Skills
+
+如果你不想安装完整 Codex plugin，只想安装 skill 文件，可以这样做：
 
 ```bash
 git clone https://github.com/sssstwee/tastedistill.git
 cd tastedistill
-```
-
-#### 1. 确认 Codex skills 目录
-
-默认安装目录通常是：
-
-```bash
 mkdir -p "$HOME/.codex/skills"
-```
 
-#### 2. 安装全部 skills
-
-推荐使用 symlink，方便后续 `git pull` 更新后自动生效。
-
-```bash
 for skill in tastedistill-learn tastedistill-think tastedistill-design tastedistill-debug tastedistill-ship tastedistill-distill; do
   rm -f "$HOME/.codex/skills/$skill"
   ln -s "$PWD/plugins/tastedistill/skills/$skill" "$HOME/.codex/skills/$skill"
 done
 ```
 
-#### 3. 只安装单个 skill
-
-```bash
-ln -s "$PWD/plugins/tastedistill/skills/tastedistill-debug" "$HOME/.codex/skills/tastedistill-debug"
-```
-
-#### 4. 验证安装
-
-重新打开 Codex 后，在输入框中尝试输入：
+重启 Codex 后输入：
 
 ```text
 /tastedistill
 ```
 
-你应该能看到 `TasteDistill Learn`、`TasteDistill Think`、`TasteDistill Design`、`TasteDistill Debug`、`TasteDistill Ship`、`TasteDistill Distill`。
+## CodeGraph 是什么
 
-#### 5. 更新
+TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph) 理解大型代码仓库。
+
+大白话解释：CodeGraph 就像给代码仓库做一张本地图谱。它能帮 agent 更快回答：
+
+- “这个功能在哪里实现？”
+- “谁调用了这个函数？”
+- “改这个文件可能影响哪里？”
+
+当你在 Git 仓库里明确调用 TasteDistill 时，它可以为当前仓库初始化本地 `.codegraph/` 索引，并且避免把它提交进 Git。
+
+也可以手动初始化：
+
+```bash
+cd your-project
+npx -y @colbymchenry/codegraph init -i
+```
+
+## 默认不会做什么
+
+TasteDistill 默认比较克制。
+
+它不会自动：
+
+- 覆盖 Codex `AGENTS.md`
+- 覆盖 Claude `CLAUDE.md`
+- 覆盖 Hermes `SOUL.md`
+- 把原始私人对话复制进仓库
+- 读取 `.env` 密钥
+- 上传或公开你的个人 profile
+
+你的个人档案默认留在本机。
+
+## 更新
+
+如果你是从 Git 安装的：
 
 ```bash
 cd /path/to/tastedistill
 git pull
 ```
 
-如果使用 symlink 安装，通常不需要重新复制文件；重启 Codex 或刷新 skills 后即可读取更新。
-
-#### 6. 卸载
-
-```bash
-for skill in tastedistill-learn tastedistill-think tastedistill-design tastedistill-debug tastedistill-ship tastedistill-distill; do
-  rm -f "$HOME/.codex/skills/$skill"
-done
-```
-
-## 目录结构
-
-```text
-.claude-plugin/
-  marketplace.json
-.agents/
-  plugins/
-    marketplace.json
-plugin.yaml
-__init__.py
-plugins/
-  tastedistill/
-    .claude-plugin/
-      plugin.json
-    .codex-plugin/
-      plugin.json
-    .mcp.json
-    claude-skills/
-      learn -> ../skills/tastedistill-learn
-      think -> ../skills/tastedistill-think
-      design -> ../skills/tastedistill-design
-      debug -> ../skills/tastedistill-debug
-      ship -> ../skills/tastedistill-ship
-      distill -> ../skills/tastedistill-distill
-    skills/
-      tastedistill-learn/
-      tastedistill-think/
-      tastedistill-design/
-      tastedistill-debug/
-      tastedistill-ship/
-      tastedistill-distill/
-    shared-rules/
-      anti-patterns.md
-      codegraph.md
-      coding-guardrails.md
-      host-compatibility.md
-      personalization.md
-      portable-profile.md
-      routing.md
-      taste-distillation-loop.md
-```
+如果宿主 agent 没有自动刷新插件，重启一次即可。
 
 ## 致谢
 
-感谢：
+TasteDistill 的设计受到了这些项目和公开经验的启发：
 
-- [Waza](https://github.com/tw93/Waza) 提供阶段化技能设计思想启发。
-- [Andrej Karpathy](https://github.com/karpathy) 关于实用 coding agent 行为的公开写作与经验启发。
-- [CodeGraph](https://github.com/colbymchenry/codegraph) 提供本地代码知识图谱的思路与工具支持。
+- [Waza](https://github.com/tw93/Waza)：阶段化 skills 的设计思路。
+- [Andrej Karpathy](https://github.com/karpathy)：关于 coding agent 实用工作方式的公开分享。
+- [CodeGraph](https://github.com/colbymchenry/codegraph)：本地代码知识图谱工具。
