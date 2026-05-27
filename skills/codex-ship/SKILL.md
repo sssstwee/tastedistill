@@ -32,6 +32,15 @@ Treat modified, staged, and untracked files as user work. Do not reset, clean, s
 5. Fix only small, clearly scoped issues when the user authorized implementation.
 6. For release or publish actions, verify artifact contents and remote state before claiming success.
 
+## Coding Guardrails
+
+For review and delivery, apply `../shared-rules/coding-guardrails.md`:
+
+- Think before coding: identify any hidden assumptions in the diff or release path.
+- Simplicity first: flag unnecessary abstraction, dependencies, or configuration surface.
+- Surgical changes: every changed line should connect to the requested outcome; flag drive-by refactors separately.
+- Goal-driven execution: acceptance should be tied to explicit checks, artifacts, or remote state.
+
 ## Review Output
 
 Lead with findings ordered by severity. If there are no findings, say so and name remaining test gaps.
@@ -41,3 +50,4 @@ Lead with findings ordered by severity. If there are no findings, say so and nam
 - Treat source tests as release proof when artifacts or registry state matter.
 - Close issues, publish packages, push commits, or tag releases without explicit current-turn authorization.
 - Promote project-specific commands into reusable rules.
+- Treat a large diff as acceptable when unrelated changes are mixed into the requested work.

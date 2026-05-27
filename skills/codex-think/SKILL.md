@@ -22,6 +22,15 @@ Use this skill when the main work is judgment, scope, or plan design.
 5. Write an implementation plan with verification steps.
 6. Name assumptions that must be checked before or during execution.
 
+## Coding Guardrails
+
+For implementation plans, apply `../shared-rules/coding-guardrails.md`:
+
+- Think before coding: surface assumptions that affect scope, behavior, cost, or rollback.
+- Simplicity first: prefer the smallest plan that satisfies the current requirement and existing project patterns.
+- Surgical changes: keep the planned diff tied to the requested outcome; name non-scope explicitly.
+- Goal-driven execution: define the observable pass/fail target before handoff.
+
 ## Output Shape
 
 ```text
@@ -31,6 +40,8 @@ Rejected options:
 Implementation plan:
 Verification:
 Risks:
+Assumptions:
+Non-scope:
 ```
 
 ## Do Not
@@ -39,4 +50,4 @@ Risks:
 - Invent requirements.
 - Expand scope beyond the user's goal.
 - Turn a debugging symptom into a planning exercise.
-
+- Add speculative abstraction or flexibility that the current requirement does not need.

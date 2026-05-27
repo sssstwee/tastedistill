@@ -153,6 +153,7 @@ skills/
   codex-distill/
   shared-rules/
     anti-patterns.md
+    coding-guardrails.md
     routing.md
     self-learning-loop.md
 ```

@@ -12,6 +12,7 @@ Use the narrowest skill that matches the task.
 | extract lessons, update rules, audit skill health | `codex-distill` |
 
 Use `skills/shared-rules/self-learning-loop.md` after meaningful work produces a reusable lesson.
+Use `skills/shared-rules/coding-guardrails.md` for coding, refactoring, debugging, review, and implementation handoff.
 
 When two skills match, prefer the one closest to the user's starting point:
 

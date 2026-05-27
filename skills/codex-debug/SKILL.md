@@ -23,11 +23,21 @@ Use this skill when the task starts from a symptom.
 6. Run the narrow regression check.
 7. Search for the same bug shape if the root cause is reusable.
 
+## Coding Guardrails
+
+For fixes, apply `../shared-rules/coding-guardrails.md`:
+
+- Think before coding: do not edit until the root-cause hypothesis is specific and evidence-backed.
+- Simplicity first: fix the cause directly; avoid broad rewrites, new abstractions, or speculative compatibility.
+- Surgical changes: keep the patch to the failure path; search siblings only for the same bug shape.
+- Goal-driven execution: prove the original symptom changed with a reproducible check.
+
 ## Stop Rules
 
 - Same symptom after a fix means the hypothesis failed.
 - Do not stack patches without new evidence.
 - Do not claim UI, native, or generated-artifact bugs are fixed from compile output alone.
+- If the fix expands into a refactor, pause and name the scope change.
 
 ## Output Shape
 
@@ -39,4 +49,3 @@ Tests:
 Regression guard:
 Remaining risk:
 ```
-
