@@ -1,0 +1,11 @@
+name: tastedistill
+version: "0.3.0"
+description: Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.
+author: sssstwee
+provides_skills:
+  - learn
+  - think
+  - design
+  - debug
+  - ship
+  - distill

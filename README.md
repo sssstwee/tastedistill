@@ -52,15 +52,15 @@ $HOME/.tastedistill/
 - `adapters/*.md` stores host-specific loading snippets. These snippets are not automatically written into host memory.
 - `projects/<repo-id>/` stores project-specific harness notes outside the business repository.
 
-## Host Compatibility
+## Native Host Support
 
-TasteDistill v1 supports Codex, Claude Code, and Hermes with different adapter behavior.
+TasteDistill v1 is packaged for Codex, Claude Code, and Hermes with host-native install surfaces.
 
-| Host | Behavior | Default write policy |
+| Host | Native entry | Invocation | Default write policy |
 |---|---|---|
-| Codex | Plugin adapter. Explicit `@TasteDistill` or `tastedistill-*` use can create `~/.tastedistill`, create project profiles, and initialize CodeGraph for the current Git repository when CodeGraph tools are available. | May write under `~/.tastedistill`, current repo `.codegraph/`, and `.git/info/exclude`. Does not rewrite `AGENTS.md` by default. |
-| Claude Code | Reference adapter. TasteDistill generates a snippet that can import or reference `~/.tastedistill/profile.md` and `~/.tastedistill/harness.md`. | Does not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
-| Hermes | External profile adapter. TasteDistill generates a snippet for using `~/.tastedistill` as an external engineering preference source. | Does not write `~/.hermes/SOUL.md`, `~/.hermes/memories/*`, `~/.hermes/skills/*`, config, or `.env` unless explicitly requested. |
+| Codex | `.codex-plugin/plugin.json` plus `.agents/plugins/marketplace.json` | `@TasteDistill` or `tastedistill-*` skills | May write under `~/.tastedistill`, current repo `.codegraph/`, and `.git/info/exclude`. Does not rewrite `AGENTS.md` by default. |
+| Claude Code | `.claude-plugin/plugin.json` plus `.claude-plugin/marketplace.json` | `/tastedistill:learn`, `/tastedistill:think`, `/tastedistill:design`, `/tastedistill:debug`, `/tastedistill:ship`, `/tastedistill:distill` | Does not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
+| Hermes | Root `plugin.yaml` plus `__init__.py` registering bundled skills | `skill_view("tastedistill:learn")` or explicit plugin skill loads | Does not write `~/.hermes/SOUL.md`, `~/.hermes/memories/*`, `~/.hermes/skills/*`, config, or `.env` unless explicitly requested. |
 
 This avoids the main integration conflicts:
 
@@ -185,7 +185,63 @@ npx -y @colbymchenry/codegraph init -i
 
 TasteDistill will use CodeGraph when `codegraph_*` MCP tools are available. If a project is not initialized yet and you explicitly invoked TasteDistill, the skills may create `.codegraph/` for the current repository and keep it out of Git via `.git/info/exclude`.
 
-### Option B: Install Skills Only
+### Option B: Install As A Claude Code Plugin
+
+Claude Code uses the marketplace at `.claude-plugin/marketplace.json` and the plugin manifest at `plugins/tastedistill/.claude-plugin/plugin.json`.
+
+Add the private marketplace:
+
+```text
+/plugin marketplace add sssstwee/tastedistill
+```
+
+Then install the plugin:
+
+```text
+/plugin install tastedistill@tastedistill
+```
+
+Plugin skills are namespaced by Claude Code. Use:
+
+```text
+/tastedistill:learn
+/tastedistill:think
+/tastedistill:design
+/tastedistill:debug
+/tastedistill:ship
+/tastedistill:distill
+```
+
+For a private GitHub repository, Claude Code uses your existing git credentials for manual install and can use `GITHUB_TOKEN` or `GH_TOKEN` for background updates.
+
+### Option C: Install As A Hermes Plugin
+
+Hermes uses the root `plugin.yaml` and `__init__.py`. The plugin registers the same six skills as read-only bundled plugin skills.
+
+Install and enable:
+
+```bash
+hermes plugins install sssstwee/tastedistill --enable
+```
+
+After restarting Hermes, the skills are available under the plugin namespace:
+
+```text
+tastedistill:learn
+tastedistill:think
+tastedistill:design
+tastedistill:debug
+tastedistill:ship
+tastedistill:distill
+```
+
+Hermes plugins are opt-in. If you install without `--enable`, run:
+
+```bash
+hermes plugins enable tastedistill
+```
+
+### Option D: Install Codex Skills Only
 
 Use this path when you only want the skills and do not want the plugin to register MCP tools.
 
@@ -249,14 +305,27 @@ done
 ## Repository Layout
 
 ```text
+.claude-plugin/
+  marketplace.json
 .agents/
   plugins/
     marketplace.json
+plugin.yaml
+__init__.py
 plugins/
   tastedistill/
+    .claude-plugin/
+      plugin.json
     .codex-plugin/
       plugin.json
     .mcp.json
+    claude-skills/
+      learn -> ../skills/tastedistill-learn
+      think -> ../skills/tastedistill-think
+      design -> ../skills/tastedistill-design
+      debug -> ../skills/tastedistill-debug
+      ship -> ../skills/tastedistill-ship
+      distill -> ../skills/tastedistill-distill
     skills/
       tastedistill-learn/
       tastedistill-think/

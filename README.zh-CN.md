@@ -52,15 +52,15 @@ $HOME/.tastedistill/
 - `adapters/*.md` 保存宿主 agent 的最小接入片段；默认不会自动写入宿主 memory。
 - `projects/<repo-id>/` 保存项目级 harness，位于业务仓库之外。
 
-## 宿主兼容
+## 原生宿主支持
 
-TasteDistill v1 支持 Codex、Claude Code、Hermes，三者采用不同接入策略。
+TasteDistill v1 已按 Codex、Claude Code、Hermes 的原生安装入口打包。
 
-| 宿主 | 行为 | 默认写入策略 |
+| 宿主 | 原生入口 | 调用方式 | 默认写入策略 |
 |---|---|---|
-| Codex | Plugin adapter。明确调用 `@TasteDistill` 或 `tastedistill-*` 后，可以创建 `~/.tastedistill`、创建项目档案，并在 CodeGraph tools 可用时为当前 Git 仓库初始化 CodeGraph。 | 可以写入 `~/.tastedistill`、当前仓库 `.codegraph/` 和 `.git/info/exclude`；默认不改 `AGENTS.md`。 |
-| Claude Code | 引用 adapter。TasteDistill 生成可引用 `~/.tastedistill/profile.md` 和 `~/.tastedistill/harness.md` 的片段。 | 默认不写 `~/.claude/CLAUDE.md`、项目 `CLAUDE.md`、`.claude/CLAUDE.md` 或 Claude auto memory。 |
-| Hermes | 外部 profile adapter。TasteDistill 生成把 `~/.tastedistill` 作为外部工程偏好来源的片段。 | 默认不写 `~/.hermes/SOUL.md`、`~/.hermes/memories/*`、`~/.hermes/skills/*`、config 或 `.env`。 |
+| Codex | `.codex-plugin/plugin.json` 与 `.agents/plugins/marketplace.json` | `@TasteDistill` 或 `tastedistill-*` skills | 可以写入 `~/.tastedistill`、当前仓库 `.codegraph/` 和 `.git/info/exclude`；默认不改 `AGENTS.md`。 |
+| Claude Code | `.claude-plugin/plugin.json` 与 `.claude-plugin/marketplace.json` | `/tastedistill:learn`、`/tastedistill:think`、`/tastedistill:design`、`/tastedistill:debug`、`/tastedistill:ship`、`/tastedistill:distill` | 默认不写 `~/.claude/CLAUDE.md`、项目 `CLAUDE.md`、`.claude/CLAUDE.md` 或 Claude auto memory。 |
+| Hermes | 根目录 `plugin.yaml` 与 `__init__.py` 注册 bundled skills | `skill_view("tastedistill:learn")` 或显式加载插件 skill | 默认不写 `~/.hermes/SOUL.md`、`~/.hermes/memories/*`、`~/.hermes/skills/*`、config 或 `.env`。 |
 
 这样可以避免主要集成冲突：
 
@@ -185,7 +185,63 @@ npx -y @colbymchenry/codegraph init -i
 
 当 `codegraph_*` MCP tools 可用时，TasteDistill 会使用 CodeGraph。若当前项目还没有初始化，并且你明确调用了 TasteDistill，skills 可以为当前仓库创建 `.codegraph/`，并通过 `.git/info/exclude` 避免把它提交进 Git。
 
-### 方案 B：只安装 Skills
+### 方案 B：作为 Claude Code Plugin 安装
+
+Claude Code 使用 `.claude-plugin/marketplace.json` 作为 marketplace，使用 `plugins/tastedistill/.claude-plugin/plugin.json` 作为 plugin manifest。
+
+添加私有 marketplace：
+
+```text
+/plugin marketplace add sssstwee/tastedistill
+```
+
+安装 plugin：
+
+```text
+/plugin install tastedistill@tastedistill
+```
+
+Claude Code 的 plugin skills 会带命名空间。可用命令：
+
+```text
+/tastedistill:learn
+/tastedistill:think
+/tastedistill:design
+/tastedistill:debug
+/tastedistill:ship
+/tastedistill:distill
+```
+
+如果仓库是私有 GitHub 仓库，Claude Code 手动安装会使用你已有的 git 凭据；后台更新可以使用 `GITHUB_TOKEN` 或 `GH_TOKEN`。
+
+### 方案 C：作为 Hermes Plugin 安装
+
+Hermes 使用根目录 `plugin.yaml` 和 `__init__.py`。该 plugin 会把同一批 skills 注册为只读的 bundled plugin skills。
+
+安装并启用：
+
+```bash
+hermes plugins install sssstwee/tastedistill --enable
+```
+
+重启 Hermes 后，skills 会以 plugin namespace 暴露：
+
+```text
+tastedistill:learn
+tastedistill:think
+tastedistill:design
+tastedistill:debug
+tastedistill:ship
+tastedistill:distill
+```
+
+Hermes plugins 默认 opt-in。如果安装时没有加 `--enable`，可以运行：
+
+```bash
+hermes plugins enable tastedistill
+```
+
+### 方案 D：只安装 Codex Skills
 
 如果你只想安装 skills，不希望 plugin 注册 MCP tools，可以使用这个方式。
 
@@ -249,14 +305,27 @@ done
 ## 目录结构
 
 ```text
+.claude-plugin/
+  marketplace.json
 .agents/
   plugins/
     marketplace.json
+plugin.yaml
+__init__.py
 plugins/
   tastedistill/
+    .claude-plugin/
+      plugin.json
     .codex-plugin/
       plugin.json
     .mcp.json
+    claude-skills/
+      learn -> ../skills/tastedistill-learn
+      think -> ../skills/tastedistill-think
+      design -> ../skills/tastedistill-design
+      debug -> ../skills/tastedistill-debug
+      ship -> ../skills/tastedistill-ship
+      distill -> ../skills/tastedistill-distill
     skills/
       tastedistill-learn/
       tastedistill-think/

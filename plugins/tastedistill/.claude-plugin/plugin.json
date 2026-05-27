@@ -1,0 +1,21 @@
+{
+  "name": "tastedistill",
+  "description": "Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.",
+  "version": "0.3.0",
+  "author": {
+    "name": "sssstwee",
+    "url": "https://github.com/sssstwee"
+  },
+  "homepage": "https://github.com/sssstwee/tastedistill",
+  "repository": "https://github.com/sssstwee/tastedistill",
+  "license": "MIT",
+  "keywords": [
+    "agent",
+    "skills",
+    "taste-distillation",
+    "workflow",
+    "coding"
+  ],
+  "skills": "./claude-skills/",
+  "mcpServers": "./.mcp.json"
+}

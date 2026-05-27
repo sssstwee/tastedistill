@@ -1,0 +1,31 @@
+{
+  "name": "tastedistill",
+  "owner": {
+    "name": "sssstwee"
+  },
+  "description": "TasteDistill plugin marketplace for Claude Code.",
+  "version": "0.3.0",
+  "plugins": [
+    {
+      "name": "tastedistill",
+      "displayName": "TasteDistill",
+      "source": "./plugins/tastedistill",
+      "description": "Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.",
+      "version": "0.3.0",
+      "author": {
+        "name": "sssstwee"
+      },
+      "homepage": "https://github.com/sssstwee/tastedistill",
+      "repository": "https://github.com/sssstwee/tastedistill",
+      "license": "MIT",
+      "category": "productivity",
+      "tags": [
+        "agent",
+        "skills",
+        "taste-distillation",
+        "workflow",
+        "coding"
+      ]
+    }
+  ]
+}
