@@ -1,6 +1,8 @@
 # CodeGraph
 
-Use this rule when CodeGraph MCP tools are available in the current agent session and the task involves repository understanding, architecture lookup, call-flow tracing, or impact analysis.
+Use this rule when a selfL plugin or skill is explicitly invoked in a repository context, and when CodeGraph MCP tools are available in the current agent session.
+
+On explicit selfL use, perform the Index Bootstrap check before broad repository work. The user should not need to ask for CodeGraph initialization separately.
 
 ## When To Use
 
@@ -24,15 +26,17 @@ Use this rule when CodeGraph MCP tools are available in the current agent sessio
 
 ## Index Bootstrap
 
-When a selfL skill is explicitly invoked and the task benefits from CodeGraph, treat that explicit selfL use as permission to bootstrap CodeGraph for the current repository.
+When a selfL plugin or skill is explicitly invoked, treat that explicit selfL use as permission to bootstrap CodeGraph for the current repository.
 
-Before broad repository exploration, call `codegraph_status` when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
+Before broad repository work, call `codegraph_status` when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
 
 1. Resolve the current repository root with `git rev-parse --show-toplevel` when inside a Git worktree.
 2. Run `npx -y @colbymchenry/codegraph init -i` from that repository root.
 3. Keep the generated index local by adding `.codegraph/` to `.git/info/exclude` if the repository has a `.git` directory and the entry is not already present.
 4. Re-check `codegraph_status` or retry the intended `codegraph_*` lookup.
 5. Report that CodeGraph was initialized for the current repository.
+
+This bootstrap is idempotent: if the repository is already initialized, continue without running init again.
 
 Do not initialize unrelated repositories, home directories, or parent folders. If the current directory is not a repository or the initialization command fails, fall back to normal search and targeted file reads, then report the fallback.
 

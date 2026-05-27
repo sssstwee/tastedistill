@@ -55,7 +55,7 @@ For larger repositories, the Codex plugin includes [CodeGraph](https://github.co
 
 When this repository is installed as a Codex plugin, CodeGraph is launched through `npx` when the MCP server is needed. Users do not need to install CodeGraph globally before installing the plugin.
 
-Each repository still needs a local graph index. When you explicitly use a selfL skill for repository learning, planning, debugging, or delivery, selfL can initialize the current repository automatically before using CodeGraph.
+Each repository still needs a local graph index. When you explicitly call the selfL plugin or any selfL skill from inside a Git repository, selfL performs an idempotent CodeGraph bootstrap check for the current repository. If the index is missing, it initializes it automatically before broad repository work.
 
 Manual initialization is also supported:
 
@@ -64,7 +64,7 @@ cd your-project
 npx -y @colbymchenry/codegraph init -i
 ```
 
-When `codegraph_*` MCP tools are available in your current Codex client, these skills will prefer CodeGraph for repository exploration, debugging, and impact analysis. If the current repository has no CodeGraph index yet, explicit selfL use is treated as permission to initialize only that repository and keep `.codegraph/` local via `.git/info/exclude`. If you install the skills without the plugin, or if CodeGraph is unavailable, the skills fall back to normal file search and targeted reads.
+When `codegraph_*` MCP tools are available in your current Codex client, these skills will prefer CodeGraph for repository exploration, debugging, and impact analysis. If the current repository has no CodeGraph index yet, explicit selfL use is treated as permission to initialize only that repository and keep `.codegraph/` local via `.git/info/exclude`. If you install the skills without the plugin, run selfL outside a Git repository, or if CodeGraph is unavailable, the skills fall back to normal file search and targeted reads.
 
 ## Workflow
 
@@ -111,7 +111,7 @@ Sparse path: leave empty
 
 Then install `selfL` from that marketplace.
 
-After installing the plugin, restart Codex. In each repository where you want graph-based code intelligence, selfL can initialize the local index automatically when you explicitly invoke a selfL skill for repository work. You can also initialize it manually:
+After installing the plugin, restart Codex. In each repository where you want graph-based code intelligence, explicitly call `@selfL` or a `selfl-*` skill once. selfL will check the local index and initialize it if needed. You can also initialize it manually:
 
 ```bash
 cd your-project
