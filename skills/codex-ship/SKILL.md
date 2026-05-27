@@ -15,7 +15,7 @@ Use this skill when an artifact exists and needs a delivery decision.
 
 ## Worktree Safety
 
-Before review, release, or maintainer action:
+Before review, release, or destructive repository action:
 
 ```bash
 git status --short --branch -uall
@@ -41,4 +41,3 @@ Lead with findings ordered by severity. If there are no findings, say so and nam
 - Treat source tests as release proof when artifacts or registry state matter.
 - Close issues, publish packages, push commits, or tag releases without explicit current-turn authorization.
 - Promote project-specific commands into reusable rules.
-

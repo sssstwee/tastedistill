@@ -59,7 +59,7 @@ codex-learn -> codex-think -> codex-design -> implementation -> codex-debug -> c
 
 ### 1. Clone
 
-If this repository is private, make sure your GitHub account has access first.
+Clone the repository:
 
 ```bash
 git clone https://github.com/sssstwee/codex-self-learning-skills.git
@@ -132,8 +132,6 @@ skills/
     anti-patterns.md
     routing.md
     self-learning-loop.md
-scripts/
-  scan-public-safety.sh
 ```
 
 ## Acknowledgements

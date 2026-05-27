@@ -59,7 +59,7 @@ codex-learn -> codex-think -> codex-design -> implementation -> codex-debug -> c
 
 ### 1. 克隆仓库
 
-如果仓库是私有仓库，先确保当前 GitHub 账号有访问权限。
+克隆仓库：
 
 ```bash
 git clone https://github.com/sssstwee/codex-self-learning-skills.git
@@ -132,8 +132,6 @@ skills/
     anti-patterns.md
     routing.md
     self-learning-loop.md
-scripts/
-  scan-public-safety.sh
 ```
 
 ## 致谢
