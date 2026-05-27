@@ -2,6 +2,8 @@
 
 Use this rule when a selfL plugin or skill is explicitly invoked in a repository context, and when CodeGraph MCP tools are available in the current agent session.
 
+In v1, automatic CodeGraph bootstrap is part of the Codex adapter. For Claude Code and Hermes, do not initialize CodeGraph by default unless equivalent tools are available and the user explicitly asks for that integration.
+
 On explicit selfL use, perform the Index Bootstrap check before broad repository work. The user should not need to ask for CodeGraph initialization separately.
 
 ## When To Use
@@ -26,7 +28,7 @@ On explicit selfL use, perform the Index Bootstrap check before broad repository
 
 ## Index Bootstrap
 
-When a selfL plugin or skill is explicitly invoked, treat that explicit selfL use as permission to bootstrap CodeGraph for the current repository.
+When a selfL plugin or skill is explicitly invoked through Codex, treat that explicit selfL use as permission to bootstrap CodeGraph for the current repository.
 
 Before broad repository work, call `codegraph_status` when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
 

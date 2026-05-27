@@ -1,7 +1,7 @@
 {
   "name": "open-self-learning-plugin",
-  "version": "0.1.4",
-  "description": "Agent self-learning workflows with built-in CodeGraph MCP support.",
+  "version": "0.1.5",
+  "description": "Portable self-learning harness for Codex, Claude Code, and Hermes with built-in CodeGraph MCP support for Codex.",
   "author": {
     "name": "sssstwee",
     "url": "https://github.com/sssstwee"
@@ -22,8 +22,8 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "selfL",
-    "shortDescription": "Self-learning workflows with CodeGraph MCP support",
-    "longDescription": "selfL provides staged self-learning workflows for learning, planning, design, debugging, delivery, and experience distillation. In Codex, it registers CodeGraph as a local MCP server for repository exploration, call-flow tracing, and impact analysis.",
+    "shortDescription": "Portable self-learning harness with CodeGraph support",
+    "longDescription": "selfL provides a portable engineering profile and staged self-learning workflows for Codex, Claude Code, and Hermes. It keeps user and project experience under ~/.selfl, avoids overwriting host memory by default, and registers CodeGraph in Codex for repository exploration, call-flow tracing, and impact analysis.",
     "developerName": "sssstwee",
     "category": "Coding",
     "capabilities": [

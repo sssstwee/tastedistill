@@ -7,7 +7,7 @@ description: Extract reusable lessons from completed work, failed attempts, user
 
 Use this skill after meaningful work has produced a lesson.
 
-Before the workflow, apply `../../shared-rules/personalization.md` for explicit selfL invocations. If this skill is already running the Local Personalization Bootstrap, use that shared rule only as the idempotence and destination policy.
+Before the workflow, apply `../../shared-rules/host-compatibility.md`, `../../shared-rules/portable-profile.md`, and `../../shared-rules/personalization.md` for explicit selfL invocations. If this skill is already running the Local Personalization Bootstrap, use those shared rules only as host-safety, idempotence, and destination policy.
 
 ## Outcome Contract
 
@@ -29,25 +29,31 @@ Use this mode when the user asks to initialize these skills from their existing 
 
 Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. Explicitly invoking the selfL plugin or any `selfl-*` skill should perform a one-time bootstrap check through `../../shared-rules/personalization.md`. If no local selfL profile exists, run this bootstrap before continuing with the requested skill.
 
+v1 supports Codex, Claude Code, and Hermes. Codex is the full automatic adapter. Claude Code and Hermes use reference adapters by default: generate selfL adapter snippets and local `~/.selfl/adapters/*.md` files, but do not write host memory or identity files unless the user explicitly asks.
+
 Bootstrap flow:
 
 1. Identify available local memory/history sources in the current agent environment.
 2. Prefer existing summaries, registries, and indexed memories before broad raw transcript reads.
-3. Create a private experience profile at `$HOME/.selfl/profile.md` unless the environment already has a better user-approved profile path.
-4. Write `$HOME/.selfl/bootstrap.json` as the idempotence marker.
-5. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
-6. Add the profile-loading instruction to the appropriate global or project agent instruction surface when safe. If no writable instruction surface is available, output the exact snippet to add.
-7. Report what was loaded, what was skipped, what was written, and how future sessions will load the profile.
+3. Detect the host agent when possible: Codex, Claude Code, Hermes, or unknown.
+4. Create the portable selfL profile under `$HOME/.selfl` according to `../../shared-rules/portable-profile.md`.
+5. Write `$HOME/.selfl/bootstrap.json` as the idempotence marker.
+6. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
+7. Generate host adapter snippets under `$HOME/.selfl/adapters/` when useful.
+8. For Codex, automatic local bootstrap is allowed after explicit selfL use. For Claude Code and Hermes, output the exact snippet to add unless the user explicitly requests host memory edits.
+9. Report what was loaded, what was skipped, what was written, and how future sessions will load the profile.
 
 Recommended output:
 
 - a private experience profile saved outside this public skill repository, preferably `$HOME/.selfl/profile.md`
+- a runtime contract saved at `$HOME/.selfl/harness.md`
 - a bootstrap marker, preferably `$HOME/.selfl/bootstrap.json`
-- a loaded instruction entry, or a short instruction snippet the user can add to global or project agent instructions when automatic wiring is unavailable
+- host adapter snippets, preferably under `$HOME/.selfl/adapters/`
+- a loaded instruction entry for Codex when already safe, or a short instruction snippet the user can add to host instructions when automatic wiring is unavailable
 - a summary of what was distilled: execution habits, preferences, project rules, validation habits, and anti-patterns
 - a list of sources that were unavailable or intentionally skipped
 
-Keep personal facts, private project details, raw transcripts, and machine-specific paths in the user's local profile or project instructions. Promote only reusable behavior into this skill or shared rules.
+Keep personal facts, private project details, raw transcripts, and machine-specific paths in the user's local profile or project profile. Promote only reusable behavior into this skill or shared rules.
 
 ## Workflow
 
@@ -69,7 +75,11 @@ Keep personal facts, private project details, raw transcripts, and machine-speci
 
 | Destination | Use for |
 |---|---|
-| Current project docs | Repo-specific commands, release process, domain constraints, or local architecture rules. |
+| Global profile | Cross-agent user preferences, communication style, product taste, execution habits, and validation preferences. Write to `$HOME/.selfl/profile.md` and, when useful, `$HOME/.selfl/profile.json`. |
+| Global harness | Cross-agent runtime contract: context loading, tool preference, permission boundaries, verification, delivery, and distillation policy. Write to `$HOME/.selfl/harness.md`. |
+| Project profile | Repo-specific commands, release process, domain constraints, local architecture rules, validation surfaces, and recurring project lessons. Write under `$HOME/.selfl/projects/<repo-id>/`. |
+| Host adapter | Short Codex, Claude Code, or Hermes loading guidance. Write under `$HOME/.selfl/adapters/` or output as a snippet. Do not edit host memory by default. |
+| Current project docs | Only when the user explicitly wants repo docs updated, or when the repo's own instructions are the correct source of truth. |
 | Skill instructions | Reusable behavior that applies whenever this phase is active. |
 | Shared rules | Cross-skill anti-patterns, routing rules, or validation expectations. |
 | Candidate note | Useful lessons that need more evidence before promotion. |
@@ -91,6 +101,21 @@ If a health signal is present, add a concrete guardrail or note the gap as remai
 ## Rule Quality Gate
 
 Promote a lesson only when it has a clear trigger, narrow scope, executable wording, and evidence. Do not promote secrets, local paths, transient release facts, one-off commands, raw transcripts, or private project details.
+
+Never copy host memory files wholesale into selfL. Distill them into short rules with provenance and destination.
+
+Do not automatically write:
+
+- `~/.codex/AGENTS.md`
+- project `AGENTS.md`
+- `~/.claude/CLAUDE.md`
+- project `CLAUDE.md` or `.claude/CLAUDE.md`
+- `~/.claude/projects/*/memory/*`
+- `~/.hermes/SOUL.md`
+- `~/.hermes/memories/*`
+- `~/.hermes/.env`
+
+Only write those host files when the user explicitly asks for that exact integration.
 
 ## Output Shape
 

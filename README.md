@@ -5,14 +5,69 @@
   <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-switch-2563eb?style=for-the-badge"></a>
 </p>
 
-selfL is an agent-oriented self-learning loop for turning repeated development work into reusable behavior: research, decide, design, implement, debug, ship, and distill.
+selfL is a portable self-learning harness for coding agents. It turns repeated development work into reusable behavior across Codex, Claude Code, and Hermes: research, decide, design, implement, debug, ship, and distill.
 
 ## Goals
 
 - Help coding agents use your accumulated memory, preferences, project context, and task evidence more consistently across future work.
+- Keep your personal engineering profile portable across Codex, Claude Code, and Hermes instead of locking it inside one agent's memory system.
 - Turn repeated development lessons, mistakes, preferences, and verification habits into reusable skill behavior.
 - Split behavior by engineering stage instead of relying on one oversized global prompt.
 - Make every stage evidence-oriented, with clear outcome contracts and validation expectations.
+
+## Portable Harness
+
+selfL does not replace your host agent. Codex, Claude Code, and Hermes remain the execution runtimes. selfL provides a local, portable profile and harness layer that those agents can reference.
+
+```text
+selfL is the source of truth
+host agent is the execution runtime
+adapter lets the host read selfL
+```
+
+The default local profile layout is:
+
+```text
+$HOME/.selfl/
+  manifest.json
+  profile.md
+  profile.json
+  harness.md
+  bootstrap.json
+  sources.json
+  adapters/
+    codex.md
+    claude.md
+    hermes.md
+  projects/
+    <repo-id>/
+      project.md
+      project.json
+      lessons.jsonl
+      sources.json
+```
+
+- `profile.md` stores cross-agent personal engineering preferences: communication, product taste, execution habits, and verification habits.
+- `harness.md` stores the runtime contract: context loading, tool preference, permission boundaries, verification, delivery, and distillation policy.
+- `adapters/*.md` stores host-specific loading snippets. These snippets are not automatically written into host memory.
+- `projects/<repo-id>/` stores project-specific harness notes outside the business repository.
+
+## Host Compatibility
+
+selfL v1 supports Codex, Claude Code, and Hermes with different adapter behavior.
+
+| Host | Behavior | Default write policy |
+|---|---|---|
+| Codex | Full adapter. Explicit `@selfL` or `selfl-*` use can create `~/.selfl`, create project profiles, and initialize CodeGraph for the current Git repository. | May write under `~/.selfl`, current repo `.codegraph/`, and `.git/info/exclude`. Does not rewrite `AGENTS.md` by default. |
+| Claude Code | Reference adapter. selfL generates a snippet that can import or reference `~/.selfl/profile.md` and `~/.selfl/harness.md`. | Does not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
+| Hermes | External profile adapter. selfL generates a snippet for using `~/.selfl` as an external engineering preference source. | Does not write `~/.hermes/SOUL.md`, `~/.hermes/memories/*`, `~/.hermes/skills/*`, config, or `.env` unless explicitly requested. |
+
+This avoids the main integration conflicts:
+
+- no automatic writes to host memory
+- no replacement of host identity or system instructions
+- no full-copy sync of the selfL profile into every host
+- no bypassing host permissions, sandboxing, or approval policy
 
 ## Agent-Native Direction
 
@@ -28,32 +83,35 @@ Use `selfl-distill` after meaningful work is completed. It helps turn user corre
 
 ## Personalization
 
-Installing these skills does not automatically read, copy, or summarize your existing Codex or agent conversations and memory. The first explicit `@selfL` or `selfl-*` invocation performs an idempotent personalization bootstrap check. If no local selfL profile exists yet, selfL runs the `selfl-distill` bootstrap before continuing with the requested skill.
+Installing these skills does not automatically read, copy, or summarize your existing Codex, Claude Code, Hermes, or other agent conversations and memory. The first explicit `@selfL` or `selfl-*` invocation performs an idempotent personalization bootstrap check. If no local selfL profile exists yet, selfL runs the `selfl-distill` bootstrap before continuing with the requested skill.
 
 The default private profile lives outside this repository:
 
 ```text
 $HOME/.selfl/profile.md
+$HOME/.selfl/harness.md
 $HOME/.selfl/bootstrap.json
 ```
+
+If you already have durable host-specific experience files, selfL treats them as sources, not targets to overwrite. For example, a Codex experience document can seed the selfL profile without forcing a new broad transcript sweep.
 
 You can also run the bootstrap directly:
 
 ```text
-Use $selfl-distill to initialize my local personalization. Review my available local agent memory, conversation history, logs, and prior task outcomes. Create a private experience profile outside this repository, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then wire it into my global or project agent instructions so future sessions can load it by default. Ask before reading broad personal history or editing instruction files.
+Use $selfl-distill to initialize my local selfL profile. Review my available local agent memory, conversation history, logs, and prior task outcomes. Create a private portable engineering profile under ~/.selfl, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then generate Codex, Claude Code, and Hermes adapter snippets. Ask before reading broad personal history or editing host instruction files.
 ```
 
 The bootstrap should handle:
 
 - find available local memory/history sources
-- create the private experience profile outside this repository
-- add or propose the instruction entry that loads the profile in future sessions
+- create the private experience profile and harness outside this repository
+- generate host adapter snippets without overwriting host memory
 - report what was loaded, what was skipped, and where the profile was saved
 
 Then keep improving it over time:
 
 ```text
-Use $selfl-distill to extract reusable lessons from this completed task and update my local experience profile.
+Use $selfl-distill to extract reusable lessons from this completed task and update my local selfL profile or project harness.
 ```
 
 ## Built-In CodeGraph MCP
@@ -210,6 +268,9 @@ plugins/
       anti-patterns.md
       codegraph.md
       coding-guardrails.md
+      host-compatibility.md
+      personalization.md
+      portable-profile.md
       routing.md
       self-learning-loop.md
 ```
