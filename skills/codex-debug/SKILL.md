@@ -32,6 +32,10 @@ For fixes, apply `../shared-rules/coding-guardrails.md`:
 - Surgical changes: keep the patch to the failure path; search siblings only for the same bug shape.
 - Goal-driven execution: prove the original symptom changed with a reproducible check.
 
+## CodeGraph
+
+For root-cause analysis, apply `../shared-rules/codegraph.md` when `codegraph_*` tools are available. Prefer `codegraph_trace` for "how does X reach Y", `codegraph_callers` / `codegraph_callees` for one-hop flow, `codegraph_context` for nearby implementation context, and direct file reads before editing.
+
 ## Stop Rules
 
 - Same symptom after a fix means the hypothesis failed.

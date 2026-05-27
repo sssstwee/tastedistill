@@ -31,6 +31,10 @@ For implementation plans, apply `../shared-rules/coding-guardrails.md`:
 - Surgical changes: keep the planned diff tied to the requested outcome; name non-scope explicitly.
 - Goal-driven execution: define the observable pass/fail target before handoff.
 
+## CodeGraph
+
+For plans that change existing code, apply `../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_context` to inspect current patterns and `codegraph_impact` for symbols likely to change before recommending architecture, file targets, or risk level.
+
 ## Output Shape
 
 ```text

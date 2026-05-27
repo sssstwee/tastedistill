@@ -49,6 +49,25 @@ work -> evidence -> lesson -> durable rule -> better next run
 使用 $codex-distill 从这次已完成任务中提炼可复用经验，并更新我的本地经验档案。
 ```
 
+## 可选增强：CodeGraph
+
+对于较大的代码仓库，可以接入 [CodeGraph](https://github.com/colbymchenry/codegraph)，让 Codex 使用本地代码知识图谱来理解架构、追踪调用链和分析影响面。
+
+单独安装 CodeGraph：
+
+```bash
+npx @colbymchenry/codegraph
+```
+
+初始化项目：
+
+```bash
+cd your-project
+codegraph init -i
+```
+
+当当前 Codex 客户端能看到 `codegraph_*` MCP tools 时，这些 skills 会优先用 CodeGraph 做仓库探索、排障和影响面分析。若 CodeGraph 不可用，则回退到普通文件搜索和定向读取。
+
 ## 工作流
 
 推荐顺序：
@@ -153,6 +172,7 @@ skills/
   codex-distill/
   shared-rules/
     anti-patterns.md
+    codegraph.md
     coding-guardrails.md
     routing.md
     self-learning-loop.md

@@ -41,6 +41,10 @@ For review and delivery, apply `../shared-rules/coding-guardrails.md`:
 - Surgical changes: every changed line should connect to the requested outcome; flag drive-by refactors separately.
 - Goal-driven execution: acceptance should be tied to explicit checks, artifacts, or remote state.
 
+## CodeGraph
+
+For review and delivery, apply `../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_impact`, callers/callees, or trace output as risk evidence for non-trivial diffs, not as a substitute for tests, artifacts, CI, or remote-state checks.
+
 ## Review Output
 
 Lead with findings ordered by severity. If there are no findings, say so and name remaining test gaps.

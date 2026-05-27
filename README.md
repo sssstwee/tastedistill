@@ -49,6 +49,25 @@ Then keep improving it over time:
 Use $codex-distill to extract reusable lessons from this completed task and update my local experience profile.
 ```
 
+## Optional: CodeGraph
+
+For larger repositories, you can connect [CodeGraph](https://github.com/colbymchenry/codegraph) to give Codex a local code knowledge graph for architecture lookup, call-flow tracing, and impact analysis.
+
+Install CodeGraph separately:
+
+```bash
+npx @colbymchenry/codegraph
+```
+
+Then initialize a project:
+
+```bash
+cd your-project
+codegraph init -i
+```
+
+When `codegraph_*` MCP tools are available in your current Codex client, these skills will prefer CodeGraph for repository exploration, debugging, and impact analysis. If CodeGraph is unavailable, the skills fall back to normal file search and targeted reads.
+
 ## Workflow
 
 Recommended sequence:
@@ -153,6 +172,7 @@ skills/
   codex-distill/
   shared-rules/
     anti-patterns.md
+    codegraph.md
     coding-guardrails.md
     routing.md
     self-learning-loop.md
