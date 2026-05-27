@@ -180,4 +180,8 @@ skills/
 
 ## Acknowledgements
 
-Thanks to [Waza](https://github.com/tw93/Waza) for the staged skill design inspiration.
+Thanks to:
+
+- [Waza](https://github.com/tw93/Waza) for the staged skill design inspiration.
+- [Andrej Karpathy](https://github.com/karpathy) for public writing and guidance on practical coding-agent behavior.
+- [CodeGraph](https://github.com/colbymchenry/codegraph) for local code knowledge graph ideas and tooling.

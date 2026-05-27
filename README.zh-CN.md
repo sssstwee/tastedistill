@@ -180,4 +180,8 @@ skills/
 
 ## 致谢
 
-感谢 [Waza](https://github.com/tw93/Waza) 提供阶段化技能设计思想启发。
+感谢：
+
+- [Waza](https://github.com/tw93/Waza) 提供阶段化技能设计思想启发。
+- [Andrej Karpathy](https://github.com/karpathy) 关于实用 coding agent 行为的公开写作与经验启发。
+- [CodeGraph](https://github.com/colbymchenry/codegraph) 提供本地代码知识图谱的思路与工具支持。
