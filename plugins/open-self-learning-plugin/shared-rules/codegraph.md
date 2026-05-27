@@ -22,10 +22,24 @@ Use this rule when CodeGraph MCP tools are available in the current agent sessio
 | Estimate affected code before editing | `codegraph_impact` |
 | Check index health or staleness | `codegraph_status` |
 
+## Index Bootstrap
+
+When a selfL skill is explicitly invoked and the task benefits from CodeGraph, treat that explicit selfL use as permission to bootstrap CodeGraph for the current repository.
+
+Before broad repository exploration, call `codegraph_status` when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
+
+1. Resolve the current repository root with `git rev-parse --show-toplevel` when inside a Git worktree.
+2. Run `npx -y @colbymchenry/codegraph init -i` from that repository root.
+3. Keep the generated index local by adding `.codegraph/` to `.git/info/exclude` if the repository has a `.git` directory and the entry is not already present.
+4. Re-check `codegraph_status` or retry the intended `codegraph_*` lookup.
+5. Report that CodeGraph was initialized for the current repository.
+
+Do not initialize unrelated repositories, home directories, or parent folders. If the current directory is not a repository or the initialization command fails, fall back to normal search and targeted file reads, then report the fallback.
+
 ## Fallbacks
 
 - If `codegraph_*` tools are not available, use normal repository search and targeted file reads.
-- If the project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`.
+- If the user did not explicitly invoke selfL and the project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`.
 - If CodeGraph reports stale or pending files, inspect `codegraph_status` and read the named files directly before editing.
 - For a precise user-provided file and line, read that file directly; CodeGraph is optional context, not a replacement.
 

@@ -55,14 +55,16 @@ work -> evidence -> lesson -> durable rule -> better next run
 
 当本仓库以 Codex plugin 方式安装时，CodeGraph 会在需要 MCP server 时通过 `npx` 启动。用户不需要在安装 plugin 之前先全局安装 CodeGraph。
 
-每个代码仓库仍然需要一份本地图谱索引。需要图谱能力的项目只需要初始化一次：
+每个代码仓库仍然需要一份本地图谱索引。当你明确使用 selfL skill 做仓库学习、方案判断、排障或交付检查时，selfL 可以在使用 CodeGraph 前自动初始化当前仓库。
+
+也可以手动初始化：
 
 ```bash
 cd your-project
 npx -y @colbymchenry/codegraph init -i
 ```
 
-当当前 Codex 客户端能看到 `codegraph_*` MCP tools 时，这些 skills 会优先用 CodeGraph 做仓库探索、排障和影响面分析。如果你只安装 skills、没有安装 plugin，或 CodeGraph 不可用，则回退到普通文件搜索和定向读取。
+当当前 Codex 客户端能看到 `codegraph_*` MCP tools 时，这些 skills 会优先用 CodeGraph 做仓库探索、排障和影响面分析。如果当前仓库还没有 CodeGraph 索引，明确使用 selfL 会被视为允许只初始化当前仓库，并通过 `.git/info/exclude` 让 `.codegraph/` 保持本地化。如果你只安装 skills、没有安装 plugin，或 CodeGraph 不可用，则回退到普通文件搜索和定向读取。
 
 ## 工作流
 
@@ -109,14 +111,14 @@ Git 引用：main
 
 然后从该 marketplace 中安装 `selfL`。
 
-安装 plugin 后，重启 Codex。每个需要代码图谱能力的仓库只需要初始化一次本地索引：
+安装 plugin 后，重启 Codex。每个需要代码图谱能力的仓库，在你明确调用 selfL skill 处理仓库任务时，可以自动初始化本地索引。你也可以手动初始化：
 
 ```bash
 cd your-project
 npx -y @colbymchenry/codegraph init -i
 ```
 
-当 `codegraph_*` MCP tools 可用时，Codex 会使用 CodeGraph。若当前项目还没有初始化，skills 会先询问再创建 `.codegraph/`。
+当 `codegraph_*` MCP tools 可用时，Codex 会使用 CodeGraph。若当前项目还没有初始化，并且你明确调用了 selfL，skills 可以为当前仓库创建 `.codegraph/`，并通过 `.git/info/exclude` 避免把它提交进 Git。
 
 ### 方案 B：只安装 Skills
 
