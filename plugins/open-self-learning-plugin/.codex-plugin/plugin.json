@@ -1,6 +1,6 @@
 {
   "name": "open-self-learning-plugin",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Agent self-learning workflows with built-in CodeGraph MCP support.",
   "author": {
     "name": "sssstwee",

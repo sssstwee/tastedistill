@@ -8,7 +8,7 @@
         "serve",
         "--mcp"
       ],
-      "note": "Local CodeGraph MCP server for repository structure, call-flow tracing, symbol search, and impact analysis. Project indexes live in each repository's .codegraph/ directory. If a project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`."
+      "note": "Local CodeGraph MCP server for repository structure, call-flow tracing, symbol search, and impact analysis. Project indexes live in each repository's .codegraph/ directory. When a selfL plugin or skill is explicitly invoked inside a Git repository, follow shared-rules/codegraph.md and bootstrap the current repository if needed; otherwise ask before running `npx -y @colbymchenry/codegraph init -i`."
     }
   }
 }
