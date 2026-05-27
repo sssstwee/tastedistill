@@ -7,31 +7,30 @@
 
 ![TasteDistill helps multiple coding agents share your working style](./assets/readme/hero-en.png)
 
-TasteDistill is a small local notebook for your coding agents.
+TasteDistill is a small local notebook for your coding agents. It keeps your taste, habits, project lessons, and delivery rules in one place so Codex, Claude Code, and Hermes can work in a more consistent way.
 
-You may use Codex today, Claude Code tomorrow, and Hermes next week. Each agent can be helpful, but they usually do not share what they learned about you: your product taste, UI preferences, delivery habits, common project rules, and the lessons from past mistakes.
+| 🧠 What it stores | 🤖 Who can read it | 🔒 Where it lives |
+|---|---|---|
+| Your product taste, UI preferences, coding habits, and lessons | Codex, Claude Code, Hermes | On your machine, under `~/.tastedistill/` |
 
-TasteDistill gives those agents one shared place to read that long-term working style.
+```mermaid
+flowchart LR
+    A["Your taste<br/>preferences<br/>lessons"] --> B["TasteDistill<br/>local profile"]
+    B --> C["Codex"]
+    B --> D["Claude Code"]
+    B --> E["Hermes"]
+```
 
-It does not replace Codex, Claude Code, or Hermes. It simply helps them work more like you.
+## 🧩 Why Use It
 
-## Why Use It
+| Without TasteDistill | With TasteDistill |
+|---|---|
+| 😵 You repeat the same preferences in every new chat. | ✅ Your preferences live in one local profile. |
+| 🧩 One agent learns something, but another agent does not know it. | 🔁 Codex, Claude Code, and Hermes can read the same working style. |
+| 🗂️ Useful lessons stay buried in old conversations. | ✨ Finished work can turn into reusable lessons. |
+| 🧱 Big global prompts become messy. | 🛠️ Each task follows a small, clear workflow. |
 
-Without TasteDistill:
-
-- You repeat the same preferences in every new chat.
-- One agent learns something, but another agent does not know it.
-- Useful lessons stay buried in old conversations.
-- Big global prompts become messy and hard to maintain.
-
-With TasteDistill:
-
-- Your preferences live in one local profile.
-- Codex, Claude Code, and Hermes can all read the same working style.
-- Finished work can turn into reusable lessons.
-- Each task follows a simple workflow: learn, think, design, debug, ship, distill.
-
-## What It Helps With
+## 🎯 What It Helps With
 
 TasteDistill is useful when you want an agent to remember things like:
 
@@ -41,7 +40,7 @@ TasteDistill is useful when you want an agent to remember things like:
 - "Do not overwrite host memory or project instruction files unless I ask."
 - "Keep private user taste and project lessons outside public repositories."
 
-The profile is stored on your own machine by default:
+The profile stays on your own machine by default:
 
 ```text
 ~/.tastedistill/
@@ -51,7 +50,7 @@ The profile is stored on your own machine by default:
   projects/       # project-specific lessons outside the business repo
 ```
 
-## How It Works
+## 🔁 How It Works
 
 ![TasteDistill workflow: learn, think, design, debug, ship, distill](./assets/readme/workflow-en.png)
 
@@ -66,9 +65,17 @@ TasteDistill splits agent work into six easy stages:
 | Ship | Work is almost done | Verify, check delivery details, prepare release or PR notes |
 | Distill | A task taught something useful | Save the lesson for future runs |
 
-## First-Time Setup
+## 🚀 First-Time Setup
 
 After installing TasteDistill, run it once to create your local profile.
+
+```mermaid
+flowchart LR
+    A["Install TasteDistill"] --> B["Run first setup"]
+    B --> C["Create<br/>~/.tastedistill"]
+    C --> D["Generate host adapters"]
+    D --> E["Use it in future tasks"]
+```
 
 In Codex, you can say:
 
@@ -93,7 +100,21 @@ On the first run, TasteDistill should:
 
 It should not silently rewrite your host agent memory.
 
-## Install In Codex Desktop
+## 🧭 Choose An Install Path
+
+```mermaid
+flowchart TD
+    A["Which host do you use?"] --> B["Codex Desktop"]
+    A --> C["Claude Code"]
+    A --> D["Hermes"]
+    A --> E["Codex skills only"]
+    B --> F["Install marketplace plugin"]
+    C --> G["Use /plugin commands"]
+    D --> H["Use hermes plugins install"]
+    E --> I["Symlink skills manually"]
+```
+
+## 🧱 Install In Codex Desktop
 
 Use this if you want the easiest Codex experience with bundled skills and CodeGraph support.
 
@@ -126,7 +147,7 @@ tastedistill-ship
 tastedistill-distill
 ```
 
-## Install In Claude Code
+## 🟣 Install In Claude Code
 
 Claude Code uses plugin marketplace commands.
 
@@ -161,7 +182,7 @@ Then use:
 
 TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small adapter snippet, and you decide whether to add it.
 
-## Install In Hermes
+## 🪽 Install In Hermes
 
 Hermes installs plugins from a Git repository.
 
@@ -190,7 +211,7 @@ hermes plugins enable tastedistill
 
 TasteDistill does not automatically edit `SOUL.md`, Hermes memories, config files, or `.env`.
 
-## Install Codex Skills Only
+## 🧰 Install Codex Skills Only
 
 Use this only if you do not want the full Codex plugin and only want the skill files.
 
@@ -211,7 +232,7 @@ Restart Codex and type:
 /tastedistill
 ```
 
-## CodeGraph Support
+## 🗺️ CodeGraph Support
 
 TasteDistill can use [CodeGraph](https://github.com/colbymchenry/codegraph) to understand larger codebases faster.
 
@@ -230,7 +251,7 @@ cd your-project
 npx -y @colbymchenry/codegraph init -i
 ```
 
-## What TasteDistill Will Not Do By Default
+## 🛡️ What TasteDistill Will Not Do By Default
 
 TasteDistill is intentionally conservative.
 
@@ -245,7 +266,7 @@ It will not automatically:
 
 Your local profile is meant to stay local unless you choose otherwise.
 
-## Update
+## 🔄 Update
 
 If you installed from Git:
 
@@ -256,7 +277,7 @@ git pull
 
 Then restart your host agent if it does not reload plugins automatically.
 
-## Acknowledgements
+## 🙏 Acknowledgements
 
 TasteDistill was inspired by useful ideas from:
 

@@ -7,31 +7,30 @@
 
 ![TasteDistill 让多个 coding agent 共享你的工作方式](./assets/readme/hero-zh.png)
 
-TasteDistill 可以理解成一个给 AI 用的“本地经验小本子”。
+TasteDistill 可以理解成一个给 AI 用的“本地经验小本子”。它把你的审美、习惯、项目经验和交付规则放在同一个地方，让 Codex、Claude Code、Hermes 都能更稳定地按你的方式做事。
 
-你今天可能用 Codex，明天用 Claude Code，后天又试 Hermes。每个 agent 都能干活，但它们通常不共享对你的理解：你的产品审美、UI 偏好、交付习惯、项目规则、踩坑经验，都容易散落在不同工具和旧对话里。
+| 🧠 它记什么 | 🤖 谁能读 | 🔒 存在哪里 |
+|---|---|---|
+| 产品审美、UI 偏好、编码习惯、踩坑经验 | Codex、Claude Code、Hermes | 你的本机：`~/.tastedistill/` |
 
-TasteDistill 做的事情很简单：把这些长期经验整理成一个本地档案，让不同 agent 都能读懂。
+```mermaid
+flowchart LR
+    A["你的品味<br/>偏好<br/>经验"] --> B["TasteDistill<br/>本地档案"]
+    B --> C["Codex"]
+    B --> D["Claude Code"]
+    B --> E["Hermes"]
+```
 
-它不替代 Codex、Claude Code 或 Hermes，只是让它们更像“按你的方式工作”。
+## 🧩 为什么需要它
 
-## 为什么需要它
+| 没有 TasteDistill | 有了 TasteDistill |
+|---|---|
+| 😵 每开新对话，都要重新解释偏好。 | ✅ 偏好统一放在本地 profile 里。 |
+| 🧩 一个 agent 学到的经验，另一个不知道。 | 🔁 三个 agent 可以读同一套工作方式。 |
+| 🗂️ 有价值的教训埋在旧聊天记录里。 | ✨ 完成任务后，可以把经验沉淀下来。 |
+| 🧱 全局提示词越写越长，很难维护。 | 🛠️ 做事流程拆成清楚的小步骤。 |
 
-没有 TasteDistill 时：
-
-- 每开一个新对话，都要重新解释偏好。
-- 一个 agent 学到的经验，另一个 agent 不知道。
-- 很有价值的教训埋在旧聊天记录里。
-- 全局提示词越写越长，最后很难维护。
-
-有了 TasteDistill 后：
-
-- 你的偏好统一放在一个本地 profile 里。
-- Codex、Claude Code、Hermes 可以读同一套工作方式。
-- 每次完成任务后，都可以把经验沉淀下来。
-- 做事流程更清楚：学习、思考、设计、调试、交付、沉淀。
-
-## 它能帮你记住什么
+## 🎯 它能帮你记住什么
 
 例如这些话，就很适合沉淀进 TasteDistill：
 
@@ -51,7 +50,7 @@ TasteDistill 做的事情很简单：把这些长期经验整理成一个本地�
   projects/       # 项目级经验，放在业务仓库外面
 ```
 
-## 工作方式
+## 🔁 工作方式
 
 ![TasteDistill 工作流：学习、思考、设计、调试、交付、沉淀](./assets/readme/workflow-zh.png)
 
@@ -66,9 +65,17 @@ TasteDistill 把 agent 工作拆成 6 个很容易理解的阶段：
 | 交付 | 快完成了 | 做验收、检查边界、准备发布或 PR |
 | 沉淀 | 这次任务有经验可复用 | 把教训写进本地档案，后面继续用 |
 
-## 第一次使用
+## 🚀 第一次使用
 
 安装后，建议先做一次初始化。
+
+```mermaid
+flowchart LR
+    A["安装 TasteDistill"] --> B["运行首次初始化"]
+    B --> C["创建<br/>~/.tastedistill"]
+    C --> D["生成宿主 adapter"]
+    D --> E["后续任务直接复用"]
+```
 
 在 Codex 里可以直接说：
 
@@ -93,7 +100,21 @@ TasteDistill 把 agent 工作拆成 6 个很容易理解的阶段：
 
 它不应该偷偷改写宿主 agent 的 memory。
 
-## 安装到 Codex Desktop
+## 🧭 选择安装方式
+
+```mermaid
+flowchart TD
+    A["你主要用哪个宿主?"] --> B["Codex Desktop"]
+    A --> C["Claude Code"]
+    A --> D["Hermes"]
+    A --> E["只装 Codex skills"]
+    B --> F["安装 marketplace plugin"]
+    C --> G["使用 /plugin 命令"]
+    D --> H["使用 hermes plugins install"]
+    E --> I["手动 symlink skills"]
+```
+
+## 🧱 安装到 Codex Desktop
 
 如果你主要用 Codex，推荐用这个方式。它会同时安装 skills 和 CodeGraph 支持。
 
@@ -126,7 +147,7 @@ tastedistill-ship
 tastedistill-distill
 ```
 
-## 安装到 Claude Code
+## 🟣 安装到 Claude Code
 
 Claude Code 使用插件市场命令安装。
 
@@ -161,7 +182,7 @@ Claude Code 使用插件市场命令安装。
 
 TasteDistill 默认不会自动修改 `CLAUDE.md`。它可以生成一段接入说明，由你决定要不要写进去。
 
-## 安装到 Hermes
+## 🪽 安装到 Hermes
 
 Hermes 可以直接从 Git 仓库安装插件。
 
@@ -190,7 +211,7 @@ hermes plugins enable tastedistill
 
 TasteDistill 默认不会改 `SOUL.md`、Hermes memories、配置文件或 `.env`。
 
-## 只安装 Codex Skills
+## 🧰 只安装 Codex Skills
 
 如果你不想安装完整 Codex plugin，只想安装 skill 文件，可以这样做：
 
@@ -211,7 +232,7 @@ done
 /tastedistill
 ```
 
-## CodeGraph 是什么
+## 🗺️ CodeGraph 是什么
 
 TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph) 理解大型代码仓库。
 
@@ -230,7 +251,7 @@ cd your-project
 npx -y @colbymchenry/codegraph init -i
 ```
 
-## 默认不会做什么
+## 🛡️ 默认不会做什么
 
 TasteDistill 默认比较克制。
 
@@ -245,7 +266,7 @@ TasteDistill 默认比较克制。
 
 你的个人档案默认留在本机。
 
-## 更新
+## 🔄 更新
 
 如果你是从 Git 安装的：
 
@@ -256,7 +277,7 @@ git pull
 
 如果宿主 agent 没有自动刷新插件，重启一次即可。
 
-## 致谢
+## 🙏 致谢
 
 TasteDistill 的设计受到了这些项目和公开经验的启发：
 
