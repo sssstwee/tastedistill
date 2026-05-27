@@ -7,6 +7,8 @@ description: Review implemented work, verify acceptance criteria, prepare delive
 
 Use this skill when an artifact exists and needs a delivery decision.
 
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit selfL invocations.
+
 ## Outcome Contract
 
 - Outcome: a delivery decision grounded in current evidence.

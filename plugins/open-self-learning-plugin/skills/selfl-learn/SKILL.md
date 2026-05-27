@@ -7,6 +7,8 @@ description: Research unfamiliar domains, source materials, repositories, docume
 
 Use this skill before making recommendations in an unfamiliar domain.
 
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit selfL invocations.
+
 ## Outcome Contract
 
 - Outcome: a compact evidence map, domain summary, and open questions.

@@ -28,15 +28,22 @@ work -> evidence -> lesson -> durable rule -> better next run
 
 ## 个性化初始化
 
-安装这些 skills 不会自动读取、复制或总结你已有的 Codex 或其他 agent 对话记录和记忆。安装只是让工作流可用；读取个人历史和修改本地 instructions 应该发生在你明确运行 `selfl-distill` 之后。
+安装这些 skills 不会自动读取、复制或总结你已有的 Codex 或其他 agent 对话记录和记忆。第一次明确呼叫 `@selfL` 或任意 `selfl-*` skill 时，会先做一次幂等的个性化 bootstrap 检查。如果本机还没有 selfL profile，selfL 会先运行 `selfl-distill` bootstrap，再继续执行用户请求的 skill。
 
-安装完成后，建议运行一次 `selfl-distill`，让它完成初始化：
+默认私有档案保存在仓库之外：
+
+```text
+$HOME/.selfl/profile.md
+$HOME/.selfl/bootstrap.json
+```
+
+也可以直接运行 bootstrap：
 
 ```text
 使用 $selfl-distill 初始化我的本地个性化配置。阅读并整理我当前可用的本地 agent memory、对话记录、日志和历史任务结果。请在这个仓库之外创建一份私有经验档案，总结我的执行偏好、产品审美、验证习惯、可复用规则和反模式，并把它接入我的全局或项目 agent instructions，让后续会话可以默认加载。读取大范围个人历史或修改 instructions 文件前先确认。
 ```
 
-`selfl-distill` 应该处理完整 bootstrap：
+bootstrap 应该处理：
 
 - 发现当前可用的本地 memory / history 来源
 - 在仓库之外创建私有经验档案

@@ -7,6 +7,8 @@ description: Extract reusable lessons from completed work, failed attempts, user
 
 Use this skill after meaningful work has produced a lesson.
 
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit selfL invocations. If this skill is already running the Local Personalization Bootstrap, use that shared rule only as the idempotence and destination policy.
+
 ## Outcome Contract
 
 - Outcome: current work improves future agent behavior through reusable guidance with scope, trigger, evidence, and destination.
@@ -25,20 +27,22 @@ Distillation is not a transcript summary. It turns repeated, verified behavior i
 
 Use this mode when the user asks to initialize these skills from their existing Codex or compatible agent memory, conversation history, logs, or prior task outcomes.
 
-Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. Running `selfl-distill` once after installation should perform the whole bootstrap, but it must ask before reading broad personal history or editing global/project instruction files.
+Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. Explicitly invoking the selfL plugin or any `selfl-*` skill should perform a one-time bootstrap check through `../../shared-rules/personalization.md`. If no local selfL profile exists, run this bootstrap before continuing with the requested skill.
 
 Bootstrap flow:
 
 1. Identify available local memory/history sources in the current agent environment.
-2. Ask for confirmation before broad history reads or instruction-file edits.
-3. Create a private experience profile outside this public skill repository.
-4. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
-5. Add the profile-loading instruction to the appropriate global or project agent instruction surface when the user authorizes it. If no writable instruction surface is available, output the exact snippet to add.
-6. Report what was loaded, what was skipped, what was written, and how future sessions will load the profile.
+2. Prefer existing summaries, registries, and indexed memories before broad raw transcript reads.
+3. Create a private experience profile at `$HOME/.selfl/profile.md` unless the environment already has a better user-approved profile path.
+4. Write `$HOME/.selfl/bootstrap.json` as the idempotence marker.
+5. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
+6. Add the profile-loading instruction to the appropriate global or project agent instruction surface when safe. If no writable instruction surface is available, output the exact snippet to add.
+7. Report what was loaded, what was skipped, what was written, and how future sessions will load the profile.
 
 Recommended output:
 
-- a private experience profile saved outside this public skill repository
+- a private experience profile saved outside this public skill repository, preferably `$HOME/.selfl/profile.md`
+- a bootstrap marker, preferably `$HOME/.selfl/bootstrap.json`
 - a loaded instruction entry, or a short instruction snippet the user can add to global or project agent instructions when automatic wiring is unavailable
 - a summary of what was distilled: execution habits, preferences, project rules, validation habits, and anti-patterns
 - a list of sources that were unavailable or intentionally skipped

@@ -28,6 +28,7 @@ Promote a lesson only when it has:
 | Repo-specific behavior | The target repo's own public docs or agent instructions |
 | Useful but unproven behavior | Candidate note, not a shipped rule |
 | Private context | Keep outside the public repository |
+| User personalization | `$HOME/.selfl/profile.md` and agent instructions |
 
 ## Validation
 

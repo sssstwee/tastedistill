@@ -7,6 +7,8 @@ description: Turn rough ideas, product questions, architecture choices, implemen
 
 Use this skill when the main work is judgment, scope, or plan design.
 
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit selfL invocations.
+
 ## Outcome Contract
 
 - Outcome: a decision, rationale, risks, and an executable plan.

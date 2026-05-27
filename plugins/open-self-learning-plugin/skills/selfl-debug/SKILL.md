@@ -7,6 +7,8 @@ description: Diagnose failures, broken behavior, regressions, test failures, run
 
 Use this skill when the task starts from a symptom.
 
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit selfL invocations.
+
 ## Outcome Contract
 
 - Outcome: proven root cause, minimal fix or handoff, and verification evidence.

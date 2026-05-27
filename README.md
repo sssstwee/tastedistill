@@ -28,15 +28,22 @@ Use `selfl-distill` after meaningful work is completed. It helps turn user corre
 
 ## Personalization
 
-Installing these skills does not automatically read, copy, or summarize your existing Codex or agent conversations and memory. Skill installation only makes the workflow available. Reading personal history and editing local instructions should happen only after you explicitly run `selfl-distill`.
+Installing these skills does not automatically read, copy, or summarize your existing Codex or agent conversations and memory. The first explicit `@selfL` or `selfl-*` invocation performs an idempotent personalization bootstrap check. If no local selfL profile exists yet, selfL runs the `selfl-distill` bootstrap before continuing with the requested skill.
 
-For the best results, run `selfl-distill` once after installation and let it complete the setup:
+The default private profile lives outside this repository:
+
+```text
+$HOME/.selfl/profile.md
+$HOME/.selfl/bootstrap.json
+```
+
+You can also run the bootstrap directly:
 
 ```text
 Use $selfl-distill to initialize my local personalization. Review my available local agent memory, conversation history, logs, and prior task outcomes. Create a private experience profile outside this repository, summarize my execution preferences, product taste, validation habits, reusable rules, and anti-patterns, then wire it into my global or project agent instructions so future sessions can load it by default. Ask before reading broad personal history or editing instruction files.
 ```
 
-`selfl-distill` should handle the whole bootstrap:
+The bootstrap should handle:
 
 - find available local memory/history sources
 - create the private experience profile outside this repository

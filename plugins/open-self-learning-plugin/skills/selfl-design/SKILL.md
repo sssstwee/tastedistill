@@ -7,6 +7,8 @@ description: Define product direction, interaction principles, UI structure, vis
 
 Use this skill for UI and product-facing work.
 
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit selfL invocations.
+
 ## Outcome Contract
 
 - Outcome: a usable interface direction or concrete UI change with clear interaction behavior.
@@ -36,4 +38,3 @@ Use this skill for UI and product-facing work.
 - Add decorative surfaces that do not support the workflow.
 - Hide unavailable actions when disabled-with-explanation is clearer.
 - Ignore responsive text fitting and layout overlap.
-
