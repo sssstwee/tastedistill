@@ -24,7 +24,7 @@ work -> evidence -> lesson -> durable rule -> better next run
 
 每个 skill 都刻意保持小而清晰：定义阶段契约、所需证据和失败边界。运行时，它们应该与你本地的 Codex memory、项目 instructions、仓库文件、日志、测试、浏览器状态和当前任务上下文一起工作。真正的代码实施仍由 Codex 原生工程能力完成；skills 负责约束什么时候研究、什么时候判断、什么时候验证、什么时候把经验更新为未来可复用行为。
 
-`codex-distill` 是差异化层：它会把已完成工作、失败尝试、用户纠正、日志、diff 和验证结果提炼为 durable rules。个人记忆和私有项目事实可以继续保留在本地，而可复用的行为模式再沉淀进 skills 或 shared rules。
+完成一次有价值的任务后，可以使用 `codex-distill`。它会帮助你把用户纠正、失败尝试、日志、diff 和验证结果提炼成后续 Codex 可复用的规则。个人记忆和私有项目事实可以继续保留在本地，而可复用的行为模式再沉淀进 skills 或 shared rules。
 
 ## 工作流
 
@@ -138,4 +138,4 @@ scripts/
 
 ## 致谢
 
-本项目的阶段化技能设计思想来源于 [Waza](https://github.com/tw93/Waza)，并在此基础上面向 Codex 自学习闭环继续演化：更强调证据驱动执行、交付前检查、以及从真实任务中持续提炼规则。
+感谢 [Waza](https://github.com/tw93/Waza) 提供阶段化技能设计思想启发。

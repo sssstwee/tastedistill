@@ -24,7 +24,7 @@ work -> evidence -> lesson -> durable rule -> better next run
 
 The skills are intentionally small. Each one defines a phase contract, expected evidence, and failure boundaries. At runtime, they are meant to work together with your local Codex memory, project instructions, repository files, logs, tests, browser state, and current task context. Codex still performs the implementation work directly; the skills shape when to research, when to decide, when to verify, and when to update future behavior.
 
-`codex-distill` is the differentiating layer. It turns completed work, failed attempts, user corrections, logs, diffs, and verification results into durable rules. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
+Use `codex-distill` after meaningful work is completed. It helps turn user corrections, failed attempts, logs, diffs, and verification results into reusable rules for future Codex runs. Personal memory and private project facts can remain local while reusable behavior is promoted into skills or shared rules.
 
 ## Workflow
 
@@ -138,4 +138,4 @@ scripts/
 
 ## Acknowledgements
 
-The staged skill design is inspired by [Waza](https://github.com/tw93/Waza). This repository adapts and evolves that idea for a Codex self-learning loop, with stronger emphasis on evidence-driven execution, delivery preflight, and continuous rule distillation from real work.
+Thanks to [Waza](https://github.com/tw93/Waza) for the staged skill design inspiration.
