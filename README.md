@@ -6,9 +6,9 @@
   <a href="./README.zh-CN.md"><strong>中文</strong></a>
 </p>
 
-![TasteDistill helps multiple coding agents share your working style](./assets/readme/hero-en.png)
+> Project About: TasteDistill lets Codex, Claude Code, and Hermes share local experience, preference memory, and engineering workflows.
 
-**Portable AI agent memory, workflow skills, and harness adapters for Codex, Claude Code, and Hermes.**
+![TasteDistill helps multiple coding agents share your working style](./assets/readme/hero-en.png)
 
 TasteDistill is a small local notebook for your coding agents. It keeps your taste, habits, project lessons, and delivery rules in one place so Codex, Claude Code, and Hermes can work in a more consistent way.
 

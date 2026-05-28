@@ -6,9 +6,9 @@
   <a href="./README.zh-CN.md"><strong>中文</strong></a>
 </p>
 
-![TasteDistill 让多个 coding agent 共享你的工作方式](./assets/readme/hero-zh.png)
+> 项目简介：让 Codex、Claude Code、Hermes 共用本地经验、偏好记忆与工程工作流。
 
-**面向 Codex、Claude Code、Hermes 的本地 AI agent memory、工作流 skills 与 harness adapter。**
+![TasteDistill 让多个 coding agent 共享你的工作方式](./assets/readme/hero-zh.png)
 
 TasteDistill 可以理解成一个给 AI 用的“本地经验小本子”。它把你的审美、习惯、项目经验和交付规则放在同一个地方，让 Codex、Claude Code、Hermes 都能更稳定地按你的方式做事。
 
