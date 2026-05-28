@@ -129,29 +129,6 @@ flowchart TD
     E --> I["使用 hermes plugins install"]
 ```
 
-## 🔄 更新到最新版
-
-如果你是从 `main` 安装的 TasteD，就在对应宿主里更新：
-
-| 宿主 | 更新方式 |
-| --- | --- |
-| Codex Desktop | 重启 Codex Desktop，让已安装的 marketplace plugin 从 `main` 刷新。 |
-| Codex CLI | 到你 symlink 的 Git 仓库里拉取最新代码，然后重启 Codex CLI 或打开新会话。 |
-| Claude Code 命令行或桌面端 | 执行 `/plugin update tasted`，然后重启 Claude Code。 |
-| Hermes CLI | 执行 `hermes plugins update tasted`，然后打开新的 Hermes 会话。 |
-
-Claude Code 也可以在终端里执行：
-
-```bash
-claude plugin update tasted
-```
-
-Hermes 在终端里执行：
-
-```bash
-hermes plugins update tasted
-```
-
 ## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> 安装到 Codex Desktop
 
 如果你主要用 Codex，推荐用这个方式。它会同时安装 skills，并带上 CodeGraph MCP 注册配置。
@@ -277,6 +254,29 @@ tasted-design
 tasted-debug
 tasted-ship
 tasted-distill
+```
+
+## 🔄 更新到最新版
+
+如果你是从 `main` 安装的 TasteD，就在对应宿主里更新：
+
+| 宿主 | 更新方式 |
+| --- | --- |
+| Codex Desktop | 重启 Codex Desktop，让已安装的 marketplace plugin 从 `main` 刷新。 |
+| Codex CLI | 到你 symlink 的 Git 仓库里拉取最新代码，然后重启 Codex CLI 或打开新会话。 |
+| Claude Code 命令行或桌面端 | 执行 `/plugin update tasted`，然后重启 Claude Code。 |
+| Hermes CLI | 执行 `hermes plugins update tasted`，然后打开新的 Hermes 会话。 |
+
+Claude Code 也可以在终端里执行：
+
+```bash
+claude plugin update tasted
+```
+
+Hermes 在终端里执行：
+
+```bash
+hermes plugins update tasted
 ```
 
 ## 🗺️ CodeGraph 是什么

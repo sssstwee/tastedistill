@@ -129,29 +129,6 @@ flowchart TD
     E --> I["Use hermes plugins install"]
 ```
 
-## 🔄 Update To The Latest Version
-
-If you installed from `main`, update TasteD from the same host where you use it:
-
-| Host | Update command |
-| --- | --- |
-| Codex Desktop | Restart Codex Desktop so the installed marketplace plugin refreshes from `main`. |
-| Codex CLI | Pull the Git repo you symlinked from, then restart Codex CLI or open a new session. |
-| Claude Code CLI or desktop | Run `/plugin update tasted`, then restart Claude Code. |
-| Hermes CLI | Run `hermes plugins update tasted`, then start a new Hermes session. |
-
-Claude Code terminal equivalent:
-
-```bash
-claude plugin update tasted
-```
-
-Hermes terminal command:
-
-```bash
-hermes plugins update tasted
-```
-
 ## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> Install In Codex Desktop
 
 Use this if you want the easiest Codex experience with bundled skills and bundled CodeGraph MCP registration.
@@ -277,6 +254,29 @@ tasted-design
 tasted-debug
 tasted-ship
 tasted-distill
+```
+
+## 🔄 Update To The Latest Version
+
+If you installed from `main`, update TasteD from the same host where you use it:
+
+| Host | Update command |
+| --- | --- |
+| Codex Desktop | Restart Codex Desktop so the installed marketplace plugin refreshes from `main`. |
+| Codex CLI | Pull the Git repo you symlinked from, then restart Codex CLI or open a new session. |
+| Claude Code CLI or desktop | Run `/plugin update tasted`, then restart Claude Code. |
+| Hermes CLI | Run `hermes plugins update tasted`, then start a new Hermes session. |
+
+Claude Code terminal equivalent:
+
+```bash
+claude plugin update tasted
+```
+
+Hermes terminal command:
+
+```bash
+hermes plugins update tasted
 ```
 
 ## 🗺️ CodeGraph Support
