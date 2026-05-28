@@ -82,22 +82,24 @@ flowchart LR
     D --> E["Use it in future tasks"]
 ```
 
-In Codex, you can say:
+In any supported host, ask TasteD to initialize. The wording does not need to be exact. Short examples:
 
 ```text
-@TasteD initialize my local profile
+Codex: @TasteD init
+Claude Code: /tasted:distill init
+Hermes: tasted:distill init
 ```
 
-Or use the distill skill:
+Any equivalent request works, for example:
 
 ```text
-Use tasted-distill to initialize my local TasteDistill profile.
+Initialize TasteD
 ```
 
 TasteDistill will:
 
 - look for existing local agent memory or instruction files
-- create a TasteDistill-owned source digest from Codex memory summary / registry when Codex has no existing `codex-experience-review.md`
+- when running in Codex, create a TasteDistill-owned source digest from Codex memory summary / registry when Codex has no existing `codex-experience-review.md`
 - ask before reading broad personal history
 - create `~/.tastedistill/profile.md`
 - create `~/.tastedistill/harness.md`

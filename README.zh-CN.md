@@ -82,22 +82,24 @@ flowchart LR
     D --> E["后续任务直接复用"]
 ```
 
-在 Codex 里可以直接说：
+在任意支持的宿主里，让 TasteD 初始化即可。不需要逐字照抄，短例子：
 
 ```text
-@TasteD 初始化我的本地 profile
+Codex: @TasteD init
+Claude Code: /tasted:distill init
+Hermes: tasted:distill init
 ```
 
-也可以用 distill skill：
+任何等价说法都可以，例如：
 
 ```text
-使用 tasted-distill 初始化我的本地 TasteDistill profile。
+初始化 TasteD
 ```
 
 TasteDistill 会执行：
 
 - 查找你本机已有的 agent memory 或 instruction 文件
-- 如果 Codex 没有现成的 `codex-experience-review.md`，从 Codex memory summary / registry 生成 TasteDistill 自己的 source digest
+- 在 Codex 中运行时，如果没有现成的 `codex-experience-review.md`，从 Codex memory summary / registry 生成 TasteDistill 自己的 source digest
 - 读取大范围个人历史前先问你
 - 创建 `~/.tastedistill/profile.md`
 - 创建 `~/.tastedistill/harness.md`
