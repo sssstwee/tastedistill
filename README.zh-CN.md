@@ -1,11 +1,14 @@
-# TasteDistill
+# TasteDistill 品味蒸馏
 
 <p>
-  <a href="./README.md"><img alt="English" src="https://img.shields.io/badge/English-switch-2563eb?style=for-the-badge"></a>
-  <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-%E5%BD%93%E5%89%8D-111827?style=for-the-badge"></a>
+  <a href="./README.md"><strong>ENGLISH</strong></a>
+  ·
+  <a href="./README.zh-CN.md"><strong>中文</strong></a>
 </p>
 
 ![TasteDistill 让多个 coding agent 共享你的工作方式](./assets/readme/hero-zh.png)
+
+**面向 Codex、Claude Code、Hermes 的本地 AI agent memory、工作流 skills 与 harness adapter。**
 
 TasteDistill 可以理解成一个给 AI 用的“本地经验小本子”。它把你的审美、习惯、项目经验和交付规则放在同一个地方，让 Codex、Claude Code、Hermes 都能更稳定地按你的方式做事。
 
@@ -89,7 +92,7 @@ flowchart LR
 使用 tastedistill-distill 初始化我的本地 TasteDistill profile。
 ```
 
-第一次初始化时，TasteDistill 应该：
+TasteDistill 会执行：
 
 - 查找你本机已有的 agent memory 或 instruction 文件
 - 读取大范围个人历史前先问你
@@ -98,7 +101,7 @@ flowchart LR
 - 生成 Codex、Claude Code、Hermes 的 adapter 说明
 - 告诉你读取了什么、跳过了什么、保存到了哪里
 
-它不应该偷偷改写宿主 agent 的 memory。
+它不会偷偷改写宿主 agent 的 memory。
 
 ## 🧭 选择安装方式
 
@@ -114,9 +117,9 @@ flowchart TD
     E --> I["手动 symlink skills"]
 ```
 
-## 🧱 安装到 Codex Desktop
+## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> 安装到 Codex Desktop
 
-如果你主要用 Codex，推荐用这个方式。它会同时安装 skills 和 CodeGraph 支持。
+如果你主要用 Codex，推荐用这个方式。它会同时安装 skills，并带上 CodeGraph MCP 注册配置。
 
 1. 打开 Codex Desktop。
 2. 进入插件市场管理。
@@ -147,9 +150,11 @@ tastedistill-ship
 tastedistill-distill
 ```
 
-## 🟣 安装到 Claude Code
+## <img src="./assets/icons/claude-code.png" width="24" height="24" alt="Claude Code"> 安装到 Claude Code
 
 Claude Code 使用插件市场命令安装。
+
+Claude Code 插件里也包含同一份 CodeGraph MCP 配置。Claude Code 可能会要求你信任或启用 MCP server，之后才会出现 `codegraph_*` tools。
 
 添加 marketplace：
 
@@ -182,9 +187,11 @@ Claude Code 使用插件市场命令安装。
 
 TasteDistill 默认不会自动修改 `CLAUDE.md`。它可以生成一段接入说明，由你决定要不要写进去。
 
-## 🪽 安装到 Hermes
+## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> 安装到 Hermes
 
 Hermes 可以直接从 Git 仓库安装插件。
+
+Hermes 插件目前安装的是 TasteDistill workflow skills，不会自动注册 CodeGraph MCP。如果你的 Hermes 环境已经暴露了兼容的 `codegraph_*` tools，TasteDistill 仍然可以使用它们。
 
 ```bash
 hermes plugins install sssstwee/tastedistill --enable
@@ -243,6 +250,17 @@ TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph)
 - “改这个文件可能影响哪里？”
 
 当你在 Git 仓库里明确调用 TasteDistill 时，它可以为当前仓库初始化本地 `.codegraph/` 索引，并且避免把它提交进 Git。
+
+| 宿主 | TasteDistill plugin 是否内置 CodeGraph MCP 注册 |
+|---|---|
+| Codex Desktop | ✅ 是。Codex plugin 指向 `plugins/tastedistill/.mcp.json`。 |
+| Claude Code | ✅ 是。Claude Code plugin 也指向 `plugins/tastedistill/.mcp.json`。 |
+| Hermes | ⚠️ 暂时不是。Hermes plugin 只安装 skills；只有当宿主/会话里已经有兼容的 `codegraph_*` tools 时才会使用。 |
+
+所以 “CodeGraph 支持” 分两种情况：
+
+- **Codex / Claude Code**：plugin 自带 MCP 注册配置，可以在宿主启用后通过 `npx` 启动 CodeGraph。
+- **Hermes**：plugin 目前不会自动接入 MCP；如果没有 `codegraph_*` tools，就回退到普通文件搜索和定向读取。
 
 也可以手动初始化：
 

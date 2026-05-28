@@ -1,11 +1,14 @@
 # TasteDistill
 
 <p>
-  <a href="./README.md"><img alt="English" src="https://img.shields.io/badge/English-current-111827?style=for-the-badge"></a>
-  <a href="./README.zh-CN.md"><img alt="中文" src="https://img.shields.io/badge/%E4%B8%AD%E6%96%87-switch-2563eb?style=for-the-badge"></a>
+  <a href="./README.md"><strong>ENGLISH</strong></a>
+  ·
+  <a href="./README.zh-CN.md"><strong>中文</strong></a>
 </p>
 
 ![TasteDistill helps multiple coding agents share your working style](./assets/readme/hero-en.png)
+
+**Portable AI agent memory, workflow skills, and harness adapters for Codex, Claude Code, and Hermes.**
 
 TasteDistill is a small local notebook for your coding agents. It keeps your taste, habits, project lessons, and delivery rules in one place so Codex, Claude Code, and Hermes can work in a more consistent way.
 
@@ -89,7 +92,7 @@ Or use the distill skill:
 Use tastedistill-distill to initialize my local TasteDistill profile.
 ```
 
-On the first run, TasteDistill should:
+TasteDistill will:
 
 - look for existing local agent memory or instruction files
 - ask before reading broad personal history
@@ -98,7 +101,7 @@ On the first run, TasteDistill should:
 - generate adapter notes for Codex, Claude Code, and Hermes
 - report what it created and what it skipped
 
-It should not silently rewrite your host agent memory.
+It will not silently rewrite your host agent memory.
 
 ## 🧭 Choose An Install Path
 
@@ -114,9 +117,9 @@ flowchart TD
     E --> I["Symlink skills manually"]
 ```
 
-## 🧱 Install In Codex Desktop
+## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> Install In Codex Desktop
 
-Use this if you want the easiest Codex experience with bundled skills and CodeGraph support.
+Use this if you want the easiest Codex experience with bundled skills and bundled CodeGraph MCP registration.
 
 1. Open Codex Desktop.
 2. Go to plugin marketplace management.
@@ -147,9 +150,11 @@ tastedistill-ship
 tastedistill-distill
 ```
 
-## 🟣 Install In Claude Code
+## <img src="./assets/icons/claude-code.png" width="24" height="24" alt="Claude Code"> Install In Claude Code
 
 Claude Code uses plugin marketplace commands.
+
+The Claude Code plugin also includes the bundled CodeGraph MCP config. Claude Code may ask you to trust or enable the MCP server before the `codegraph_*` tools appear.
 
 Add the marketplace:
 
@@ -182,9 +187,11 @@ Then use:
 
 TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small adapter snippet, and you decide whether to add it.
 
-## 🪽 Install In Hermes
+## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> Install In Hermes
 
 Hermes installs plugins from a Git repository.
+
+The Hermes plugin currently installs the TasteDistill workflow skills. It does not automatically register CodeGraph MCP. If your Hermes environment already exposes compatible `codegraph_*` tools, TasteDistill can still use them.
 
 ```bash
 hermes plugins install sssstwee/tastedistill --enable
@@ -243,6 +250,17 @@ In simple terms: CodeGraph is a local map of your repository. It helps the agent
 - "What might break if we change this file?"
 
 When you explicitly call TasteDistill inside a Git repository, it may initialize a local `.codegraph/` index for that repository and keep it out of Git.
+
+| Host | Does the TasteDistill plugin include CodeGraph MCP registration? |
+|---|---|
+| Codex Desktop | ✅ Yes. The Codex plugin points to `plugins/tastedistill/.mcp.json`. |
+| Claude Code | ✅ Yes. The Claude Code plugin also points to `plugins/tastedistill/.mcp.json`. |
+| Hermes | ⚠️ Not yet. The Hermes plugin installs skills; use CodeGraph only if the host/session already exposes compatible `codegraph_*` tools. |
+
+So "CodeGraph support" means two different things:
+
+- **Codex / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
+- **Hermes**: the plugin does not currently wire MCP automatically; TasteDistill falls back to normal repository search unless CodeGraph tools are already available.
 
 Manual setup is also possible:
 
