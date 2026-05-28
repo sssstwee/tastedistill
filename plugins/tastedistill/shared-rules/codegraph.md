@@ -30,13 +30,14 @@ On explicit TasteD or TasteDistill use, perform the Index Bootstrap check before
 
 When a TasteD/TasteDistill plugin or skill is explicitly invoked in a host session where CodeGraph tools are available, treat that explicit use as permission to bootstrap CodeGraph for the current repository.
 
-Before broad repository work, call `codegraph_status` when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
+Before broad repository work, first check whether the current directory is inside a Git worktree with `git rev-parse --show-toplevel`. If that fails, skip CodeGraph status and initialization, then fall back to normal search and targeted file reads. Report that the current directory is not a Git repository.
 
-1. Resolve the current repository root with `git rev-parse --show-toplevel` when inside a Git worktree.
-2. Run `npx -y @colbymchenry/codegraph init -i` from that repository root.
-3. Keep the generated index local by adding `.codegraph/` to `.git/info/exclude` if the repository has a `.git` directory and the entry is not already present.
-4. Re-check `codegraph_status` or retry the intended `codegraph_*` lookup.
-5. Report that CodeGraph was initialized for the current repository.
+If the current directory is inside a Git worktree, call `codegraph_status` for that repository root when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
+
+1. Run `npx -y @colbymchenry/codegraph init -i` from that repository root.
+2. Keep the generated index local by adding `.codegraph/` to `.git/info/exclude` if the repository has a `.git` directory and the entry is not already present.
+3. Re-check `codegraph_status` or retry the intended `codegraph_*` lookup.
+4. Report that CodeGraph was initialized for the current repository.
 
 This bootstrap is idempotent: if the repository is already initialized, continue without running init again.
 

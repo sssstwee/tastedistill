@@ -49,6 +49,8 @@ The bootstrap should:
 9. Keep raw transcripts, secrets, private paths, machine-specific state, and project-private facts out of the public plugin repository.
 10. Report what was created, what was loaded, what was skipped, and how future TasteD/TasteDistill calls will reuse the profile.
 
+Use the real current timestamp for generated metadata. Do not use placeholder dates such as midnight on the current day. If the host exposes a current date but not a precise clock, run a local time command or record that the timestamp is approximate.
+
 ## Existing Host Sources
 
 If a host-specific experience document already exists, do not behave as if the user has no prior context.
@@ -70,7 +72,7 @@ Codex may or may not have a user-created experience document. Treat `$HOME/.code
 When the host is Codex, use this order:
 
 1. If `$HOME/.codex/instructions/codex-experience-review.md` exists, read it as the highest-signal Codex experience source.
-2. Always inventory Codex memory summary and registry sources when available:
+2. Always inventory Codex memory summary and registry sources when available, even if the experience document is already sufficient:
    - `$HOME/.codex/memories/memory_summary.md`
    - `$HOME/.codex/memories/MEMORY.md`
    - targeted files under `$HOME/.codex/memories/rollout_summaries/` only when referenced by the registry or needed for evidence.
@@ -78,6 +80,8 @@ When the host is Codex, use this order:
    - `$HOME/.tastedistill/imports/codex/source-digest.md`
    - `$HOME/.tastedistill/imports/codex/source-digest.json`
 4. Record all discovered, loaded, skipped, and missing Codex sources in `$HOME/.tastedistill/sources.json` and `$HOME/.tastedistill/bootstrap.json`.
+
+If a source is only inventoried and not fully read, record that distinction explicitly. A lightweight bootstrap may avoid broad history scans, but it should not make the source inventory look narrower than it was.
 
 The Codex digest should extract durable communication preferences, execution habits, product taste, validation habits, reusable project boundaries, and anti-patterns. It must not copy raw transcripts, secrets, token material, private logs, or large project-private facts.
 

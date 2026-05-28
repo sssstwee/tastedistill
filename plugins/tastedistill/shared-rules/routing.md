@@ -17,6 +17,7 @@ Use `shared-rules/host-compatibility.md` before writing host agent memory, ident
 Use `shared-rules/portable-profile.md` when creating, loading, or updating `~/.tastedistill` global or project profiles.
 Use `shared-rules/coding-guardrails.md` for coding, refactoring, debugging, review, and implementation handoff.
 Use `shared-rules/codegraph.md` when `codegraph_*` tools are available and the task involves architecture lookup, call flow, impact analysis, or large-repo exploration.
+Use `shared-rules/runtime-hygiene.md` when running commands, helper scripts, browser checks, local servers, or generated-artifact verification.
 
 When two skills match, prefer the one closest to the user's starting point:
 

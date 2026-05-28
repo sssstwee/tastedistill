@@ -10,6 +10,7 @@ Use this skill for UI and product-facing work.
 Prefix your first response line with ✦ inline, not as its own paragraph.
 
 Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations.
+Apply `../../shared-rules/runtime-hygiene.md` when design verification uses browser screenshots, snapshots, local servers, or generated artifacts.
 
 ## Outcome Contract
 

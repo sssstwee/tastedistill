@@ -20,6 +20,8 @@ TasteDistill is a portable engineering profile and harness layer. The host agent
 - Do not duplicate the full TasteDistill profile into host memory. Host files should reference TasteDistill or contain a short adapter snippet.
 - Do not bypass the host agent's sandbox, approval policy, or permission model.
 - Do not treat TasteDistill as active unless the user explicitly invokes the TasteD/TasteDistill plugin or a `tasted-*` skill.
+- Do not treat host-private skills named in project instructions as part of TasteDistill. If `AGENTS.md`, `CLAUDE.md`, or another host instruction references private skills such as `sssst-*`, read them only when the user explicitly requested that private skill or when the host has already routed the turn to it. For TasteDistill work, prefer the nearest `tasted-*` skill instead.
+- Do not execute helper scripts from a guessed host skill path such as `$HOME/.codex/skills/<skill>/scripts/...`. If a helper is needed, resolve it relative to the actual `SKILL.md` file that was loaded. If that path is missing, report the missing helper and continue with a manual check.
 
 ## Host Detection
 
@@ -70,3 +72,12 @@ Keep Hermes SOUL.md as the source of agent identity.
 ## Safety Response
 
 When a requested integration would modify host memory, identity, config, or project instructions, state the target file and risk first. Proceed only after the user explicitly asks for that write.
+
+## Host Instruction Boundaries
+
+Project instruction files may mention the user's older or private workflow skills. Treat those mentions as host context, not as TasteDistill dependencies.
+
+- Use project instructions for user preferences, boundaries, and local workflow expectations.
+- Do not load or invoke unrelated host-private skills merely because they are listed as a recommended sequence.
+- If a host-private skill and a TasteDistill skill both appear relevant, use TasteDistill's native skill for explicit TasteD/TasteDistill calls unless the user named the private skill directly.
+- When you do inspect a host-private skill for compatibility, keep all file, script, and asset paths anchored to the actual file path you opened.

@@ -10,6 +10,7 @@ Use this skill after meaningful work has produced a lesson.
 Prefix your first response line with ⚗️ inline, not as its own paragraph.
 
 Before the workflow, apply `../../shared-rules/host-compatibility.md`, `../../shared-rules/portable-profile.md`, and `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations. If this skill is already running the Local Personalization Bootstrap, use those shared rules only as host-safety, idempotence, and destination policy.
+Apply `../../shared-rules/runtime-hygiene.md` when distillation reads logs, creates generated evidence, invokes helper scripts, or runs browser/runtime checks.
 
 ## Outcome Contract
 
