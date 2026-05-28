@@ -76,7 +76,7 @@ TasteDistill 把 agent 工作拆成 6 个很容易理解的阶段：
 flowchart LR
     A["安装 TasteDistill"] --> B["在项目里调用 TasteD"]
     B --> C["创建<br/>~/.tastedistill"]
-    C --> D["生成宿主 adapter"]
+    C --> D["生成接入说明"]
     D --> E["后续任务直接复用"]
 ```
 
@@ -88,22 +88,30 @@ Claude Code: /tasted:think 分析这个项目
 Hermes: tasted:think 分析这个项目
 ```
 
+不同宿主的调用方式不完全一样，但都可以进入对应阶段的 TasteD skill。Codex 支持 `@TasteD` 这种插件呼叫；Claude Code 和 Hermes 使用安装后的插件命名空间。
+
+| 宿主 | 日常入口 | 阶段 skill 调用 |
+| --- | --- | --- |
+| Codex Desktop | `@TasteD 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
+| Claude Code | `/tasted:think 分析这个项目` | `/tasted:learn`、`/tasted:think`、`/tasted:design`、`/tasted:debug`、`/tasted:ship`、`/tasted:distill` |
+| Hermes | `tasted:think 分析这个项目` | `tasted:learn`、`tasted:think`、`tasted:design`、`tasted:debug`、`tasted:ship`、`tasted:distill` |
+
 直接说你想做什么就可以。第一次使用时，TasteD 会自动准备本地档案，然后继续处理你的请求。
 
 TasteDistill 会执行：
 
-- 查找你本机已有的 agent memory 或 instruction 文件
-- 在 Codex 中运行时，如果没有现成的 `codex-experience-review.md`，从 Codex memory summary / registry 生成 TasteDistill 自己的 source digest
+- 查找你本机已有的 agent 使用偏好和说明
+- 在 Codex 中运行时，优先参考你已有的 Codex 使用偏好；如果没有现成整理，就从能安全读取的记录里整理一份 TasteDistill 自己的本地摘要
 - 读取大范围个人历史前先问你
 - 创建 `~/.tastedistill/profile.md`
 - 创建 `~/.tastedistill/harness.md`
-- 必要时创建 `~/.tastedistill/imports/codex/source-digest.md`
-- 生成 Codex、Claude Code、Hermes 的 adapter 说明
+- 必要时保存一份 Codex 上下文的本地摘要
+- 生成 Codex、Claude Code、Hermes 的接入说明
 - 告诉你读取了什么、跳过了什么、保存到了哪里
 
 它不会偷偷改写宿主 agent 的 memory。
 
-你不需要先手动生成 `~/.codex/instructions/codex-experience-review.md`。如果这个文件存在，TasteDistill 会把它当作高质量来源；如果不存在，TasteDistill 会把 Codex 的 `memory_summary.md`、`MEMORY.md` 和相关 rollout summary 蒸馏成自己的本地 digest，而不是写回 Codex 的 instruction 文件。
+你不需要先准备任何 Codex 偏好文件。Codex 里如果已经有能体现你使用习惯的记录，TasteDistill 会优先参考；如果没有，它也会从当前能安全读取的记录里整理一份自己的本地摘要。它不会偷偷改 Codex 原本的 instructions 或 memories。
 
 ## 🧭 选择安装方式
 
@@ -135,13 +143,13 @@ Git 引用：main
 
 4. 安装 `TasteD`（TasteDistill 项目的插件短名）。
 5. 重启 Codex。
-6. 在任意项目里调用：
+6. 在任意项目里调用插件：
 
 ```text
 @TasteD 分析这个项目
 ```
 
-也可以单独调用这些 skills：
+也可以单独调用某个 skill：
 
 ```text
 tasted-learn
@@ -176,7 +184,7 @@ Claude Code 插件里也包含同一份 CodeGraph MCP 配置。Claude Code 可�
 /plugin install tasted
 ```
 
-然后调用：
+然后调用某个 TasteD skill：
 
 ```text
 /tasted:learn
@@ -201,7 +209,7 @@ hermes plugins install sssstwee/tastedistill --enable
 
 安装后重启 Hermes。
 
-skills 会以 TasteD 命名空间暴露：
+通过插件命名空间调用某个 TasteD skill：
 
 ```text
 tasted:learn

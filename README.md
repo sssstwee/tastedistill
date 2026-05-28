@@ -76,7 +76,7 @@ After installing TasteDistill, use it normally in a project. The first explicit 
 flowchart LR
     A["Install TasteDistill"] --> B["Call TasteD in a project"]
     B --> C["Create<br/>~/.tastedistill"]
-    C --> D["Generate host adapters"]
+    C --> D["Generate setup notes"]
     D --> E["Use it in future tasks"]
 ```
 
@@ -88,22 +88,30 @@ Claude Code: /tasted:think analyze this project
 Hermes: tasted:think analyze this project
 ```
 
+TasteD can be called in different ways depending on the host. Codex supports an `@TasteD` mention; Claude Code and Hermes use the installed plugin namespace.
+
+| Host | Everyday call | Stage skill calls |
+| --- | --- | --- |
+| Codex Desktop | `@TasteD analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
+| Claude Code | `/tasted:think analyze this project` | `/tasted:learn`, `/tasted:think`, `/tasted:design`, `/tasted:debug`, `/tasted:ship`, `/tasted:distill` |
+| Hermes | `tasted:think analyze this project` | `tasted:learn`, `tasted:think`, `tasted:design`, `tasted:debug`, `tasted:ship`, `tasted:distill` |
+
 Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
 
 TasteDistill will:
 
-- look for existing local agent memory or instruction files
-- when running in Codex, create a TasteDistill-owned source digest from Codex memory summary / registry when Codex has no existing `codex-experience-review.md`
+- look for existing local agent preferences and guidance
+- when running in Codex, reuse your existing Codex preferences when available, or build a local TasteDistill summary from the safe records it can already see
 - ask before reading broad personal history
 - create `~/.tastedistill/profile.md`
 - create `~/.tastedistill/harness.md`
-- create `~/.tastedistill/imports/codex/source-digest.md` when needed
-- generate adapter notes for Codex, Claude Code, and Hermes
+- save a local summary of useful Codex context when needed
+- generate setup notes for Codex, Claude Code, and Hermes
 - report what it created and what it skipped
 
 It will not silently rewrite your host agent memory.
 
-You do not need to create `~/.codex/instructions/codex-experience-review.md` first. If that file exists, TasteDistill treats it as a high-signal source. If it does not exist, TasteDistill distills Codex `memory_summary.md`, `MEMORY.md`, and targeted rollout summaries into its own local digest instead of writing back into Codex instruction files.
+You do not need to prepare any Codex preference file first. If Codex already has useful notes about how you like agents to work, TasteDistill will use them. If not, it will make its own local summary from the safe records it can already see. It will not quietly change Codex's own instructions or memories.
 
 ## 🧭 Choose An Install Path
 
@@ -135,13 +143,13 @@ Sparse path: leave empty
 
 4. Install `TasteD` (the plugin for the TasteDistill project).
 5. Restart Codex.
-6. In a project, call:
+6. In a project, call the plugin:
 
 ```text
 @TasteD analyze this repo
 ```
 
-You can also call the individual skills:
+You can also call an individual skill directly:
 
 ```text
 tasted-learn
@@ -176,7 +184,7 @@ If your Claude Code version expects the plugin name directly, use:
 /plugin install tasted
 ```
 
-Then use:
+Then call an individual TasteD skill:
 
 ```text
 /tasted:learn
@@ -187,7 +195,7 @@ Then use:
 /tasted:distill
 ```
 
-TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small adapter snippet, and you decide whether to add it.
+TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small setup snippet, and you decide whether to add it.
 
 ## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> Install In Hermes
 
@@ -201,7 +209,7 @@ hermes plugins install sssstwee/tastedistill --enable
 
 Restart Hermes after installing.
 
-The skills are available under the TasteD namespace:
+Call an individual TasteD skill under the plugin namespace:
 
 ```text
 tasted:learn

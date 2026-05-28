@@ -1,11 +1,12 @@
 {
   "name": "tastedistill",
   "interface": {
-    "displayName": "TasteDistill"
+    "displayName": "TasteD"
   },
   "plugins": [
     {
-      "name": "tastedistill",
+      "name": "tasted",
+      "version": "0.0.1",
       "source": {
         "source": "local",
         "path": "./plugins/tastedistill"
