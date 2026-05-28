@@ -7,7 +7,7 @@ description: Turn rough ideas, product questions, architecture choices, implemen
 
 Use this skill when the main work is judgment, scope, or plan design.
 
-Prefix your first response line with 🧭 inline, not as its own paragraph.
+Prefix your first response line with ⚗️ inline, not as its own paragraph.
 
 Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations.
 

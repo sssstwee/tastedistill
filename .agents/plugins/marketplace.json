@@ -2,13 +2,13 @@
   "name": "tastedistill",
   "interface": {
     "displayName": "TasteD",
-    "logo": "./assets/tastedistill-logo-256.png",
-    "composerIcon": "./assets/tastedistill-logo-256.png"
+    "logo": "./assets/distill-icon.svg",
+    "composerIcon": "./assets/distill-icon.svg"
   },
   "plugins": [
     {
       "name": "tasted",
-      "version": "0.0.11",
+      "version": "0.0.12",
       "source": {
         "source": "local",
         "path": "./plugins/tastedistill"
@@ -18,8 +18,8 @@
         "authentication": "ON_INSTALL"
       },
       "category": "Coding",
-      "logo": "./assets/tastedistill-logo-256.png",
-      "composerIcon": "./assets/tastedistill-logo-256.png"
+      "logo": "./assets/distill-icon.svg",
+      "composerIcon": "./assets/distill-icon.svg"
     }
   ]
 }

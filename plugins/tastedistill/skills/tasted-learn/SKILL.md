@@ -7,7 +7,7 @@ description: Research unfamiliar domains, source materials, repositories, docume
 
 Use this skill before making recommendations in an unfamiliar domain.
 
-Prefix your first response line with 🔎 inline, not as its own paragraph.
+Prefix your first response line with ⚗️ inline, not as its own paragraph.
 
 Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations.
 Apply `../../shared-rules/runtime-hygiene.md` when repository learning uses helper scripts, browser checks, local servers, or generated artifacts.

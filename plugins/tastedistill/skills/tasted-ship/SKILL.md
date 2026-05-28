@@ -7,7 +7,7 @@ description: Review implemented work, verify acceptance criteria, prepare delive
 
 Use this skill when an artifact exists and needs a delivery decision.
 
-Prefix your first response line with 🚢 inline, not as its own paragraph.
+Prefix your first response line with ⚗️ inline, not as its own paragraph.
 
 Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations.
 Apply `../../shared-rules/runtime-hygiene.md` when delivery verification uses helper scripts, browser checks, local servers, screenshots, traces, package artifacts, or other generated outputs.
