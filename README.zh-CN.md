@@ -91,12 +91,12 @@ Hermes CLI: tasted:think 分析这个项目
 
 不同宿主的调用方式不完全一样，但都可以进入对应阶段的 TasteD skill。Codex Desktop 和 Codex CLI 都可以安装 TasteD plugin，Claude Code 使用 `/plugin` 命令，Hermes 是命令行形式。
 
-| 宿主 | 日常入口 | 阶段 skill 调用 |
+| 宿主 | 日常入口 | 阶段调用示例 |
 | --- | --- | --- |
-| Codex Desktop | `@TasteD 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
-| Codex CLI | `@TasteD 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
-| Claude Code 命令行或桌面端 | `/tasted:think 分析这个项目` | `/tasted:learn`、`/tasted:think`、`/tasted:design`、`/tasted:debug`、`/tasted:ship`、`/tasted:distill` |
-| Hermes CLI | `tasted:think 分析这个项目` | `tasted:learn`、`tasted:think`、`tasted:design`、`tasted:debug`、`tasted:ship`、`tasted:distill` |
+| Codex Desktop | `@TasteD 分析这个项目` | `tasted-learn 了解这个项目`<br>`tasted-think 分析这个项目`<br>`tasted-design 优化这个界面`<br>`tasted-debug 排查这个报错`<br>`tasted-ship 检查是否可以发布`<br>`tasted-distill 总结这次经验` |
+| Codex CLI | `@TasteD 分析这个项目` | `tasted-learn 了解这个项目`<br>`tasted-think 分析这个项目`<br>`tasted-design 优化这个界面`<br>`tasted-debug 排查这个报错`<br>`tasted-ship 检查是否可以发布`<br>`tasted-distill 总结这次经验` |
+| Claude Code 命令行或桌面端 | `/tasted:think 分析这个项目` | `/tasted:learn 了解这个项目`<br>`/tasted:think 分析这个项目`<br>`/tasted:design 优化这个界面`<br>`/tasted:debug 排查这个报错`<br>`/tasted:ship 检查是否可以发布`<br>`/tasted:distill 总结这次经验` |
+| Hermes CLI | `tasted:think 分析这个项目` | `tasted:learn 了解这个项目`<br>`tasted:think 分析这个项目`<br>`tasted:design 优化这个界面`<br>`tasted:debug 排查这个报错`<br>`tasted:ship 检查是否可以发布`<br>`tasted:distill 总结这次经验` |
 
 直接说你想做什么就可以。第一次使用时，TasteD 会自动准备本地档案，然后继续处理你的请求。
 

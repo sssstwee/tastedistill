@@ -91,12 +91,12 @@ Hermes CLI: tasted:think analyze this project
 
 TasteD can be called in different ways depending on the host. Codex Desktop and Codex CLI can use the TasteD plugin, Claude Code uses `/plugin` commands, and Hermes is managed from the command line.
 
-| Host | Everyday call | Stage skill calls |
+| Host | Everyday call | Stage call examples |
 | --- | --- | --- |
-| Codex Desktop | `@TasteD analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
-| Codex CLI | `@TasteD analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
-| Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn`, `/tasted:think`, `/tasted:design`, `/tasted:debug`, `/tasted:ship`, `/tasted:distill` |
-| Hermes CLI | `tasted:think analyze this project` | `tasted:learn`, `tasted:think`, `tasted:design`, `tasted:debug`, `tasted:ship`, `tasted:distill` |
+| Codex Desktop | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
+| Codex CLI | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
+| Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn understand this project`<br>`/tasted:think analyze this project`<br>`/tasted:design improve this UI`<br>`/tasted:debug debug this error`<br>`/tasted:ship check if this is ready to release`<br>`/tasted:distill summarize lessons from this work` |
+| Hermes CLI | `tasted:think analyze this project` | `tasted:learn understand this project`<br>`tasted:think analyze this project`<br>`tasted:design improve this UI`<br>`tasted:debug debug this error`<br>`tasted:ship check if this is ready to release`<br>`tasted:distill summarize lessons from this work` |
 
 Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
 
