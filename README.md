@@ -127,6 +127,29 @@ flowchart TD
     E --> I["Symlink skills manually"]
 ```
 
+## 🔄 Update To The Latest Version
+
+If you installed from `main`, update TasteD from the same host where you use it:
+
+| Host | Update command |
+| --- | --- |
+| Codex Desktop | Restart Codex Desktop so the installed marketplace plugin refreshes from `main`. |
+| Claude Code | Run `/plugin update tasted`, then restart Claude Code. |
+| Hermes | Run `hermes plugins update tasted`, then restart Hermes. |
+| Codex skills only | Pull the Git repo you symlinked from, then restart Codex. |
+
+Claude Code terminal equivalent:
+
+```bash
+claude plugin update tasted
+```
+
+Hermes terminal command:
+
+```bash
+hermes plugins update tasted
+```
+
 ## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> Install In Codex Desktop
 
 Use this if you want the easiest Codex experience with bundled skills and bundled CodeGraph MCP registration.
