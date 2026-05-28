@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import shutil
 from pathlib import Path
 
 
@@ -15,6 +16,8 @@ At the start of ordinary work, lightly read these files when present:
 - ~/.tastedistill/rules.jsonl
 
 Use them as distilled cross-agent preferences and rules. Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
+
+After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
 
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 """
@@ -29,9 +32,21 @@ At the start of ordinary work, lightly read these files when present:
 
 Use them as distilled cross-agent preferences and rules. Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
 
+After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
+
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 Do not copy raw TasteDistill content into CLAUDE.md.
 """
+
+
+BIN_SCRIPTS = (
+    "auto_setup.py",
+    "check_memory_freshness.py",
+    "doctor.py",
+    "install_adapters.py",
+    "refresh_host_memory.py",
+    "sync_profile.py",
+)
 
 
 def write_if_changed(path: Path, text: str) -> bool:
@@ -60,15 +75,36 @@ def replace_section(path: Path, title: str, snippet: str) -> bool:
     return True
 
 
+def install_bin_scripts(tasted_home: Path) -> list[str]:
+    source_dir = Path(__file__).resolve().parent
+    bin_dir = tasted_home / "bin"
+    changed: list[str] = []
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    for name in BIN_SCRIPTS:
+        source = source_dir / name
+        if not source.exists():
+            continue
+        target = bin_dir / name
+        old = target.read_text(encoding="utf-8") if target.exists() else None
+        new = source.read_text(encoding="utf-8")
+        if old != new:
+            shutil.copy2(source, target)
+            changed.append(str(target))
+        target.chmod(0o755)
+    return changed
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--home", default=str(Path.home()), help="Home directory.")
     parser.add_argument("--write-host", action="store_true", help="Also install snippets into host global instruction files.")
+    parser.add_argument("--quiet", action="store_true", help="Only print when files changed.")
     args = parser.parse_args()
 
     home = Path(args.home).expanduser().resolve()
     tasted_home = home / ".tastedistill"
     changed = []
+    changed.extend(install_bin_scripts(tasted_home))
     if write_if_changed(tasted_home / "adapters" / "codex.md", CODEX_SNIPPET):
         changed.append(str(tasted_home / "adapters" / "codex.md"))
     if write_if_changed(tasted_home / "adapters" / "claude.md", CLAUDE_SNIPPET):
@@ -78,9 +114,10 @@ def main() -> int:
             changed.append(str(home / ".codex" / "AGENTS.md"))
         if replace_section(home / ".claude" / "CLAUDE.md", "TasteDistill", CLAUDE_SNIPPET):
             changed.append(str(home / ".claude" / "CLAUDE.md"))
-    print("changed=" + str(len(changed)))
-    for path in changed:
-        print(path)
+    if changed or not args.quiet:
+        print("changed=" + str(len(changed)))
+        for path in changed:
+            print(path)
     return 0
 
 

@@ -148,6 +148,8 @@ distill 工作流会优先调用本地 helper：
 scripts/refresh_host_memory.py  # 写入 imports/<host>/effective-memory.*
 scripts/sync_profile.py         # 把稳定规则追加到 rules.jsonl
 scripts/doctor.py               # 检查 profile/imports/adapters 是否过期
+scripts/check_memory_freshness.py # 只比较时间戳，发现过期时提示是否同步
+scripts/auto_setup.py           # 插件加载后自动刷新 adapter 与 ~/.tastedistill/bin
 scripts/install_adapters.py      # 写入 TasteDistill adapter 片段
 ```
 
@@ -155,13 +157,17 @@ scripts/install_adapters.py      # 写入 TasteDistill adapter 片段
 
 这样新的宿主纠偏不会被旧的 TasteDistill profile 遮住。
 
-如果要让宿主 agent 默认轻量自动读取 TasteDistill，可以安装 adapter 片段：
+更新到新版本后，用户不需要手动运行安装脚本。TasteD 被加载或任一 `tasted-*` skill 被使用时，会自动运行 idempotent setup：刷新 `~/.tastedistill/bin`，并维护 Codex/Claude 宿主指令文件里的 TasteDistill marker section。这个 setup 只写 TasteDistill 自己管理的片段，不会改写其他宿主指令。
 
-```bash
-scripts/install_adapters.py --write-host
+自动写入的片段会让宿主默认只读取 `profile.md`、`harness.md` 和 `rules.jsonl`；原始宿主历史仍然只在明确 refresh/sync 时读取。
+
+安装后的 adapter 还会使用 `~/.tastedistill/bin/check_memory_freshness.py` 做轻量预检。预检只比较 Codex/Claude 记忆来源和 `rules.jsonl` 的更新时间；如果发现宿主记忆更新，会提示：
+
+```text
+发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？
 ```
 
-它会给 Codex/Claude 的宿主指令文件加入一小段 TasteDistill 说明：默认只读取 `profile.md`、`harness.md` 和 `rules.jsonl`；原始宿主历史仍然只在明确 refresh/sync 时读取。
+只有用户确认后，agent 才应该继续运行 refresh/sync 命令。
 
 也可以在一个宿主里导入另一个宿主的记忆。例如在 Codex 里运行下面命令，让 Claude Code 的最新项目记忆通过 TasteDistill 变成 Codex 可读的共享规则：
 
@@ -292,7 +298,7 @@ Claude Code 插件里也包含同一份 CodeGraph MCP 配置。Claude Code 可�
 /tasted:distill
 ```
 
-TasteDistill 默认不会自动修改 `CLAUDE.md`。它可以生成一段接入说明，由你决定要不要写进去。
+TasteDistill 被加载后可以自动维护 `CLAUDE.md` 里属于自己的 bounded marker section。它不会改写无关 Claude 指令，也不会在未确认时同步原始记忆。
 
 ## 🔄 更新到最新版
 

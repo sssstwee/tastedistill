@@ -6,6 +6,19 @@ Explicit TasteD or TasteDistill use means the user wants TasteDistill behavior, 
 
 Apply `host-compatibility.md` and `portable-profile.md` with this rule. TasteDistill is the portable profile source of truth; the host agent remains the execution runtime.
 
+## Automatic Adapter Setup
+
+Before the selected skill begins its main workflow, run `../../scripts/auto_setup.py --quiet` when that helper exists. Resolve it relative to the loaded skill file, not from a guessed host path.
+
+The auto setup is intentionally narrower than memory sync:
+
+- It may install or refresh TasteDistill-managed marker sections in `~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md`.
+- It may copy helper scripts into `~/.tastedistill/bin/`.
+- It must be idempotent and version-aware, so updating the plugin is enough for the next TasteD load to refresh adapters.
+- It must not refresh, import, or sync host memory without the user's confirmation.
+
+If auto setup cannot run, continue the requested work and report the missing helper path.
+
 ## Supported Hosts
 
 v1 supports two host agents:
@@ -13,7 +26,7 @@ v1 supports two host agents:
 | Host | Bootstrap behavior |
 |---|---|
 | Codex | Plugin adapter. Explicit TasteD or TasteDistill use may create or update `~/.tastedistill`, create or update the current project profile, and initialize the current repo CodeGraph index through `codegraph.md` when CodeGraph tools are available. |
-| Claude Code | Reference adapter. Generate `~/.tastedistill/adapters/claude.md` and a snippet the user can add to Claude memory. Do not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
+| Claude Code | Reference adapter. Auto setup may maintain the TasteDistill-managed marker section in `~/.claude/CLAUDE.md` and generate `~/.tastedistill/adapters/claude.md`. Do not write project `CLAUDE.md`, project `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
 
 If the host is unknown, use the safest common path: create or load `~/.tastedistill`, generate adapter snippets, and do not write host memory.
 
@@ -68,7 +81,7 @@ The bootstrap should:
 5. Create the portable profile under `$HOME/.tastedistill` according to `portable-profile.md`.
 6. Write `$HOME/.tastedistill/bootstrap.json` with at least timestamp, profile path, harness path, source summary, plugin version when available, and host adapter status.
 7. Generate host adapter files under `$HOME/.tastedistill/adapters/`.
-8. Automatic local TasteDistill bootstrap is allowed after explicit TasteD/TasteDistill use. For host memory integration, output or save adapter snippets but do not write host memory unless explicitly requested.
+8. Automatic local TasteDistill bootstrap is allowed after explicit TasteD/TasteDistill use. For host memory integration, auto setup may write only TasteDistill-managed marker sections and local adapter/bin files; do not write host memory content or project instructions unless explicitly requested.
 9. Keep raw transcripts, secrets, private paths, machine-specific state, and project-private facts out of the public plugin repository.
 10. Report what was created, what was loaded, what was skipped, and how future TasteD/TasteDistill calls will reuse the profile.
 

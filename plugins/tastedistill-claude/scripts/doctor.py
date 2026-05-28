@@ -66,6 +66,7 @@ def main() -> int:
     rules = tasted_home / "rules.jsonl"
     effective = tasted_home / "imports" / args.host / "effective-memory.json"
     adapter = tasted_home / "adapters" / ("claude.md" if args.host == "claude" else "codex.md")
+    preflight = tasted_home / "bin" / "check_memory_freshness.py"
     project_root = Path(args.project_root).expanduser().resolve() if args.project_root else Path.cwd()
     sources = collect_codex_sources(home, project_root) if args.host == "codex" else collect_claude_sources(home, project_root)
     newest_source, newest_source_ts = newest(sources)
@@ -80,6 +81,7 @@ def main() -> int:
         status_line(effective.exists(), "effective-memory", f"{effective} ({fmt_ts(effective_ts)})"),
         status_line(rules.exists(), "rules", f"{rules} ({fmt_ts(rules_ts)})"),
         status_line(adapter.exists(), "adapter", str(adapter)),
+        status_line(preflight.exists(), "preflight", str(preflight)),
     ]
 
     if newest_source:
@@ -89,6 +91,7 @@ def main() -> int:
         if stale_effective:
             lines.append(f"ACTION run scripts/refresh_host_memory.py --host {args.host}")
         if stale_profile:
+            lines.append(f"PROMPT 发现 {args.host.title()} memory 比 TasteD rules 更新，是否同步？")
             lines.append(f"ACTION run scripts/sync_profile.py --host {args.host} after refresh")
     else:
         lines.append(status_line(False, "host sources", "no host memory sources found"))

@@ -103,8 +103,16 @@ TasteDistill helper scripts implement three local operations:
 | Refresh host memory | `scripts/refresh_host_memory.py` | Writes `imports/<host>/effective-memory.*` and updates `sources.json`. |
 | Sync profile | `scripts/sync_profile.py` | Imports stable overlay rules into `rules.jsonl` and records conflicts. |
 | Doctor | `scripts/doctor.py` | Checks whether profile, rules, imports, and host sources are stale or missing. |
+| Preflight freshness check | `scripts/check_memory_freshness.py` | Compares host memory source mtimes with `rules.jsonl` and prints the user confirmation prompt when sync is needed. |
+| Auto setup | `scripts/auto_setup.py` | Idempotently refreshes host adapter marker sections and `~/.tastedistill/bin` after plugin updates. |
 
 Use `--host codex` inside Codex and `--host claude` inside Claude Code. For Claude project memory, pass `--project-root <path>` when the current working directory is not the project root.
+
+Default host adapters may run only the preflight check during ordinary work. They must ask the user before running refresh/sync:
+
+```text
+发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？
+```
 
 ## Safety
 

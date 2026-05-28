@@ -8,13 +8,13 @@ TasteDistill is a portable engineering profile and harness layer. The host agent
 
 | Host | Native surface | TasteDistill behavior |
 |---|---|---|
-| Codex | `AGENTS.md`, Codex skills, MCP servers, sandbox and approval policy | Plugin adapter. Explicit TasteD or TasteDistill use may initialize `~/.tastedistill`, the current project profile, and the current repo CodeGraph index when inside a Git repository and CodeGraph tools are available. Do not rewrite Codex instruction files by default. |
-| Claude Code | `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, Claude auto memory | Reference adapter. Generate snippets that import or reference TasteDistill. Do not write Claude memory files unless the user explicitly asks. |
+| Codex | `AGENTS.md`, Codex skills, MCP servers, sandbox and approval policy | Plugin adapter. Explicit TasteD or TasteDistill use may initialize `~/.tastedistill`, the current project profile, the bounded TasteDistill section in `~/.codex/AGENTS.md`, and the current repo CodeGraph index when inside a Git repository and CodeGraph tools are available. |
+| Claude Code | `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, Claude auto memory | Reference adapter. Auto setup may maintain the bounded TasteDistill section in `~/.claude/CLAUDE.md`. Do not write project memory files or Claude auto memory unless the user explicitly asks. |
 
 ## Non-Override Rules
 
-- Do not automatically write host global memory files such as `~/.claude/CLAUDE.md` or `~/.codex/AGENTS.md`.
-- Do not automatically write project instruction files such as `AGENTS.md`, `CLAUDE.md`, `.claude/CLAUDE.md`, or repository docs.
+- Do not automatically write host global memory files except the bounded TasteDistill marker section maintained by auto setup.
+- Do not automatically write project instruction files such as project `AGENTS.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or repository docs.
 - Do not copy raw host memory, raw transcripts, secrets, `.env` content, tokens, or private logs into TasteDistill.
 - Do not duplicate the full TasteDistill profile into host memory. Host files should reference TasteDistill or contain a short adapter snippet.
 - Do not bypass the host agent's sandbox, approval policy, or permission model.
@@ -35,21 +35,25 @@ If the host is unclear, follow the safest common path: load or create `~/.tasted
 
 ## Adapter Snippets
 
+TasteDistill may automatically maintain only its own marker section in host instruction files. The generated section must be bounded by `<!-- BEGIN TasteDistill -->` and `<!-- END TasteDistill -->`, and the setup must be idempotent. Do not rewrite unrelated host instructions.
+
 ### Codex
 
-Codex may load TasteDistill through the plugin and skills. If the user asks for manual wiring, propose a short instruction instead of rewriting existing files automatically:
+Codex may load TasteDistill through the plugin and skills. Auto setup may write or refresh this bounded section in `~/.codex/AGENTS.md`:
 
 ```text
 At the start of ordinary work, lightly read ~/.tastedistill/profile.md, ~/.tastedistill/harness.md, and ~/.tastedistill/rules.jsonl when present. Use them as distilled cross-agent preferences and rules.
 
 Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
 
+After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
+
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 ```
 
 ### Claude Code
 
-Generate this snippet unless the user asks to write it:
+Auto setup may write or refresh this bounded section in `~/.claude/CLAUDE.md`:
 
 ```md
 # TasteDistill
@@ -57,6 +61,8 @@ Generate this snippet unless the user asks to write it:
 At the start of ordinary work, lightly read @~/.tastedistill/profile.md, @~/.tastedistill/harness.md, and @~/.tastedistill/rules.jsonl when present. Use them as distilled cross-agent preferences and rules.
 
 Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
+
+After the light read, if @~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
 
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 Do not copy raw TasteDistill content into CLAUDE.md.

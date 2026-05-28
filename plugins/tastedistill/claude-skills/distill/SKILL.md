@@ -77,8 +77,11 @@ Use these helpers when available. Resolve paths relative to this `SKILL.md`; do 
 | refresh, import, or initialize host memory | `../../scripts/refresh_host_memory.py --host claude` | `~/.tastedistill/imports/claude/effective-memory.*` and `sources.json` |
 | sync host corrections into TasteDistill | `../../scripts/sync_profile.py --host claude` | `rules.jsonl`, `conflicts.jsonl`, and `profile.json` sync metadata |
 | check whether TasteDistill is stale or incomplete | `../../scripts/doctor.py --host claude` | Health report with follow-up actions |
+| preflight whether sync should be offered | `../../scripts/check_memory_freshness.py --host claude` | Prints `SYNC_NEEDED` and the confirmation prompt when host memory is newer than `rules.jsonl` |
 
 To import Codex memory while running from Claude Code, use the same helpers with `--host codex`. To import Claude project memory for Codex to consume later, use `--host claude --project-root <path>`.
+
+During ordinary work, preflight checks may be automatic, but refresh/sync is not automatic. If the preflight says host memory is newer, ask: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Continue only after explicit confirmation.
 
 Default sequence for "refresh/sync my memory":
 

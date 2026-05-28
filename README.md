@@ -148,6 +148,8 @@ The distill workflow runs the local helpers when available:
 scripts/refresh_host_memory.py  # write imports/<host>/effective-memory.*
 scripts/sync_profile.py         # append stable rules to rules.jsonl
 scripts/doctor.py               # report stale profile/imports/adapters
+scripts/check_memory_freshness.py # compare mtimes and prompt before syncing
+scripts/auto_setup.py           # refresh adapters and ~/.tastedistill/bin after plugin load
 scripts/install_adapters.py      # write TasteDistill adapter snippets
 ```
 
@@ -155,13 +157,17 @@ Use `--host codex` in Codex and `--host claude` in Claude Code.
 
 This keeps newer host corrections from being hidden behind an older TasteDistill profile.
 
-To enable lightweight automatic reads in host agents, install the adapter snippets:
+After updating to a new version, users do not need to run the adapter install script manually. When TasteD is loaded or any `tasted-*` skill is used, it runs an idempotent setup: refresh `~/.tastedistill/bin` and maintain the TasteDistill marker section in Codex/Claude host instruction files. This setup only writes the TasteDistill-managed section and does not rewrite unrelated host instructions.
 
-```bash
-scripts/install_adapters.py --write-host
+The automatic section tells the host to read only `profile.md`, `harness.md`, and `rules.jsonl` by default; raw host histories are still read only during explicit refresh/sync.
+
+The installed adapter also uses `~/.tastedistill/bin/check_memory_freshness.py` as a lightweight preflight. It only compares the mtimes of Codex/Claude memory sources with `rules.jsonl`. If host memory is newer, it prompts:
+
+```text
+发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？
 ```
 
-This adds a small TasteDistill section to Codex/Claude host instruction files. It tells the host to read only `profile.md`, `harness.md`, and `rules.jsonl` by default; raw host histories are still read only during explicit refresh/sync.
+The agent should run refresh/sync commands only after the user confirms.
 
 You can also import one host's memory from another host. For example, run this in Codex when you want Claude Code's latest project memory to become available through TasteDistill:
 
@@ -292,7 +298,7 @@ You can also call any individual TasteD skill:
 /tasted:distill
 ```
 
-TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small setup snippet, and you decide whether to add it.
+TasteDistill may automatically maintain its own bounded marker section in `CLAUDE.md` after the plugin is loaded. It does not rewrite unrelated Claude instructions or sync raw memory without confirmation.
 
 ## 🔄 Update To The Latest Version
 
