@@ -98,24 +98,6 @@ TasteD can be called in different ways depending on the host. Codex Desktop and 
 | Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn understand this project`<br>`/tasted:think analyze this project`<br>`/tasted:design improve this UI`<br>`/tasted:debug debug this error`<br>`/tasted:ship check if this is ready to release`<br>`/tasted:distill summarize lessons from this work` |
 | Hermes CLI | `tasted:think analyze this project` | `tasted:learn understand this project`<br>`tasted:think analyze this project`<br>`tasted:design improve this UI`<br>`tasted:debug debug this error`<br>`tasted:ship check if this is ready to release`<br>`tasted:distill summarize lessons from this work` |
 
-## ⚗️ Core Habit: Distill Your Taste
-
-The most important TasteDistill habit is using `distill` after real work. It saves the product taste, judgment, workflow preferences, and lessons that would otherwise disappear when the conversation ends.
-
-Use it once at the end of a workday:
-
-```text
-tasted-distill summarize today's lessons and save my taste
-```
-
-Or use it immediately in any conversation where something important should be remembered:
-
-```text
-tasted-distill save the important preferences from this conversation
-```
-
-In Claude Code, use `/tasted:distill ...`. In Hermes CLI, use `tasted:distill ...`.
-
 Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
 
 TasteDistill will:
@@ -132,6 +114,26 @@ TasteDistill will:
 It will not silently rewrite your host agent memory.
 
 You do not need to prepare any Codex preference file first. If Codex already has useful notes about how you like agents to work, TasteDistill will use them. If not, it will make its own local summary from the safe records it can already see. It will not quietly change Codex's own instructions or memories.
+
+## ⚗️ Daily Habit: Distill Your Taste
+
+![Distill once a day, keep your taste](./assets/readme/distill-en.png)
+
+In daily work, the most important TasteD habit is using `distill` after meaningful sessions. It saves the product taste, judgment, workflow preferences, and lessons that would otherwise disappear when the conversation ends.
+
+Use it at least once when you finish work for the day:
+
+```text
+tasted-distill summarize today's lessons and save my taste
+```
+
+Use it immediately when a conversation contains something important that should be saved now:
+
+```text
+tasted-distill save the important preferences from this conversation
+```
+
+In Claude Code, use `/tasted:distill ...`. In Hermes CLI, use `tasted:distill ...`.
 
 ## 🧭 Choose An Install Path
 
