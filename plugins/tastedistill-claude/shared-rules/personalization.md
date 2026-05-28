@@ -8,13 +8,12 @@ Apply `host-compatibility.md` and `portable-profile.md` with this rule. TasteDis
 
 ## Supported Hosts
 
-v1 supports three host agents:
+v1 supports two host agents:
 
 | Host | Bootstrap behavior |
 |---|---|
 | Codex | Plugin adapter. Explicit TasteD or TasteDistill use may create or update `~/.tastedistill`, create or update the current project profile, and initialize the current repo CodeGraph index through `codegraph.md` when CodeGraph tools are available. |
 | Claude Code | Reference adapter. Generate `~/.tastedistill/adapters/claude.md` and a snippet the user can add to Claude memory. Do not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
-| Hermes | External profile adapter. Generate `~/.tastedistill/adapters/hermes.md` and a snippet the user can add to Hermes guidance. Do not write `~/.hermes/SOUL.md`, `~/.hermes/memories/*`, `~/.hermes/skills/*`, `~/.hermes/config.yaml`, or `~/.hermes/.env` unless explicitly requested. |
 
 If the host is unknown, use the safest common path: create or load `~/.tastedistill`, generate adapter snippets, and do not write host memory.
 
@@ -28,7 +27,7 @@ Preferred default locations:
 - `$HOME/.tastedistill/harness.md`
 - `$HOME/.tastedistill/bootstrap.json`
 
-Also discover existing host-specific profiles, such as Codex experience instructions, Claude user memory, or Hermes memory files. Treat those files as sources, not as targets to overwrite.
+Also discover existing host-specific profiles, such as Codex experience instructions or Claude user memory. Treat those files as sources, not as targets to overwrite.
 
 If `profile.md`, `harness.md`, and `bootstrap.json` exist and are loadable, do not rebuild the global profile. Briefly note that TasteDistill personalization is already initialized when relevant, then continue with project bootstrap and the requested skill.
 
@@ -40,7 +39,7 @@ The bootstrap should:
 
 1. Discover available local agent memory, conversation history, logs, and prior task summaries.
 2. Prefer existing summaries, registries, and indexed memories before broad raw transcript reads.
-3. Detect the current host as Codex, Claude Code, Hermes, or unknown.
+3. Detect the current host as Codex, Claude Code, or unknown.
 4. For Codex, run [Codex Source Synthesis](#codex-source-synthesis) when needed.
 5. Create the portable profile under `$HOME/.tastedistill` according to `portable-profile.md`.
 6. Write `$HOME/.tastedistill/bootstrap.json` with at least timestamp, profile path, harness path, source summary, plugin version when available, and host adapter status.
@@ -59,7 +58,6 @@ Examples:
 
 - Codex: `$HOME/.codex/instructions/codex-experience-review.md`
 - Claude Code: `$HOME/.claude/CLAUDE.md`
-- Hermes: `$HOME/.hermes/memories/MEMORY.md` or `$HOME/.hermes/memories/USER.md`
 
 Use those sources to seed or update `~/.tastedistill/profile.md` and `~/.tastedistill/harness.md`, then record them in `~/.tastedistill/sources.json` and `~/.tastedistill/bootstrap.json`. Prefer summary and rule extraction over raw copying.
 
@@ -153,7 +151,7 @@ After project profile bootstrap, apply `codegraph.md` only when the current proj
 - Do not promote private user facts into this public plugin.
 - Do not write to host global memory, host project memory, host identity files, or project instruction files unless the user explicitly requests that write.
 - If the environment blocks memory/history access, create the profile from available instructions and current context, then report the missing sources.
-- Do not read Hermes `.env` files or any secrets source during bootstrap.
+- Do not read `.env` files or any secrets source during bootstrap.
 
 ## Startup Order
 

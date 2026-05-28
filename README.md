@@ -6,22 +6,21 @@
   <a href="./README.zh-CN.md"><strong>中文</strong></a>
 </p>
 
-> Project About: TasteDistill lets Codex, Claude Code, and Hermes share local experience, preference memory, and engineering workflows.
+> Project About: TasteDistill lets Codex and Claude Code share local experience, preference memory, and engineering workflows.
 
 ![TasteDistill helps multiple coding agents share your working style](./assets/readme/hero-en.png)
 
-TasteDistill is a small local notebook for your coding agents. It keeps your taste, habits, project lessons, and delivery rules in one place so Codex, Claude Code, and Hermes can work in a more consistent way.
+TasteDistill is a small local notebook for your coding agents. It keeps your taste, habits, project lessons, and delivery rules in one place so Codex and Claude Code can work in a more consistent way.
 
 | 🧠 What it stores | 🤖 Who can read it | 🔒 Where it lives |
 |---|---|---|
-| Your product taste, UI preferences, coding habits, and lessons | Codex, Claude Code, Hermes | On your machine, under `~/.tastedistill/` |
+| Your product taste, UI preferences, coding habits, and lessons | Codex, Claude Code | On your machine, under `~/.tastedistill/` |
 
 ```mermaid
 flowchart LR
     A["Your taste<br/>preferences<br/>lessons"] --> B["TasteDistill<br/>local profile"]
     B --> C["Codex"]
     B --> D["Claude Code"]
-    B --> E["Hermes"]
 ```
 
 ## 🧩 Why Use It
@@ -29,7 +28,7 @@ flowchart LR
 | Without TasteDistill | With TasteDistill |
 |---|---|
 | 😵 You repeat the same preferences in every new chat. | ✅ Your preferences live in one local profile. |
-| 🧩 One agent learns something, but another agent does not know it. | 🔁 Codex, Claude Code, and Hermes can read the same working style. |
+| 🧩 One agent learns something, but another agent does not know it. | 🔁 Codex and Claude Code can read the same working style. |
 | 🗂️ Useful lessons stay buried in old conversations. | ✨ Finished work can turn into reusable lessons. |
 | 🧱 Big global prompts become messy. | 🛠️ Each task follows a small, clear workflow. |
 
@@ -49,7 +48,7 @@ The profile stays on your own machine by default:
 ~/.tastedistill/
   profile.md      # your personal taste and working preferences
   harness.md      # how agents should verify, deliver, and distill lessons
-  adapters/       # Codex, Claude Code, Hermes loading notes
+  adapters/       # Codex and Claude Code loading notes
   projects/       # project-specific lessons outside the business repo; Git is optional
 ```
 
@@ -86,17 +85,15 @@ Use the same everyday request you would normally ask an agent:
 Codex Desktop: @TasteD analyze this project
 Codex CLI: @TasteD analyze this project
 Claude Code: /tasted:think analyze this project
-Hermes CLI: hermes -s tasted:think -z "analyze this project"
 ```
 
-TasteD can be called in different ways depending on the host. Codex Desktop and Codex CLI can use the TasteD plugin, Claude Code uses `/plugin` commands, and Hermes is managed from the command line.
+TasteD can be called in different ways depending on the host. Codex Desktop and Codex CLI can use the TasteD plugin, and Claude Code uses `/plugin` commands.
 
 | Host | Everyday call | Stage call examples |
 | --- | --- | --- |
 | Codex Desktop | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
 | Codex CLI | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
 | Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn understand this project`<br>`/tasted:think analyze this project`<br>`/tasted:design improve this UI`<br>`/tasted:debug debug this error`<br>`/tasted:ship check if this is ready to release`<br>`/tasted:distill summarize lessons from this work` |
-| Hermes CLI | `hermes -s tasted:think -z "analyze this project"` | `hermes -s tasted:learn -z "understand this project"`<br>`hermes -s tasted:think -z "analyze this project"`<br>`hermes -s tasted:design -z "improve this UI"`<br>`hermes -s tasted:debug -z "debug this error"`<br>`hermes -s tasted:ship -z "check if this is ready to release"`<br>`hermes -s tasted:distill -z "summarize lessons from this work"` |
 
 Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
 
@@ -108,7 +105,7 @@ TasteDistill will:
 - create `~/.tastedistill/profile.md`
 - create `~/.tastedistill/harness.md`
 - save a local summary of useful Codex context when needed
-- generate setup notes for Codex, Claude Code, and Hermes
+- generate setup notes for Codex and Claude Code
 - report what it created and what it skipped
 
 It will not silently rewrite your host agent memory.
@@ -133,7 +130,7 @@ Use it immediately when a conversation contains something important that should 
 tasted-distill save the important preferences from this conversation
 ```
 
-In Claude Code, use `/tasted:distill ...`. In Hermes CLI, use `hermes -s tasted:distill -z "..."`.
+In Claude Code, use `/tasted:distill ...`.
 
 ## 🧭 Choose An Install Path
 
@@ -142,11 +139,9 @@ flowchart TD
     A["Which host do you use?"] --> B["Codex Desktop"]
     A --> C["Codex CLI"]
     A --> D["Claude Code<br/>CLI or desktop"]
-    A --> E["Hermes CLI"]
     B --> F["Install marketplace plugin"]
     C --> G["Install marketplace plugin"]
     D --> H["Use /plugin commands"]
-    E --> I["Use hermes plugins install"]
 ```
 
 ## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> Install In Codex Desktop
@@ -258,45 +253,6 @@ You can also call any individual TasteD skill:
 
 TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small setup snippet, and you decide whether to add it.
 
-## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> Install In Hermes CLI
-
-Hermes is managed from the command line and installs plugins from a Git repository.
-
-The Hermes plugin currently installs the TasteDistill workflow skills. It does not automatically register CodeGraph MCP. If your Hermes environment already exposes compatible `codegraph_*` tools, TasteDistill can still use them.
-
-```bash
-hermes plugins install sssstwee/tastedistill --enable
-```
-
-Restart Hermes after installing.
-
-Open a new Hermes session, then call:
-
-```bash
-hermes -s tasted:think -z "analyze this project"
-```
-
-You can also call any individual TasteD skill by its Hermes plugin-qualified skill name:
-
-```bash
-hermes -s tasted:learn
-hermes -s tasted:think
-hermes -s tasted:design
-hermes -s tasted:debug
-hermes -s tasted:ship
-hermes -s tasted:distill
-```
-
-If a local Hermes skill such as `~/.hermes/skills/software-development/tasted-think/SKILL.md` exists, bare `hermes -s tasted-think` may load that local skill instead of this plugin. Use the `tasted:<skill>` form to force the plugin namespace.
-
-If you installed without `--enable`, enable it later:
-
-```bash
-hermes plugins enable tasted
-```
-
-TasteDistill does not automatically edit `SOUL.md`, Hermes memories, config files, or `.env`.
-
 ## 🔄 Update To The Latest Version
 
 If you installed from `main`, update TasteD from the same host where you use it:
@@ -306,18 +262,11 @@ If you installed from `main`, update TasteD from the same host where you use it:
 | Codex Desktop | Restart Codex Desktop so the installed marketplace plugin refreshes from `main`. |
 | Codex CLI | Run `codex plugin marketplace upgrade tastedistill`, then open a new Codex session. |
 | Claude Code CLI or desktop | In Claude Code, type `/plugin update tasted` into the chat input and press Enter. Then restart Claude Code. |
-| Hermes CLI | Run `hermes plugins update tasted`, then start a new Hermes session. |
 
 Claude Code terminal equivalent:
 
 ```bash
 claude plugin update tasted
-```
-
-Hermes terminal command:
-
-```bash
-hermes plugins update tasted
 ```
 
 ## 🗺️ CodeGraph Support
@@ -337,28 +286,10 @@ When you explicitly call TasteDistill inside a project directory, it may create 
 | Codex Desktop | ✅ Yes. The Codex plugin points to `plugins/tastedistill/.mcp.json`. |
 | Codex CLI | ✅ Yes. The Codex CLI plugin install includes the same MCP registration. |
 | Claude Code CLI or desktop | ✅ Yes. The Claude Code plugin also points to `plugins/tastedistill/.mcp.json`. |
-| Hermes CLI | ⚠️ Not automatically. Add CodeGraph as a Hermes MCP server manually if you want `codegraph_*` tools in Hermes. |
 
 So "CodeGraph support" means two different things:
 
-- **Codex Desktop / Codex CLI / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
-- **Hermes CLI**: add CodeGraph to Hermes MCP manually, or use TasteDistill without CodeGraph. Without CodeGraph, TasteDistill still works, but falls back to normal repository search and targeted file reads.
-
-Hermes manual MCP setup:
-
-```yaml
-# ~/.hermes/config.yaml
-mcp_servers:
-  codegraph:
-    command: "npx"
-    args: ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
-```
-
-Then test it and start a new Hermes session:
-
-```bash
-hermes mcp test codegraph
-```
+**Codex Desktop / Codex CLI / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
 
 For each Git repository where you want CodeGraph indexing, initialize the local index once:
 
@@ -375,7 +306,6 @@ It will not automatically:
 
 - overwrite Codex `AGENTS.md`
 - overwrite Claude `CLAUDE.md`
-- overwrite Hermes `SOUL.md`
 - copy raw private conversations into the repository
 - read `.env` secrets
 - publish or upload your personal profile

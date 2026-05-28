@@ -32,13 +32,13 @@ Use this mode when the user asks to initialize these skills from their existing 
 
 Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. Explicitly invoking the TasteD/TasteDistill plugin or any `tasted-*` skill should perform a one-time bootstrap check through `../../shared-rules/personalization.md`. If no local TasteDistill profile exists, run this bootstrap before continuing with the requested skill.
 
-v1 supports Codex, Claude Code, and Hermes. Codex can run as a full plugin adapter. Claude Code and Hermes use reference adapters by default: generate TasteDistill adapter snippets and local `~/.tastedistill/adapters/*.md` files, but do not write host memory or identity files unless the user explicitly asks.
+v1 supports Codex and Claude Code. Codex can run as a full plugin adapter. Claude Code uses a reference adapter by default: generate TasteDistill adapter snippets and local `~/.tastedistill/adapters/*.md` files, but do not write host memory or identity files unless the user explicitly asks.
 
 Bootstrap flow:
 
 1. Identify available local memory/history sources in the current agent environment.
 2. Prefer existing summaries, registries, and indexed memories before broad raw transcript reads.
-3. Detect the host agent when possible: Codex, Claude Code, Hermes, or unknown.
+3. Detect the host agent when possible: Codex, Claude Code, or unknown.
 4. For Codex, treat `$HOME/.codex/instructions/codex-experience-review.md` as optional. If it is missing, synthesize a TasteDistill-owned Codex digest from available Codex summaries and registries.
 5. Create the portable TasteDistill profile under `$HOME/.tastedistill` according to `../../shared-rules/portable-profile.md`.
 6. Write `$HOME/.tastedistill/bootstrap.json` as the idempotence marker.
@@ -101,7 +101,7 @@ Keep personal facts, private project details, raw transcripts, and machine-speci
 | Global profile | Cross-agent user preferences, communication style, product taste, execution habits, and validation preferences. Write to `$HOME/.tastedistill/profile.md` and, when useful, `$HOME/.tastedistill/profile.json`. |
 | Global harness | Cross-agent runtime contract: context loading, tool preference, permission boundaries, verification, delivery, and distillation policy. Write to `$HOME/.tastedistill/harness.md`. |
 | Project profile | Repo-specific commands, release process, domain constraints, local architecture rules, validation surfaces, and recurring project lessons. Write under `$HOME/.tastedistill/projects/<repo-id>/`. |
-| Host adapter | Short Codex, Claude Code, or Hermes loading guidance. Write under `$HOME/.tastedistill/adapters/` or output as a snippet. Do not edit host memory by default. |
+| Host adapter | Short Codex or Claude Code loading guidance. Write under `$HOME/.tastedistill/adapters/` or output as a snippet. Do not edit host memory by default. |
 | Current project docs | Only when the user explicitly wants repo docs updated, or when the repo's own instructions are the correct source of truth. |
 | Skill instructions | Reusable behavior that applies whenever this phase is active. |
 | Shared rules | Cross-skill anti-patterns, routing rules, or validation expectations. |
@@ -134,10 +134,6 @@ Do not automatically write:
 - `~/.claude/CLAUDE.md`
 - project `CLAUDE.md` or `.claude/CLAUDE.md`
 - `~/.claude/projects/*/memory/*`
-- `~/.hermes/SOUL.md`
-- `~/.hermes/memories/*`
-- `~/.hermes/.env`
-
 Only write those host files when the user explicitly asks for that exact integration.
 
 ## Output Shape

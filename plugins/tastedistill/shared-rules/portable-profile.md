@@ -21,7 +21,6 @@ TasteDistill stores portable user and project experience in `~/.tastedistill`. T
   adapters/
     codex.md
     claude.md
-    hermes.md
   projects/
     <project-id>/
       project.md
@@ -71,7 +70,7 @@ If hashing is not available, use a conservative safe slug and record the full pa
 - Plugin installation alone must not scan history or create user/project profiles.
 - Explicit TasteD/TasteDistill plugin or `tasted-*` skill use may create `~/.tastedistill`.
 - Explicit TasteD/TasteDistill use may perform local bootstrap automatically across supported hosts while respecting each host's write boundaries.
-- Claude Code and Hermes use reference adapters by default. Generate snippets and local adapter files; do not write host memory unless explicitly requested.
+- Claude Code uses a reference adapter by default. Generate snippets and local adapter files; do not write host memory unless explicitly requested.
 - Project profiles may be created automatically when TasteD/TasteDistill is explicitly used inside a Git repository or a non-Git local project directory, but the first profile should be thin: project identity, stack, entry points, commands, instruction surfaces, known validation entry points, and boundaries.
 - Non-Git project profiles are valid project-level memory. Mark them as directory-backed in `project.json` and skip Git-only features such as CodeGraph initialization.
 - Deep project lessons should be added by `tasted-distill` only when backed by task evidence.
@@ -84,7 +83,6 @@ Examples:
 
 - Codex: `~/.codex/instructions/codex-experience-review.md`, `~/.codex/memories/MEMORY.md`, `~/.codex/memories/memory_summary.md`
 - Claude Code: `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`
-- Hermes: `~/.hermes/SOUL.md`, `~/.hermes/memories/MEMORY.md`, `~/.hermes/memories/USER.md`
 
 When an existing host profile already contains durable user preferences, merge or summarize it into `~/.tastedistill/profile.md` and record the source in `sources.json` and `bootstrap.json`. Do not re-run broad raw transcript sweeps just because the TasteDistill marker did not previously exist.
 
