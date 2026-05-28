@@ -145,7 +145,7 @@ Git 引用：main
 
 4. 安装 `TasteD`（TasteDistill 项目的插件短名）。
 5. 重启 Codex。
-6. 在任意项目里调用插件：
+6. 打开一个项目后调用：
 
 ```text
 @TasteD 分析这个项目
@@ -219,7 +219,13 @@ Claude Code 插件里也包含同一份 CodeGraph MCP 配置。Claude Code 可�
 /plugin install tasted
 ```
 
-然后调用某个 TasteD skill：
+重启 Claude Code，或者打开一个新的 Claude Code 会话后调用：
+
+```text
+/tasted:think 分析这个项目
+```
+
+也可以单独调用某个 TasteD skill：
 
 ```text
 /tasted:learn
@@ -244,7 +250,13 @@ hermes plugins install sssstwee/tastedistill --enable
 
 安装后重启 Hermes。
 
-通过插件命名空间调用某个 TasteD skill：
+打开新的 Hermes 会话后调用：
+
+```text
+tasted:think 分析这个项目
+```
+
+也可以通过插件命名空间调用某个 TasteD skill：
 
 ```text
 tasted:learn

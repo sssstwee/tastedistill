@@ -145,7 +145,7 @@ Sparse path: leave empty
 
 4. Install `TasteD` (the plugin for the TasteDistill project).
 5. Restart Codex.
-6. In a project, call the plugin:
+6. Open a project, then call:
 
 ```text
 @TasteD analyze this repo
@@ -219,7 +219,13 @@ If your Claude Code version expects the plugin name directly, use:
 /plugin install tasted
 ```
 
-Then call an individual TasteD skill:
+Restart Claude Code or open a new Claude Code session, then call:
+
+```text
+/tasted:think analyze this project
+```
+
+You can also call any individual TasteD skill:
 
 ```text
 /tasted:learn
@@ -244,7 +250,13 @@ hermes plugins install sssstwee/tastedistill --enable
 
 Restart Hermes after installing.
 
-Call an individual TasteD skill under the plugin namespace:
+Open a new Hermes session, then call:
+
+```text
+tasted:think analyze this project
+```
+
+You can also call any individual TasteD skill under the plugin namespace:
 
 ```text
 tasted:learn
