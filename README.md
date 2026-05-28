@@ -84,17 +84,17 @@ Use the same everyday request you would normally ask an agent:
 
 ```text
 Codex Desktop: @TasteD analyze this project
-Codex CLI: tasted-think analyze this project
+Codex CLI: @TasteD analyze this project
 Claude Code: /tasted:think analyze this project
 Hermes CLI: tasted:think analyze this project
 ```
 
-TasteD can be called in different ways depending on the host. Codex Desktop supports an `@TasteD` mention, Codex CLI can call symlinked skills directly, Claude Code uses `/plugin` commands, and Hermes is managed from the command line.
+TasteD can be called in different ways depending on the host. Codex Desktop and Codex CLI can use the TasteD plugin, Claude Code uses `/plugin` commands, and Hermes is managed from the command line.
 
 | Host | Everyday call | Stage skill calls |
 | --- | --- | --- |
 | Codex Desktop | `@TasteD analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
-| Codex CLI | `tasted-think analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
+| Codex CLI | `@TasteD analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
 | Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn`, `/tasted:think`, `/tasted:design`, `/tasted:debug`, `/tasted:ship`, `/tasted:distill` |
 | Hermes CLI | `tasted:think analyze this project` | `tasted:learn`, `tasted:think`, `tasted:design`, `tasted:debug`, `tasted:ship`, `tasted:distill` |
 
@@ -124,7 +124,7 @@ flowchart TD
     A --> D["Claude Code<br/>CLI or desktop"]
     A --> E["Hermes CLI"]
     B --> F["Install marketplace plugin"]
-    C --> G["Symlink Codex skills"]
+    C --> G["Install marketplace plugin"]
     D --> H["Use /plugin commands"]
     E --> I["Use hermes plugins install"]
 ```
@@ -146,6 +146,39 @@ Sparse path: leave empty
 4. Install `TasteD` (the plugin for the TasteDistill project).
 5. Restart Codex.
 6. In a project, call the plugin:
+
+```text
+@TasteD analyze this repo
+```
+
+You can also call an individual skill directly:
+
+```text
+tasted-learn
+tasted-think
+tasted-design
+tasted-debug
+tasted-ship
+tasted-distill
+```
+
+## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> Install In Codex CLI
+
+Use this if you run Codex from the terminal.
+
+Add the marketplace:
+
+```bash
+codex plugin marketplace add sssstwee/tastedistill --ref main
+```
+
+Install the plugin:
+
+```bash
+codex plugin add tasted@tastedistill
+```
+
+Start a new Codex session, then call:
 
 ```text
 @TasteD analyze this repo
@@ -230,9 +263,9 @@ hermes plugins enable tasted
 
 TasteDistill does not automatically edit `SOUL.md`, Hermes memories, config files, or `.env`.
 
-## 🧰 Install In Codex CLI Or Codex Skills Only
+## 🧰 Manual Codex Skills Only
 
-Use this for Codex CLI, or when you do not want the full Codex Desktop plugin and only want the skill files.
+Use this only as a fallback for older Codex CLI builds that do not have `codex plugin`, or when you deliberately want the skill files without the full plugin.
 
 ```bash
 git clone https://github.com/sssstwee/tastedistill.git
@@ -263,8 +296,8 @@ If you installed from `main`, update TasteD from the same host where you use it:
 | Host | Update command |
 | --- | --- |
 | Codex Desktop | Restart Codex Desktop so the installed marketplace plugin refreshes from `main`. |
-| Codex CLI | Pull the Git repo you symlinked from, then restart Codex CLI or open a new session. |
-| Claude Code CLI or desktop | Run `/plugin update tasted`, then restart Claude Code. |
+| Codex CLI | Run `codex plugin marketplace upgrade tastedistill`, then open a new Codex session. |
+| Claude Code CLI or desktop | In Claude Code, type `/plugin update tasted` into the chat input and press Enter. Then restart Claude Code. |
 | Hermes CLI | Run `hermes plugins update tasted`, then start a new Hermes session. |
 
 Claude Code terminal equivalent:
@@ -294,16 +327,32 @@ When you explicitly call TasteDistill inside a Git repository, it may initialize
 | Host | Does the TasteDistill plugin include CodeGraph MCP registration? |
 |---|---|
 | Codex Desktop | ✅ Yes. The Codex plugin points to `plugins/tastedistill/.mcp.json`. |
-| Codex CLI | ⚠️ Skills-only install does not register MCP automatically. Use CodeGraph only if the session already exposes compatible `codegraph_*` tools, or set MCP up manually. |
+| Codex CLI | ✅ Yes when installed with `codex plugin add`. Manual skills-only install does not register MCP automatically. |
 | Claude Code CLI or desktop | ✅ Yes. The Claude Code plugin also points to `plugins/tastedistill/.mcp.json`. |
-| Hermes CLI | ⚠️ Not yet. The Hermes plugin installs skills; use CodeGraph only if the host/session already exposes compatible `codegraph_*` tools. |
+| Hermes CLI | ⚠️ Not automatically. Add CodeGraph as a Hermes MCP server manually if you want `codegraph_*` tools in Hermes. |
 
 So "CodeGraph support" means two different things:
 
-- **Codex Desktop / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
-- **Codex CLI / Hermes CLI**: the plugin does not currently wire MCP automatically in these paths; TasteDistill falls back to normal repository search unless CodeGraph tools are already available.
+- **Codex Desktop / Codex CLI / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
+- **Hermes CLI**: add CodeGraph to Hermes MCP manually, or use TasteDistill without CodeGraph. Without CodeGraph, TasteDistill still works, but falls back to normal repository search and targeted file reads.
 
-Manual setup is also possible:
+Hermes manual MCP setup:
+
+```yaml
+# ~/.hermes/config.yaml
+mcp_servers:
+  codegraph:
+    command: "npx"
+    args: ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
+```
+
+Then test it and start a new Hermes session:
+
+```bash
+hermes mcp test codegraph
+```
+
+For each project where you want CodeGraph indexing, initialize the local index once:
 
 ```bash
 cd your-project
@@ -324,17 +373,6 @@ It will not automatically:
 - publish or upload your personal profile
 
 Your local profile is meant to stay local unless you choose otherwise.
-
-## 🔄 Update
-
-If you installed from Git:
-
-```bash
-cd /path/to/tastedistill
-git pull
-```
-
-Then restart your host agent if it does not reload plugins automatically.
 
 ## 🙏 Acknowledgements
 

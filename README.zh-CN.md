@@ -84,17 +84,17 @@ flowchart LR
 
 ```text
 Codex Desktop: @TasteD 分析这个项目
-Codex CLI: tasted-think 分析这个项目
+Codex CLI: @TasteD 分析这个项目
 Claude Code: /tasted:think 分析这个项目
 Hermes CLI: tasted:think 分析这个项目
 ```
 
-不同宿主的调用方式不完全一样，但都可以进入对应阶段的 TasteD skill。Codex Desktop 支持 `@TasteD` 这种插件呼叫，Codex CLI 可以直接调用 symlink 后的 skills，Claude Code 使用 `/plugin` 命令，Hermes 是命令行形式。
+不同宿主的调用方式不完全一样，但都可以进入对应阶段的 TasteD skill。Codex Desktop 和 Codex CLI 都可以安装 TasteD plugin，Claude Code 使用 `/plugin` 命令，Hermes 是命令行形式。
 
 | 宿主 | 日常入口 | 阶段 skill 调用 |
 | --- | --- | --- |
 | Codex Desktop | `@TasteD 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
-| Codex CLI | `tasted-think 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
+| Codex CLI | `@TasteD 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
 | Claude Code 命令行或桌面端 | `/tasted:think 分析这个项目` | `/tasted:learn`、`/tasted:think`、`/tasted:design`、`/tasted:debug`、`/tasted:ship`、`/tasted:distill` |
 | Hermes CLI | `tasted:think 分析这个项目` | `tasted:learn`、`tasted:think`、`tasted:design`、`tasted:debug`、`tasted:ship`、`tasted:distill` |
 
@@ -124,7 +124,7 @@ flowchart TD
     A --> D["Claude Code<br/>命令行或桌面端"]
     A --> E["Hermes CLI"]
     B --> F["安装 marketplace plugin"]
-    C --> G["手动 symlink Codex skills"]
+    C --> G["安装 marketplace plugin"]
     D --> H["使用 /plugin 命令"]
     E --> I["使用 hermes plugins install"]
 ```
@@ -146,6 +146,39 @@ Git 引用：main
 4. 安装 `TasteD`（TasteDistill 项目的插件短名）。
 5. 重启 Codex。
 6. 在任意项目里调用插件：
+
+```text
+@TasteD 分析这个项目
+```
+
+也可以单独调用某个 skill：
+
+```text
+tasted-learn
+tasted-think
+tasted-design
+tasted-debug
+tasted-ship
+tasted-distill
+```
+
+## <img src="./assets/icons/codex.png" width="24" height="24" alt="Codex"> 安装到 Codex CLI
+
+如果你在终端里使用 Codex，用这个方式安装。
+
+添加 marketplace：
+
+```bash
+codex plugin marketplace add sssstwee/tastedistill --ref main
+```
+
+安装 plugin：
+
+```bash
+codex plugin add tasted@tastedistill
+```
+
+打开新的 Codex 会话后调用：
 
 ```text
 @TasteD 分析这个项目
@@ -230,9 +263,9 @@ hermes plugins enable tasted
 
 TasteDistill 默认不会改 `SOUL.md`、Hermes memories、配置文件或 `.env`。
 
-## 🧰 安装到 Codex CLI 或只安装 Codex Skills
+## 🧰 只手动安装 Codex Skills
 
-如果你使用 Codex CLI，或者不想安装完整 Codex Desktop plugin、只想安装 skill 文件，可以这样做：
+只有在旧版 Codex CLI 没有 `codex plugin` 命令，或者你明确不想安装完整 plugin、只想安装 skill 文件时，才使用这个备用方式：
 
 ```bash
 git clone https://github.com/sssstwee/tastedistill.git
@@ -263,8 +296,8 @@ tasted-distill
 | 宿主 | 更新方式 |
 | --- | --- |
 | Codex Desktop | 重启 Codex Desktop，让已安装的 marketplace plugin 从 `main` 刷新。 |
-| Codex CLI | 到你 symlink 的 Git 仓库里拉取最新代码，然后重启 Codex CLI 或打开新会话。 |
-| Claude Code 命令行或桌面端 | 执行 `/plugin update tasted`，然后重启 Claude Code。 |
+| Codex CLI | 执行 `codex plugin marketplace upgrade tastedistill`，然后打开新的 Codex 会话。 |
+| Claude Code 命令行或桌面端 | 在 Claude Code 的聊天输入框里输入 `/plugin update tasted` 并回车，然后重启 Claude Code。 |
 | Hermes CLI | 执行 `hermes plugins update tasted`，然后打开新的 Hermes 会话。 |
 
 Claude Code 也可以在终端里执行：
@@ -294,16 +327,32 @@ TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph)
 | 宿主 | TasteDistill plugin 是否内置 CodeGraph MCP 注册 |
 |---|---|
 | Codex Desktop | ✅ 是。Codex plugin 指向 `plugins/tastedistill/.mcp.json`。 |
-| Codex CLI | ⚠️ 只安装 skills 时不会自动注册 MCP。只有当前会话里已经有兼容的 `codegraph_*` tools，或你手动配置 MCP 时才会使用。 |
+| Codex CLI | ✅ 是。用 `codex plugin add` 安装时会带上 MCP 注册；只有手动安装 skills 的备用方式不会自动注册 MCP。 |
 | Claude Code 命令行或桌面端 | ✅ 是。Claude Code plugin 也指向 `plugins/tastedistill/.mcp.json`。 |
-| Hermes CLI | ⚠️ 暂时不是。Hermes plugin 只安装 skills；只有当宿主/会话里已经有兼容的 `codegraph_*` tools 时才会使用。 |
+| Hermes CLI | ⚠️ 不会自动接入。想在 Hermes 里使用 `codegraph_*` tools，需要手动把 CodeGraph 加到 Hermes MCP。 |
 
 所以 “CodeGraph 支持” 分两种情况：
 
-- **Codex Desktop / Claude Code**：plugin 自带 MCP 注册配置，可以在宿主启用后通过 `npx` 启动 CodeGraph。
-- **Codex CLI / Hermes CLI**：这些路径目前不会自动接入 MCP；如果没有 `codegraph_*` tools，就回退到普通文件搜索和定向读取。
+- **Codex Desktop / Codex CLI / Claude Code**：plugin 自带 MCP 注册配置，可以在宿主启用后通过 `npx` 启动 CodeGraph。
+- **Hermes CLI**：需要你手动把 CodeGraph 加到 Hermes MCP；不配置也可以用 TasteDistill，只是会回退到普通文件搜索和定向读取。
 
-也可以手动初始化：
+Hermes 手动接入 CodeGraph：
+
+```yaml
+# ~/.hermes/config.yaml
+mcp_servers:
+  codegraph:
+    command: "npx"
+    args: ["-y", "@colbymchenry/codegraph", "serve", "--mcp"]
+```
+
+然后测试连接，并打开新的 Hermes 会话：
+
+```bash
+hermes mcp test codegraph
+```
+
+每个需要 CodeGraph 的项目，第一次使用前初始化一次本地索引：
 
 ```bash
 cd your-project
@@ -324,17 +373,6 @@ TasteDistill 默认比较克制。
 - 上传或公开你的个人 profile
 
 你的个人档案默认留在本机。
-
-## 🔄 更新
-
-如果你是从 Git 安装的：
-
-```bash
-cd /path/to/tastedistill
-git pull
-```
-
-如果宿主 agent 没有自动刷新插件，重启一次即可。
 
 ## 🙏 致谢
 
