@@ -1,7 +1,8 @@
 name: tasted
-version: "0.0.1"
+version: "0.0.2"
 description: Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.
 author: sssstwee
+icon: ./assets/brand/distill-icon.svg
 provides_skills:
   - learn
   - think

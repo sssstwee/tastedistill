@@ -4,20 +4,22 @@
     "name": "sssstwee"
   },
   "description": "TasteDistill plugin marketplace for Claude Code.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "plugins": [
     {
       "name": "tasted",
       "displayName": "TasteD",
       "source": "./plugins/tastedistill",
       "description": "Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.",
-      "version": "0.0.1",
+      "version": "0.0.2",
       "author": {
         "name": "sssstwee"
       },
       "homepage": "https://github.com/sssstwee/tastedistill",
       "repository": "https://github.com/sssstwee/tastedistill",
       "license": "MIT",
+      "icon": "./assets/distill-icon.svg",
+      "logo": "./assets/distill-icon.svg",
       "category": "productivity",
       "tags": [
         "agent",

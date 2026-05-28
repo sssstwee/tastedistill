@@ -1,6 +1,6 @@
 {
   "name": "tasted",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.",
   "author": {
     "name": "sssstwee",
@@ -32,6 +32,8 @@
       "Write"
     ],
     "websiteURL": "https://github.com/sssstwee/tastedistill",
+    "logo": "./assets/distill-icon.svg",
+    "composerIcon": "./assets/distill-icon.svg",
     "defaultPrompt": [
       "Initialize my local agent personalization",
       "Analyze this repo and create an implementation plan",
