@@ -12,8 +12,6 @@
 
 TasteDistill is a small local notebook for your coding agents. It keeps your taste, habits, project lessons, and delivery rules in one place so Codex, Claude Code, and Hermes can work in a more consistent way.
 
-The project and brand name is **TasteDistill**. The short plugin invocation name is **TasteD** / `tasted`.
-
 | 🧠 What it stores | 🤖 Who can read it | 🔒 Where it lives |
 |---|---|---|
 | Your product taste, UI preferences, coding habits, and lessons | Codex, Claude Code, Hermes | On your machine, under `~/.tastedistill/` |

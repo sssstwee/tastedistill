@@ -12,8 +12,6 @@
 
 TasteDistill 可以理解成一个给 AI 用的“本地经验小本子”。它把你的审美、习惯、项目经验和交付规则放在同一个地方，让 Codex、Claude Code、Hermes 都能更稳定地按你的方式做事。
 
-项目和品牌名仍然是 **TasteDistill**。插件里的短调用名是 **TasteD** / `tasted`。
-
 | 🧠 它记什么 | 🤖 谁能读 | 🔒 存在哪里 |
 |---|---|---|
 | 产品审美、UI 偏好、编码习惯、踩坑经验 | Codex、Claude Code、Hermes | 你的本机：`~/.tastedistill/` |
