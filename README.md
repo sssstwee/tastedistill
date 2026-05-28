@@ -132,6 +132,47 @@ tasted-distill save the important preferences from this conversation
 
 In Claude Code, use `/tasted:distill ...`.
 
+## 🔄 Keep Agent Memory In Sync
+
+TasteDistill treats host memory as a source, not as something to overwrite. When a host such as Codex has a main memory file plus newer correction notes, TasteD first builds an effective memory view, then imports stable rules into the portable store.
+
+Use this when one agent has learned something that other agents should reuse:
+
+```text
+tasted-distill refresh and sync my host memory
+```
+
+The distill workflow runs the local helpers when available:
+
+```text
+scripts/refresh_host_memory.py  # write imports/<host>/effective-memory.*
+scripts/sync_profile.py         # append stable rules to rules.jsonl
+scripts/doctor.py               # report stale profile/imports/adapters
+scripts/install_adapters.py      # write TasteDistill adapter snippets
+```
+
+Use `--host codex` in Codex and `--host claude` in Claude Code.
+
+This keeps newer host corrections from being hidden behind an older TasteDistill profile.
+
+To enable lightweight automatic reads in host agents, install the adapter snippets:
+
+```bash
+scripts/install_adapters.py --write-host
+```
+
+This adds a small TasteDistill section to Codex/Claude host instruction files. It tells the host to read only `profile.md`, `harness.md`, and `rules.jsonl` by default; raw host histories are still read only during explicit refresh/sync.
+
+You can also import one host's memory from another host. For example, run this in Codex when you want Claude Code's latest project memory to become available through TasteDistill:
+
+```bash
+scripts/refresh_host_memory.py --host claude --project-root /path/to/project
+scripts/sync_profile.py --host claude
+scripts/doctor.py --host claude --project-root /path/to/project
+```
+
+Codex can then consume the shared rules from `~/.tastedistill/rules.jsonl` without reading Claude's raw memory files directly.
+
 ## 🧭 Choose An Install Path
 
 ```mermaid

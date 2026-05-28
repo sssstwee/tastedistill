@@ -19,7 +19,7 @@ TasteDistill is a portable engineering profile and harness layer. The host agent
 - Do not duplicate the full TasteDistill profile into host memory. Host files should reference TasteDistill or contain a short adapter snippet.
 - Do not bypass the host agent's sandbox, approval policy, or permission model.
 - Do not treat TasteDistill as active unless the user explicitly invokes the TasteD/TasteDistill plugin or a `tasted-*` skill.
-- Do not treat host-private skills named in project instructions as part of TasteDistill. If `AGENTS.md`, `CLAUDE.md`, or another host instruction references private skills such as `sssst-*`, read them only when the user explicitly requested that private skill or when the host has already routed the turn to it. For TasteDistill work, prefer the nearest `tasted-*` skill instead.
+- Do not treat host-private skills named in project instructions as part of TasteDistill. If `AGENTS.md`, `CLAUDE.md`, or another host instruction references private or legacy skills, the host decides whether those skills are installed and routable before TasteDistill runs. TasteDistill must not search for, load, or preserve fallback behavior for unavailable host skills.
 - Do not execute helper scripts from a guessed host skill path such as `$HOME/.codex/skills/<skill>/scripts/...`. If a helper is needed, resolve it relative to the actual `SKILL.md` file that was loaded. If that path is missing, report the missing helper and continue with a manual check.
 
 ## Host Detection
@@ -40,7 +40,11 @@ If the host is unclear, follow the safest common path: load or create `~/.tasted
 Codex may load TasteDistill through the plugin and skills. If the user asks for manual wiring, propose a short instruction instead of rewriting existing files automatically:
 
 ```text
-When TasteD or TasteDistill is explicitly invoked, load ~/.tastedistill/profile.md and ~/.tastedistill/harness.md. If working inside a local project directory and a matching TasteDistill project profile exists, load that project profile before running the selected TasteDistill workflow.
+At the start of ordinary work, lightly read ~/.tastedistill/profile.md, ~/.tastedistill/harness.md, and ~/.tastedistill/rules.jsonl when present. Use them as distilled cross-agent preferences and rules.
+
+Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
+
+For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 ```
 
 ### Claude Code
@@ -50,9 +54,11 @@ Generate this snippet unless the user asks to write it:
 ```md
 # TasteDistill
 
-When working with my projects, read @~/.tastedistill/profile.md and @~/.tastedistill/harness.md for my personal engineering preferences.
+At the start of ordinary work, lightly read @~/.tastedistill/profile.md, @~/.tastedistill/harness.md, and @~/.tastedistill/rules.jsonl when present. Use them as distilled cross-agent preferences and rules.
 
-If inside a local project directory, ask before loading the matching TasteDistill project profile from ~/.tastedistill/projects/.
+Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
+
+For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 Do not copy raw TasteDistill content into CLAUDE.md.
 ```
 
@@ -66,5 +72,6 @@ Project instruction files may mention the user's older or private workflow skill
 
 - Use project instructions for user preferences, boundaries, and local workflow expectations.
 - Do not load or invoke unrelated host-private skills merely because they are listed as a recommended sequence.
-- If a host-private skill and a TasteDistill skill both appear relevant, use TasteDistill's native skill for explicit TasteD/TasteDistill calls unless the user named the private skill directly.
+- Do not ask TasteDistill to adjudicate removed, unavailable, or host-owned skill routing. That is a host-agent responsibility.
+- If a TasteD/TasteDistill call has reached this rule, the host has already selected TasteDistill; use the native `tasted-*` skill for the requested stage.
 - When you do inspect a host-private skill for compatibility, keep all file, script, and asset paths anchored to the actual file path you opened.

@@ -12,10 +12,14 @@ TasteDistill stores portable user and project experience in `~/.tastedistill`. T
   profile.md
   profile.json
   harness.md
+  rules.jsonl
+  conflicts.jsonl
   bootstrap.json
   sources.json
   imports/
     codex/
+      effective-memory.md
+      effective-memory.json
       source-digest.md
       source-digest.json
   adapters/
@@ -37,8 +41,12 @@ TasteDistill stores portable user and project experience in `~/.tastedistill`. T
 | `profile.md` | Human-readable global engineering profile: communication, product taste, execution habits, validation preferences, durable personal rules. |
 | `profile.json` | Machine-readable summary/index for the global profile. |
 | `harness.md` | Runtime contract: context loading, tool preferences, permission boundaries, verification, delivery, and distillation rules. |
+| `rules.jsonl` | Append-only host-neutral rules imported from host effective memory views and TasteDistill distillation. |
+| `conflicts.jsonl` | Append-only records for superseded, contradicted, or stale rules. |
 | `bootstrap.json` | Idempotence marker: initialization time, sources used, sources skipped, plugin version, and host adapter state. |
 | `sources.json` | Discovered host sources and import status. |
+| `imports/<host>/effective-memory.md` | Human-readable snapshot of the host's resolved memory view. |
+| `imports/<host>/effective-memory.json` | Machine-readable snapshot of host sources, correction overlays, and candidate rules. |
 | `imports/<host>/source-digest.md` | Optional host-specific synthesis created when a durable host experience document is missing or incomplete. |
 | `imports/<host>/source-digest.json` | Machine-readable inventory and extraction summary for the host-specific synthesis. |
 | `adapters/*.md` | Host-specific reference snippets. These are generated locally and are not automatically written into host memory. |
@@ -81,12 +89,14 @@ If existing host-specific experience files are found, treat them as sources, not
 
 Examples:
 
-- Codex: `~/.codex/instructions/codex-experience-review.md`, `~/.codex/memories/MEMORY.md`, `~/.codex/memories/memory_summary.md`
+- Codex: `~/.codex/instructions/codex-experience-review.md`, `~/.codex/memories/memory_summary.md`, `~/.codex/memories/MEMORY.md`, `~/.codex/memories/extensions/ad_hoc/notes/*.md`
 - Claude Code: `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`
 
 When an existing host profile already contains durable user preferences, merge or summarize it into `~/.tastedistill/profile.md` and record the source in `sources.json` and `bootstrap.json`. Do not re-run broad raw transcript sweeps just because the TasteDistill marker did not previously exist.
 
-If a durable host profile is missing, TasteDistill may create a host-owned source digest under `~/.tastedistill/imports/<host>/` from summary and registry sources. This digest is a TasteDistill cache, not a host memory file, and must not be written back into the host unless the user explicitly asks.
+For hosts with a correction or extension layer, include that layer in the source inventory. Treat explicit correction notes as overlays on the host's main memory, not as lower-quality raw history.
+
+If a durable host profile is missing, TasteDistill may create a host-owned source digest under `~/.tastedistill/imports/<host>/` from summary, registry, and correction sources. This digest is a TasteDistill cache, not a host memory file, and must not be written back into the host unless the user explicitly asks.
 
 ## Write Boundaries
 

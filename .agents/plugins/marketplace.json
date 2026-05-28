@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "tasted",
-      "version": "0.0.13",
+      "version": "0.0.14",
       "source": {
         "source": "local",
         "path": "./plugins/tastedistill"

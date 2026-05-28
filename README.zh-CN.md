@@ -132,6 +132,47 @@ tasted-distill 保存这次对话里的重要偏好
 
 在 Claude Code 里使用 `/tasted:distill ...`。
 
+## 🔄 保持多 Agent 记忆同步
+
+TasteDistill 把宿主记忆当作来源，而不是要覆盖的目标。当 Codex 这类宿主同时有主记忆和更新的纠偏 note 时，TasteD 会先建立 effective memory view，再把稳定规则导入跨 Agent 可读的本地 store。
+
+当某个 agent 学到的规则也应该被其他 agent 复用时，可以这样使用：
+
+```text
+tasted-distill 刷新并同步我的宿主记忆
+```
+
+distill 工作流会优先调用本地 helper：
+
+```text
+scripts/refresh_host_memory.py  # 写入 imports/<host>/effective-memory.*
+scripts/sync_profile.py         # 把稳定规则追加到 rules.jsonl
+scripts/doctor.py               # 检查 profile/imports/adapters 是否过期
+scripts/install_adapters.py      # 写入 TasteDistill adapter 片段
+```
+
+在 Codex 里使用 `--host codex`，在 Claude Code 里使用 `--host claude`。
+
+这样新的宿主纠偏不会被旧的 TasteDistill profile 遮住。
+
+如果要让宿主 agent 默认轻量自动读取 TasteDistill，可以安装 adapter 片段：
+
+```bash
+scripts/install_adapters.py --write-host
+```
+
+它会给 Codex/Claude 的宿主指令文件加入一小段 TasteDistill 说明：默认只读取 `profile.md`、`harness.md` 和 `rules.jsonl`；原始宿主历史仍然只在明确 refresh/sync 时读取。
+
+也可以在一个宿主里导入另一个宿主的记忆。例如在 Codex 里运行下面命令，让 Claude Code 的最新项目记忆通过 TasteDistill 变成 Codex 可读的共享规则：
+
+```bash
+scripts/refresh_host_memory.py --host claude --project-root /path/to/project
+scripts/sync_profile.py --host claude
+scripts/doctor.py --host claude --project-root /path/to/project
+```
+
+之后 Codex 读取 `~/.tastedistill/rules.jsonl` 即可复用这些共享规则，不需要直接读取 Claude 的原始记忆文件。
+
 ## 🧭 选择安装方式
 
 ```mermaid

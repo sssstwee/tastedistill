@@ -11,6 +11,7 @@ Prefix your first response line with ⚗️ inline, not as its own paragraph.
 
 Before the workflow, apply `../../shared-rules/host-compatibility.md`, `../../shared-rules/portable-profile.md`, and `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations. If this skill is already running the Local Personalization Bootstrap, use those shared rules only as host-safety, idempotence, and destination policy.
 Apply `../../shared-rules/runtime-hygiene.md` when distillation reads logs, creates generated evidence, invokes helper scripts, or runs browser/runtime checks.
+Apply `../../shared-rules/memory-protocol.md` when the request involves cross-agent memory, host memory refresh, profile sync, or memory health checks.
 
 ## Outcome Contract
 
@@ -37,9 +38,9 @@ v1 supports Codex and Claude Code. Codex can run as a full plugin adapter. Claud
 Bootstrap flow:
 
 1. Identify available local memory/history sources in the current agent environment.
-2. Prefer existing summaries, registries, and indexed memories before broad raw transcript reads.
+2. Prefer the host's effective memory view: summaries, registries, correction notes, and indexed memories before broad raw transcript reads.
 3. Detect the host agent when possible: Codex, Claude Code, or unknown.
-4. For Codex, treat `$HOME/.codex/instructions/codex-experience-review.md` as optional. If it is missing, synthesize a TasteDistill-owned Codex digest from available Codex summaries and registries.
+4. For Codex, treat `$HOME/.codex/instructions/codex-experience-review.md` as optional. If it is missing or stale relative to newer Codex correction notes, synthesize or refresh a TasteDistill-owned Codex digest from the effective Codex memory view.
 5. Create the portable TasteDistill profile under `$HOME/.tastedistill` according to `../../shared-rules/portable-profile.md`.
 6. Write `$HOME/.tastedistill/bootstrap.json` as the idempotence marker.
 7. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
@@ -53,17 +54,40 @@ Codex fallback flow:
    - `$HOME/.codex/instructions/codex-experience-review.md`
    - `$HOME/.codex/memories/memory_summary.md`
    - `$HOME/.codex/memories/MEMORY.md`
+   - `$HOME/.codex/memories/extensions/ad_hoc/notes/*.md`
    - targeted `$HOME/.codex/memories/rollout_summaries/*` files referenced by the memory registry
    - `$HOME/.codex/config.toml` without copying secrets or volatile machine state
-2. If `codex-experience-review.md` exists, use it as the highest-signal source.
-3. If it is missing or incomplete, create:
+2. Ask the host to resolve its effective memory view when possible. Newer ad-hoc correction notes with explicit override language should supersede older inferred rules in Codex memories.
+3. If `codex-experience-review.md` exists, use it as a high-signal source, but do not let it override newer Codex correction notes.
+4. If it is missing, incomplete, or contradicted by newer correction notes, create or refresh:
    - `$HOME/.tastedistill/imports/codex/source-digest.md`
    - `$HOME/.tastedistill/imports/codex/source-digest.json`
-4. Use the digest to seed `profile.md` and `harness.md`.
-5. Record loaded, skipped, and missing sources in `sources.json` and `bootstrap.json`.
-6. Do not automatically write `codex-experience-review.md` back into `$HOME/.codex/instructions/`.
-7. Read raw Codex sessions, logs, or broad SQLite state only as an opt-in deep scan or bounded fallback when summary sources are insufficient. Follow `../../shared-rules/personalization.md#bounded-codex-history-scan`: metadata and indexes first, recent sessions default max 30, highest-frequency `cwd` groups default max 10, failures/fixes/user corrections prioritized, and scan scope reported before reading raw content.
-8. Follow `../../shared-rules/personalization.md#codex-source-precedence`: bounded scan results can fill gaps or flag contradictions, but must not silently override an existing TasteDistill profile, Codex experience document, or Codex summary-derived rule.
+5. Use the digest to seed or refresh `profile.md` and `harness.md` only when the user asked for initialization, refresh, import, or memory distillation.
+6. Record loaded, skipped, missing, and correction-overlay sources in `sources.json` and `bootstrap.json`.
+7. Do not automatically write `codex-experience-review.md` back into `$HOME/.codex/instructions/`.
+8. Read raw Codex sessions, logs, or broad SQLite state only as an opt-in deep scan or bounded fallback when summary sources are insufficient. Follow `../../shared-rules/personalization.md#bounded-codex-history-scan`: metadata and indexes first, recent sessions default max 30, highest-frequency `cwd` groups default max 10, failures/fixes/user corrections prioritized, and scan scope reported before reading raw content.
+9. Follow `../../shared-rules/personalization.md#codex-source-precedence`: bounded scan results can fill gaps or flag contradictions, but must not silently override an existing TasteDistill profile, Codex experience document, or Codex summary-derived rule. Newer host correction notes are not bounded-scan evidence; they are part of the host effective memory view.
+
+## Memory Sync Operations
+
+Use these helpers when available. Resolve paths relative to this `SKILL.md`; do not guess host install paths.
+
+| User intent | Helper | Output |
+|---|---|---|
+| refresh, import, or initialize host memory | `../../scripts/refresh_host_memory.py --host claude` | `~/.tastedistill/imports/claude/effective-memory.*` and `sources.json` |
+| sync host corrections into TasteDistill | `../../scripts/sync_profile.py --host claude` | `rules.jsonl`, `conflicts.jsonl`, and `profile.json` sync metadata |
+| check whether TasteDistill is stale or incomplete | `../../scripts/doctor.py --host claude` | Health report with follow-up actions |
+
+To import Codex memory while running from Claude Code, use the same helpers with `--host codex`. To import Claude project memory for Codex to consume later, use `--host claude --project-root <path>`.
+
+Default sequence for "refresh/sync my memory":
+
+1. Run `refresh_host_memory.py`.
+2. Run `sync_profile.py`.
+3. Run `doctor.py`.
+4. Report files written, stale sources, and any warnings.
+
+If helpers are unavailable, manually follow `../../shared-rules/memory-protocol.md` and report the missing helper path.
 
 Recommended output:
 

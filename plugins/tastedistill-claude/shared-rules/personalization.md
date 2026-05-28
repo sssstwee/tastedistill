@@ -29,7 +29,31 @@ Preferred default locations:
 
 Also discover existing host-specific profiles, such as Codex experience instructions or Claude user memory. Treat those files as sources, not as targets to overwrite.
 
-If `profile.md`, `harness.md`, and `bootstrap.json` exist and are loadable, do not rebuild the global profile. Briefly note that TasteDistill personalization is already initialized when relevant, then continue with project bootstrap and the requested skill.
+If `profile.md`, `harness.md`, and `bootstrap.json` exist and are loadable, do not rebuild the global profile. Briefly note that TasteDistill personalization is already initialized when relevant, then continue with project bootstrap and the requested skill. Existing TasteDistill files are a cache of distilled preferences, not proof that newer host memory corrections have already been imported.
+
+## Host Effective Memory View
+
+When the host has its own memory system, let the host form the effective memory view before TasteDistill runs. TasteDistill may import or summarize that view, but must not replace the host's precedence rules.
+
+For Codex, the effective memory view is:
+
+1. `$HOME/.codex/memories/memory_summary.md` for the current summary.
+2. `$HOME/.codex/memories/MEMORY.md` for the main registry and indexed lessons.
+3. `$HOME/.codex/memories/extensions/ad_hoc/notes/*.md` for explicit corrections, overrides, and newly captured rules.
+4. Targeted rollout summaries only when referenced by the registry or needed as evidence.
+
+Codex ad-hoc notes are a correction layer. Newer notes with wording such as `correction`, `supersede`, `do not infer`, `default`, or `wrong behavior` should override older inferred rules when they conflict. Do not treat an older TasteDistill profile as authoritative against a newer host correction.
+
+For Claude Code, the effective memory view is:
+
+1. `$HOME/.claude/CLAUDE.md` for global Claude guidance.
+2. Project `CLAUDE.md` for project guidance.
+3. Project `.claude/CLAUDE.md` for project-local Claude guidance.
+4. Current-session user corrections supplied by the host.
+
+Claude project guidance should remain project-scoped unless the user explicitly asks to promote a rule globally or the rule is clearly portable.
+
+If a TasteD/TasteDistill invocation only needs current-task behavior, use the host-provided effective context and continue. If the user asks to initialize, refresh, import, or distill memory, import the effective host memory view into TasteDistill-owned files and record the exact source set in `sources.json` and `bootstrap.json`.
 
 ## First-Run Bootstrap
 
@@ -57,7 +81,7 @@ If a host-specific experience document already exists, do not behave as if the u
 Examples:
 
 - Codex: `$HOME/.codex/instructions/codex-experience-review.md`
-- Claude Code: `$HOME/.claude/CLAUDE.md`
+- Claude Code: `$HOME/.claude/CLAUDE.md`, project `CLAUDE.md`, project `.claude/CLAUDE.md`
 
 Use those sources to seed or update `~/.tastedistill/profile.md` and `~/.tastedistill/harness.md`, then record them in `~/.tastedistill/sources.json` and `~/.tastedistill/bootstrap.json`. Prefer summary and rule extraction over raw copying.
 
@@ -73,8 +97,9 @@ When the host is Codex, use this order:
 2. Always inventory Codex memory summary and registry sources when available, even if the experience document is already sufficient:
    - `$HOME/.codex/memories/memory_summary.md`
    - `$HOME/.codex/memories/MEMORY.md`
+   - `$HOME/.codex/memories/extensions/ad_hoc/notes/*.md`
    - targeted files under `$HOME/.codex/memories/rollout_summaries/` only when referenced by the registry or needed for evidence.
-3. If the experience document is missing or too thin, synthesize a TasteDistill-owned digest from summary and registry sources:
+3. If the experience document is missing or too thin, or if newer Codex correction notes materially change the current profile, synthesize or refresh a TasteDistill-owned digest from the effective Codex memory view:
    - `$HOME/.tastedistill/imports/codex/source-digest.md`
    - `$HOME/.tastedistill/imports/codex/source-digest.json`
 4. Record all discovered, loaded, skipped, and missing Codex sources in `$HOME/.tastedistill/sources.json` and `$HOME/.tastedistill/bootstrap.json`.
@@ -93,12 +118,13 @@ The normal Codex source strategy and bounded history scan must not compete.
 
 Use this precedence order:
 
-1. Existing TasteDistill profile and bootstrap marker: load and reuse by default. Do not refresh or scan history unless the user asks.
-2. Existing host experience document: use `$HOME/.codex/instructions/codex-experience-review.md` as the highest-signal source when present.
-3. Codex summaries and registries: use `memory_summary.md`, `MEMORY.md`, and targeted rollout summaries as the default synthesis layer.
-4. Bounded history scan: use only to fill gaps, resolve contradictions, or satisfy an explicit deeper-import request.
+1. Host-provided effective current context: respect the host's already-resolved memory, instruction, and routing decisions for the current turn.
+2. Existing TasteDistill profile and bootstrap marker: load and reuse by default, but treat it as a cache that can be stale relative to newer host corrections.
+3. Existing host experience document: use `$HOME/.codex/instructions/codex-experience-review.md` as a high-signal source when present.
+4. Codex summaries, registries, and correction layers: use `memory_summary.md`, `MEMORY.md`, `extensions/ad_hoc/notes/*.md`, and targeted rollout summaries as the default synthesis layer.
+5. Bounded history scan: use only to fill gaps, resolve contradictions, or satisfy an explicit deeper-import request.
 
-Bounded scan results may enrich missing evidence, add candidate lessons, or mark contradictions for review. They must not silently override profile rules derived from higher-precedence sources. If bounded evidence contradicts an existing profile rule, record the conflict in `sources.json` or `bootstrap.json` and keep the existing rule unless the newer evidence is clearly repeated, durable, and relevant.
+Bounded scan results may enrich missing evidence, add candidate lessons, or mark contradictions for review. They must not silently override profile rules derived from higher-precedence sources. If bounded evidence contradicts an existing profile rule, record the conflict in `sources.json` or `bootstrap.json` and keep the existing rule unless the newer evidence is clearly repeated, durable, and relevant. If a newer host correction contradicts the existing TasteDistill profile, do not let the stale profile win; either refresh the profile when requested or report that a newer host correction is being used for this run.
 
 ## Bounded Codex History Scan
 
