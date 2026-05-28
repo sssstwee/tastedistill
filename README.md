@@ -85,7 +85,7 @@ Use the same everyday request you would normally ask an agent:
 ```text
 Codex Desktop: @TasteD analyze this project
 Codex CLI: @TasteD analyze this project
-Claude Code: /tasted-think analyze this project
+Claude Code: /tasted:think analyze this project
 Hermes CLI: tasted-think analyze this project
 ```
 
@@ -95,7 +95,7 @@ TasteD can be called in different ways depending on the host. Codex Desktop and 
 | --- | --- | --- |
 | Codex Desktop | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
 | Codex CLI | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
-| Claude Code CLI or desktop | `/tasted-think analyze this project` | `/tasted-learn understand this project`<br>`/tasted-think analyze this project`<br>`/tasted-design improve this UI`<br>`/tasted-debug debug this error`<br>`/tasted-ship check if this is ready to release`<br>`/tasted-distill summarize lessons from this work` |
+| Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn understand this project`<br>`/tasted:think analyze this project`<br>`/tasted:design improve this UI`<br>`/tasted:debug debug this error`<br>`/tasted:ship check if this is ready to release`<br>`/tasted:distill summarize lessons from this work` |
 | Hermes CLI | `tasted-think analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
 
 Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
@@ -133,7 +133,7 @@ Use it immediately when a conversation contains something important that should 
 tasted-distill save the important preferences from this conversation
 ```
 
-In Claude Code, use `/tasted-distill ...`. In Hermes CLI, use `tasted-distill ...`.
+In Claude Code, use `/tasted:distill ...`. In Hermes CLI, use `tasted-distill ...`.
 
 ## 🧭 Choose An Install Path
 
@@ -242,18 +242,18 @@ If your Claude Code version expects the plugin name directly, use:
 Restart Claude Code or open a new Claude Code session, then call:
 
 ```text
-/tasted-think analyze this project
+/tasted:think analyze this project
 ```
 
 You can also call any individual TasteD skill:
 
 ```text
-/tasted-learn
-/tasted-think
-/tasted-design
-/tasted-debug
-/tasted-ship
-/tasted-distill
+/tasted:learn
+/tasted:think
+/tasted:design
+/tasted:debug
+/tasted:ship
+/tasted:distill
 ```
 
 TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small setup snippet, and you decide whether to add it.
@@ -276,7 +276,7 @@ Open a new Hermes session, then call:
 tasted-think analyze this project
 ```
 
-You can also call any individual TasteD skill under the plugin namespace:
+You can also call any individual TasteD skill by its Hermes skill name:
 
 ```text
 tasted-learn
