@@ -275,32 +275,6 @@ hermes plugins enable tasted
 
 TasteDistill does not automatically edit `SOUL.md`, Hermes memories, config files, or `.env`.
 
-## 🧰 Manual Codex Skills Only
-
-Use this only as a fallback for older Codex CLI builds that do not have `codex plugin`, or when you deliberately want the skill files without the full plugin.
-
-```bash
-git clone https://github.com/sssstwee/tastedistill.git
-cd tastedistill
-mkdir -p "$HOME/.codex/skills"
-
-for phase in learn think design debug ship distill; do
-  rm -f "$HOME/.codex/skills/tasted-$phase"
-  ln -s "$PWD/plugins/tastedistill/skills/tastedistill-$phase" "$HOME/.codex/skills/tasted-$phase"
-done
-```
-
-Restart Codex and call the short skill names:
-
-```text
-tasted-learn
-tasted-think
-tasted-design
-tasted-debug
-tasted-ship
-tasted-distill
-```
-
 ## 🔄 Update To The Latest Version
 
 If you installed from `main`, update TasteD from the same host where you use it:
@@ -339,7 +313,7 @@ When you explicitly call TasteDistill inside a Git repository, it may initialize
 | Host | Does the TasteDistill plugin include CodeGraph MCP registration? |
 |---|---|
 | Codex Desktop | ✅ Yes. The Codex plugin points to `plugins/tastedistill/.mcp.json`. |
-| Codex CLI | ✅ Yes when installed with `codex plugin add`. Manual skills-only install does not register MCP automatically. |
+| Codex CLI | ✅ Yes. The Codex CLI plugin install includes the same MCP registration. |
 | Claude Code CLI or desktop | ✅ Yes. The Claude Code plugin also points to `plugins/tastedistill/.mcp.json`. |
 | Hermes CLI | ⚠️ Not automatically. Add CodeGraph as a Hermes MCP server manually if you want `codegraph_*` tools in Hermes. |
 

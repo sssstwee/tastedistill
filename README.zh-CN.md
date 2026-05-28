@@ -275,32 +275,6 @@ hermes plugins enable tasted
 
 TasteDistill 默认不会改 `SOUL.md`、Hermes memories、配置文件或 `.env`。
 
-## 🧰 只手动安装 Codex Skills
-
-只有在旧版 Codex CLI 没有 `codex plugin` 命令，或者你明确不想安装完整 plugin、只想安装 skill 文件时，才使用这个备用方式：
-
-```bash
-git clone https://github.com/sssstwee/tastedistill.git
-cd tastedistill
-mkdir -p "$HOME/.codex/skills"
-
-for phase in learn think design debug ship distill; do
-  rm -f "$HOME/.codex/skills/tasted-$phase"
-  ln -s "$PWD/plugins/tastedistill/skills/tastedistill-$phase" "$HOME/.codex/skills/tasted-$phase"
-done
-```
-
-重启 Codex 后调用短 skill 名：
-
-```text
-tasted-learn
-tasted-think
-tasted-design
-tasted-debug
-tasted-ship
-tasted-distill
-```
-
 ## 🔄 更新到最新版
 
 如果你是从 `main` 安装的 TasteD，就在对应宿主里更新：
@@ -339,7 +313,7 @@ TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph)
 | 宿主 | TasteDistill plugin 是否内置 CodeGraph MCP 注册 |
 |---|---|
 | Codex Desktop | ✅ 是。Codex plugin 指向 `plugins/tastedistill/.mcp.json`。 |
-| Codex CLI | ✅ 是。用 `codex plugin add` 安装时会带上 MCP 注册；只有手动安装 skills 的备用方式不会自动注册 MCP。 |
+| Codex CLI | ✅ 是。Codex CLI plugin 安装会带上同一份 MCP 注册配置。 |
 | Claude Code 命令行或桌面端 | ✅ 是。Claude Code plugin 也指向 `plugins/tastedistill/.mcp.json`。 |
 | Hermes CLI | ⚠️ 不会自动接入。想在 Hermes 里使用 `codegraph_*` tools，需要手动把 CodeGraph 加到 Hermes MCP。 |
 
