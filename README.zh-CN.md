@@ -83,18 +83,20 @@ flowchart LR
 直接使用你平时会问 agent 的高频任务：
 
 ```text
-Codex: @TasteD 分析这个项目
+Codex Desktop: @TasteD 分析这个项目
+Codex CLI: tasted-think 分析这个项目
 Claude Code: /tasted:think 分析这个项目
-Hermes: tasted:think 分析这个项目
+Hermes CLI: tasted:think 分析这个项目
 ```
 
-不同宿主的调用方式不完全一样，但都可以进入对应阶段的 TasteD skill。Codex 支持 `@TasteD` 这种插件呼叫；Claude Code 和 Hermes 使用安装后的插件命名空间。
+不同宿主的调用方式不完全一样，但都可以进入对应阶段的 TasteD skill。Codex Desktop 支持 `@TasteD` 这种插件呼叫，Codex CLI 可以直接调用 symlink 后的 skills，Claude Code 使用 `/plugin` 命令，Hermes 是命令行形式。
 
 | 宿主 | 日常入口 | 阶段 skill 调用 |
 | --- | --- | --- |
 | Codex Desktop | `@TasteD 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
-| Claude Code | `/tasted:think 分析这个项目` | `/tasted:learn`、`/tasted:think`、`/tasted:design`、`/tasted:debug`、`/tasted:ship`、`/tasted:distill` |
-| Hermes | `tasted:think 分析这个项目` | `tasted:learn`、`tasted:think`、`tasted:design`、`tasted:debug`、`tasted:ship`、`tasted:distill` |
+| Codex CLI | `tasted-think 分析这个项目` | `tasted-learn`、`tasted-think`、`tasted-design`、`tasted-debug`、`tasted-ship`、`tasted-distill` |
+| Claude Code 命令行或桌面端 | `/tasted:think 分析这个项目` | `/tasted:learn`、`/tasted:think`、`/tasted:design`、`/tasted:debug`、`/tasted:ship`、`/tasted:distill` |
+| Hermes CLI | `tasted:think 分析这个项目` | `tasted:learn`、`tasted:think`、`tasted:design`、`tasted:debug`、`tasted:ship`、`tasted:distill` |
 
 直接说你想做什么就可以。第一次使用时，TasteD 会自动准备本地档案，然后继续处理你的请求。
 
@@ -118,13 +120,13 @@ TasteDistill 会执行：
 ```mermaid
 flowchart TD
     A["你主要用哪个宿主?"] --> B["Codex Desktop"]
-    A --> C["Claude Code"]
-    A --> D["Hermes"]
-    A --> E["只装 Codex skills"]
+    A --> C["Codex CLI"]
+    A --> D["Claude Code<br/>命令行或桌面端"]
+    A --> E["Hermes CLI"]
     B --> F["安装 marketplace plugin"]
-    C --> G["使用 /plugin 命令"]
-    D --> H["使用 hermes plugins install"]
-    E --> I["手动 symlink skills"]
+    C --> G["手动 symlink Codex skills"]
+    D --> H["使用 /plugin 命令"]
+    E --> I["使用 hermes plugins install"]
 ```
 
 ## 🔄 更新到最新版
@@ -134,9 +136,9 @@ flowchart TD
 | 宿主 | 更新方式 |
 | --- | --- |
 | Codex Desktop | 重启 Codex Desktop，让已安装的 marketplace plugin 从 `main` 刷新。 |
-| Claude Code | 执行 `/plugin update tasted`，然后重启 Claude Code。 |
-| Hermes | 执行 `hermes plugins update tasted`，然后重启 Hermes。 |
-| 只安装 Codex skills | 到你 symlink 的 Git 仓库里拉取最新代码，然后重启 Codex。 |
+| Codex CLI | 到你 symlink 的 Git 仓库里拉取最新代码，然后重启 Codex CLI 或打开新会话。 |
+| Claude Code 命令行或桌面端 | 执行 `/plugin update tasted`，然后重启 Claude Code。 |
+| Hermes CLI | 执行 `hermes plugins update tasted`，然后打开新的 Hermes 会话。 |
 
 Claude Code 也可以在终端里执行：
 
@@ -185,7 +187,7 @@ tasted-distill
 
 ## <img src="./assets/icons/claude-code.png" width="24" height="24" alt="Claude Code"> 安装到 Claude Code
 
-Claude Code 使用插件市场命令安装。
+Claude Code 有命令行和桌面端入口。只要当前入口支持输入 `/plugin`，就使用同一套插件命令。
 
 Claude Code 插件里也包含同一份 CodeGraph MCP 配置。Claude Code 可能会要求你信任或启用 MCP server，之后才会出现 `codegraph_*` tools。
 
@@ -220,9 +222,9 @@ Claude Code 插件里也包含同一份 CodeGraph MCP 配置。Claude Code 可�
 
 TasteDistill 默认不会自动修改 `CLAUDE.md`。它可以生成一段接入说明，由你决定要不要写进去。
 
-## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> 安装到 Hermes
+## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> 安装到 Hermes CLI
 
-Hermes 可以直接从 Git 仓库安装插件。
+Hermes 是命令行形式，通过 Git 仓库安装插件。
 
 Hermes 插件目前安装的是 TasteDistill workflow skills，不会自动注册 CodeGraph MCP。如果你的 Hermes 环境已经暴露了兼容的 `codegraph_*` tools，TasteDistill 仍然可以使用它们。
 
@@ -251,9 +253,9 @@ hermes plugins enable tasted
 
 TasteDistill 默认不会改 `SOUL.md`、Hermes memories、配置文件或 `.env`。
 
-## 🧰 只安装 Codex Skills
+## 🧰 安装到 Codex CLI 或只安装 Codex Skills
 
-如果你不想安装完整 Codex plugin，只想安装 skill 文件，可以这样做：
+如果你使用 Codex CLI，或者不想安装完整 Codex Desktop plugin、只想安装 skill 文件，可以这样做：
 
 ```bash
 git clone https://github.com/sssstwee/tastedistill.git
@@ -292,13 +294,14 @@ TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph)
 | 宿主 | TasteDistill plugin 是否内置 CodeGraph MCP 注册 |
 |---|---|
 | Codex Desktop | ✅ 是。Codex plugin 指向 `plugins/tastedistill/.mcp.json`。 |
-| Claude Code | ✅ 是。Claude Code plugin 也指向 `plugins/tastedistill/.mcp.json`。 |
-| Hermes | ⚠️ 暂时不是。Hermes plugin 只安装 skills；只有当宿主/会话里已经有兼容的 `codegraph_*` tools 时才会使用。 |
+| Codex CLI | ⚠️ 只安装 skills 时不会自动注册 MCP。只有当前会话里已经有兼容的 `codegraph_*` tools，或你手动配置 MCP 时才会使用。 |
+| Claude Code 命令行或桌面端 | ✅ 是。Claude Code plugin 也指向 `plugins/tastedistill/.mcp.json`。 |
+| Hermes CLI | ⚠️ 暂时不是。Hermes plugin 只安装 skills；只有当宿主/会话里已经有兼容的 `codegraph_*` tools 时才会使用。 |
 
 所以 “CodeGraph 支持” 分两种情况：
 
-- **Codex / Claude Code**：plugin 自带 MCP 注册配置，可以在宿主启用后通过 `npx` 启动 CodeGraph。
-- **Hermes**：plugin 目前不会自动接入 MCP；如果没有 `codegraph_*` tools，就回退到普通文件搜索和定向读取。
+- **Codex Desktop / Claude Code**：plugin 自带 MCP 注册配置，可以在宿主启用后通过 `npx` 启动 CodeGraph。
+- **Codex CLI / Hermes CLI**：这些路径目前不会自动接入 MCP；如果没有 `codegraph_*` tools，就回退到普通文件搜索和定向读取。
 
 也可以手动初始化：
 

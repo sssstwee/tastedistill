@@ -83,18 +83,20 @@ flowchart LR
 Use the same everyday request you would normally ask an agent:
 
 ```text
-Codex: @TasteD analyze this project
+Codex Desktop: @TasteD analyze this project
+Codex CLI: tasted-think analyze this project
 Claude Code: /tasted:think analyze this project
-Hermes: tasted:think analyze this project
+Hermes CLI: tasted:think analyze this project
 ```
 
-TasteD can be called in different ways depending on the host. Codex supports an `@TasteD` mention; Claude Code and Hermes use the installed plugin namespace.
+TasteD can be called in different ways depending on the host. Codex Desktop supports an `@TasteD` mention, Codex CLI can call symlinked skills directly, Claude Code uses `/plugin` commands, and Hermes is managed from the command line.
 
 | Host | Everyday call | Stage skill calls |
 | --- | --- | --- |
 | Codex Desktop | `@TasteD analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
-| Claude Code | `/tasted:think analyze this project` | `/tasted:learn`, `/tasted:think`, `/tasted:design`, `/tasted:debug`, `/tasted:ship`, `/tasted:distill` |
-| Hermes | `tasted:think analyze this project` | `tasted:learn`, `tasted:think`, `tasted:design`, `tasted:debug`, `tasted:ship`, `tasted:distill` |
+| Codex CLI | `tasted-think analyze this project` | `tasted-learn`, `tasted-think`, `tasted-design`, `tasted-debug`, `tasted-ship`, `tasted-distill` |
+| Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn`, `/tasted:think`, `/tasted:design`, `/tasted:debug`, `/tasted:ship`, `/tasted:distill` |
+| Hermes CLI | `tasted:think analyze this project` | `tasted:learn`, `tasted:think`, `tasted:design`, `tasted:debug`, `tasted:ship`, `tasted:distill` |
 
 Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
 
@@ -118,13 +120,13 @@ You do not need to prepare any Codex preference file first. If Codex already has
 ```mermaid
 flowchart TD
     A["Which host do you use?"] --> B["Codex Desktop"]
-    A --> C["Claude Code"]
-    A --> D["Hermes"]
-    A --> E["Codex skills only"]
+    A --> C["Codex CLI"]
+    A --> D["Claude Code<br/>CLI or desktop"]
+    A --> E["Hermes CLI"]
     B --> F["Install marketplace plugin"]
-    C --> G["Use /plugin commands"]
-    D --> H["Use hermes plugins install"]
-    E --> I["Symlink skills manually"]
+    C --> G["Symlink Codex skills"]
+    D --> H["Use /plugin commands"]
+    E --> I["Use hermes plugins install"]
 ```
 
 ## 🔄 Update To The Latest Version
@@ -134,9 +136,9 @@ If you installed from `main`, update TasteD from the same host where you use it:
 | Host | Update command |
 | --- | --- |
 | Codex Desktop | Restart Codex Desktop so the installed marketplace plugin refreshes from `main`. |
-| Claude Code | Run `/plugin update tasted`, then restart Claude Code. |
-| Hermes | Run `hermes plugins update tasted`, then restart Hermes. |
-| Codex skills only | Pull the Git repo you symlinked from, then restart Codex. |
+| Codex CLI | Pull the Git repo you symlinked from, then restart Codex CLI or open a new session. |
+| Claude Code CLI or desktop | Run `/plugin update tasted`, then restart Claude Code. |
+| Hermes CLI | Run `hermes plugins update tasted`, then start a new Hermes session. |
 
 Claude Code terminal equivalent:
 
@@ -185,7 +187,7 @@ tasted-distill
 
 ## <img src="./assets/icons/claude-code.png" width="24" height="24" alt="Claude Code"> Install In Claude Code
 
-Claude Code uses plugin marketplace commands.
+Claude Code can be used from the terminal or from a desktop UI. Use the same plugin commands anywhere Claude Code exposes `/plugin`.
 
 The Claude Code plugin also includes the bundled CodeGraph MCP config. Claude Code may ask you to trust or enable the MCP server before the `codegraph_*` tools appear.
 
@@ -220,9 +222,9 @@ Then call an individual TasteD skill:
 
 TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small setup snippet, and you decide whether to add it.
 
-## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> Install In Hermes
+## <img src="./assets/icons/hermes.png" width="24" height="24" alt="Hermes"> Install In Hermes CLI
 
-Hermes installs plugins from a Git repository.
+Hermes is managed from the command line and installs plugins from a Git repository.
 
 The Hermes plugin currently installs the TasteDistill workflow skills. It does not automatically register CodeGraph MCP. If your Hermes environment already exposes compatible `codegraph_*` tools, TasteDistill can still use them.
 
@@ -251,9 +253,9 @@ hermes plugins enable tasted
 
 TasteDistill does not automatically edit `SOUL.md`, Hermes memories, config files, or `.env`.
 
-## 🧰 Install Codex Skills Only
+## 🧰 Install In Codex CLI Or Codex Skills Only
 
-Use this only if you do not want the full Codex plugin and only want the skill files.
+Use this for Codex CLI, or when you do not want the full Codex Desktop plugin and only want the skill files.
 
 ```bash
 git clone https://github.com/sssstwee/tastedistill.git
@@ -292,13 +294,14 @@ When you explicitly call TasteDistill inside a Git repository, it may initialize
 | Host | Does the TasteDistill plugin include CodeGraph MCP registration? |
 |---|---|
 | Codex Desktop | ✅ Yes. The Codex plugin points to `plugins/tastedistill/.mcp.json`. |
-| Claude Code | ✅ Yes. The Claude Code plugin also points to `plugins/tastedistill/.mcp.json`. |
-| Hermes | ⚠️ Not yet. The Hermes plugin installs skills; use CodeGraph only if the host/session already exposes compatible `codegraph_*` tools. |
+| Codex CLI | ⚠️ Skills-only install does not register MCP automatically. Use CodeGraph only if the session already exposes compatible `codegraph_*` tools, or set MCP up manually. |
+| Claude Code CLI or desktop | ✅ Yes. The Claude Code plugin also points to `plugins/tastedistill/.mcp.json`. |
+| Hermes CLI | ⚠️ Not yet. The Hermes plugin installs skills; use CodeGraph only if the host/session already exposes compatible `codegraph_*` tools. |
 
 So "CodeGraph support" means two different things:
 
-- **Codex / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
-- **Hermes**: the plugin does not currently wire MCP automatically; TasteDistill falls back to normal repository search unless CodeGraph tools are already available.
+- **Codex Desktop / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
+- **Codex CLI / Hermes CLI**: the plugin does not currently wire MCP automatically in these paths; TasteDistill falls back to normal repository search unless CodeGraph tools are already available.
 
 Manual setup is also possible:
 
