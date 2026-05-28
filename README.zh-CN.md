@@ -86,7 +86,7 @@ flowchart LR
 Codex Desktop: @TasteD 分析这个项目
 Codex CLI: @TasteD 分析这个项目
 Claude Code: /tasted:think 分析这个项目
-Hermes CLI: tasted-think 分析这个项目
+Hermes CLI: hermes -s tasted:think -z "分析这个项目"
 ```
 
 不同宿主的调用方式不完全一样，但都可以进入对应阶段的 TasteD skill。Codex Desktop 和 Codex CLI 都可以安装 TasteD plugin，Claude Code 使用 `/plugin` 命令，Hermes 是命令行形式。
@@ -96,7 +96,7 @@ Hermes CLI: tasted-think 分析这个项目
 | Codex Desktop | `@TasteD 分析这个项目` | `tasted-learn 了解这个项目`<br>`tasted-think 分析这个项目`<br>`tasted-design 优化这个界面`<br>`tasted-debug 排查这个报错`<br>`tasted-ship 检查是否可以发布`<br>`tasted-distill 总结这次经验` |
 | Codex CLI | `@TasteD 分析这个项目` | `tasted-learn 了解这个项目`<br>`tasted-think 分析这个项目`<br>`tasted-design 优化这个界面`<br>`tasted-debug 排查这个报错`<br>`tasted-ship 检查是否可以发布`<br>`tasted-distill 总结这次经验` |
 | Claude Code 命令行或桌面端 | `/tasted:think 分析这个项目` | `/tasted:learn 了解这个项目`<br>`/tasted:think 分析这个项目`<br>`/tasted:design 优化这个界面`<br>`/tasted:debug 排查这个报错`<br>`/tasted:ship 检查是否可以发布`<br>`/tasted:distill 总结这次经验` |
-| Hermes CLI | `tasted-think 分析这个项目` | `tasted-learn 了解这个项目`<br>`tasted-think 分析这个项目`<br>`tasted-design 优化这个界面`<br>`tasted-debug 排查这个报错`<br>`tasted-ship 检查是否可以发布`<br>`tasted-distill 总结这次经验` |
+| Hermes CLI | `hermes -s tasted:think -z "分析这个项目"` | `hermes -s tasted:learn -z "了解这个项目"`<br>`hermes -s tasted:think -z "分析这个项目"`<br>`hermes -s tasted:design -z "优化这个界面"`<br>`hermes -s tasted:debug -z "排查这个报错"`<br>`hermes -s tasted:ship -z "检查是否可以发布"`<br>`hermes -s tasted:distill -z "总结这次经验"` |
 
 直接说你想做什么就可以。第一次使用时，TasteD 会自动准备本地档案，然后继续处理你的请求。
 
@@ -133,7 +133,7 @@ tasted-distill 总结今天的经验并保存我的品味
 tasted-distill 保存这次对话里的重要偏好
 ```
 
-在 Claude Code 里使用 `/tasted:distill ...`，在 Hermes CLI 里使用 `tasted-distill ...`。
+在 Claude Code 里使用 `/tasted:distill ...`，在 Hermes CLI 里使用 `hermes -s tasted:distill -z "..."`。
 
 ## 🧭 选择安装方式
 
@@ -272,20 +272,22 @@ hermes plugins install sssstwee/tastedistill --enable
 
 打开新的 Hermes 会话后调用：
 
-```text
-tasted-think 分析这个项目
+```bash
+hermes -s tasted:think -z "分析这个项目"
 ```
 
-也可以通过 Hermes skill 名调用某个 TasteD skill：
+也可以通过 Hermes plugin-qualified skill 名调用某个 TasteD skill：
 
-```text
-tasted-learn
-tasted-think
-tasted-design
-tasted-debug
-tasted-ship
-tasted-distill
+```bash
+hermes -s tasted:learn
+hermes -s tasted:think
+hermes -s tasted:design
+hermes -s tasted:debug
+hermes -s tasted:ship
+hermes -s tasted:distill
 ```
+
+如果本机存在 `~/.hermes/skills/software-development/tasted-think/SKILL.md` 这类本地 Hermes skill，裸 `hermes -s tasted-think` 可能会加载本地旧 skill，而不是这个插件。使用 `tasted:<skill>` 形式可以强制走插件命名空间。
 
 如果安装时没有加 `--enable`，之后可以手动启用：
 

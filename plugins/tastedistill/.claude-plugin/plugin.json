@@ -1,7 +1,7 @@
 {
   "name": "tasted",
   "description": "Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": {
     "name": "sssstwee",
     "url": "https://github.com/sssstwee"

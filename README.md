@@ -86,7 +86,7 @@ Use the same everyday request you would normally ask an agent:
 Codex Desktop: @TasteD analyze this project
 Codex CLI: @TasteD analyze this project
 Claude Code: /tasted:think analyze this project
-Hermes CLI: tasted-think analyze this project
+Hermes CLI: hermes -s tasted:think -z "analyze this project"
 ```
 
 TasteD can be called in different ways depending on the host. Codex Desktop and Codex CLI can use the TasteD plugin, Claude Code uses `/plugin` commands, and Hermes is managed from the command line.
@@ -96,7 +96,7 @@ TasteD can be called in different ways depending on the host. Codex Desktop and 
 | Codex Desktop | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
 | Codex CLI | `@TasteD analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
 | Claude Code CLI or desktop | `/tasted:think analyze this project` | `/tasted:learn understand this project`<br>`/tasted:think analyze this project`<br>`/tasted:design improve this UI`<br>`/tasted:debug debug this error`<br>`/tasted:ship check if this is ready to release`<br>`/tasted:distill summarize lessons from this work` |
-| Hermes CLI | `tasted-think analyze this project` | `tasted-learn understand this project`<br>`tasted-think analyze this project`<br>`tasted-design improve this UI`<br>`tasted-debug debug this error`<br>`tasted-ship check if this is ready to release`<br>`tasted-distill summarize lessons from this work` |
+| Hermes CLI | `hermes -s tasted:think -z "analyze this project"` | `hermes -s tasted:learn -z "understand this project"`<br>`hermes -s tasted:think -z "analyze this project"`<br>`hermes -s tasted:design -z "improve this UI"`<br>`hermes -s tasted:debug -z "debug this error"`<br>`hermes -s tasted:ship -z "check if this is ready to release"`<br>`hermes -s tasted:distill -z "summarize lessons from this work"` |
 
 Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
 
@@ -133,7 +133,7 @@ Use it immediately when a conversation contains something important that should 
 tasted-distill save the important preferences from this conversation
 ```
 
-In Claude Code, use `/tasted:distill ...`. In Hermes CLI, use `tasted-distill ...`.
+In Claude Code, use `/tasted:distill ...`. In Hermes CLI, use `hermes -s tasted:distill -z "..."`.
 
 ## 🧭 Choose An Install Path
 
@@ -272,20 +272,22 @@ Restart Hermes after installing.
 
 Open a new Hermes session, then call:
 
-```text
-tasted-think analyze this project
+```bash
+hermes -s tasted:think -z "analyze this project"
 ```
 
-You can also call any individual TasteD skill by its Hermes skill name:
+You can also call any individual TasteD skill by its Hermes plugin-qualified skill name:
 
-```text
-tasted-learn
-tasted-think
-tasted-design
-tasted-debug
-tasted-ship
-tasted-distill
+```bash
+hermes -s tasted:learn
+hermes -s tasted:think
+hermes -s tasted:design
+hermes -s tasted:debug
+hermes -s tasted:ship
+hermes -s tasted:distill
 ```
+
+If a local Hermes skill such as `~/.hermes/skills/software-development/tasted-think/SKILL.md` exists, bare `hermes -s tasted-think` may load that local skill instead of this plugin. Use the `tasted:<skill>` form to force the plugin namespace.
 
 If you installed without `--enable`, enable it later:
 
