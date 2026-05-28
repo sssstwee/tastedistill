@@ -98,6 +98,24 @@ Hermes CLI: tasted:think 分析这个项目
 | Claude Code 命令行或桌面端 | `/tasted:think 分析这个项目` | `/tasted:learn 了解这个项目`<br>`/tasted:think 分析这个项目`<br>`/tasted:design 优化这个界面`<br>`/tasted:debug 排查这个报错`<br>`/tasted:ship 检查是否可以发布`<br>`/tasted:distill 总结这次经验` |
 | Hermes CLI | `tasted:think 分析这个项目` | `tasted:learn 了解这个项目`<br>`tasted:think 分析这个项目`<br>`tasted:design 优化这个界面`<br>`tasted:debug 排查这个报错`<br>`tasted:ship 检查是否可以发布`<br>`tasted:distill 总结这次经验` |
 
+## ⚗️ 核心习惯：蒸馏你的品味
+
+TasteDistill 最核心的用法，是在真实工作结束后使用 `distill`。它会把你的产品品味、判断方式、工作偏好和这次踩坑经验保存下来，避免这些宝贵经验随着对话结束而丢失。
+
+建议每天工作结束后用一次：
+
+```text
+tasted-distill 总结今天的经验并保存我的品味
+```
+
+也可以在任何你觉得“这段对话很重要，应该马上保存”的时候立即用一次：
+
+```text
+tasted-distill 保存这次对话里的重要偏好
+```
+
+在 Claude Code 里使用 `/tasted:distill ...`，在 Hermes CLI 里使用 `tasted:distill ...`。
+
 直接说你想做什么就可以。第一次使用时，TasteD 会自动准备本地档案，然后继续处理你的请求。
 
 TasteDistill 会执行：
