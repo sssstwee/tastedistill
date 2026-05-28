@@ -12,7 +12,7 @@ v1 supports three host agents:
 
 | Host | Bootstrap behavior |
 |---|---|
-| Codex | Plugin adapter. Explicit TasteD or TasteDistill use may create or update `~/.tastedistill`, create or update the current repo project profile, and initialize the current repo CodeGraph index through `codegraph.md` when CodeGraph tools are available. |
+| Codex | Plugin adapter. Explicit TasteD or TasteDistill use may create or update `~/.tastedistill`, create or update the current project profile, and initialize the current repo CodeGraph index through `codegraph.md` when CodeGraph tools are available. |
 | Claude Code | Reference adapter. Generate `~/.tastedistill/adapters/claude.md` and a snippet the user can add to Claude memory. Do not write `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
 | Hermes | External profile adapter. Generate `~/.tastedistill/adapters/hermes.md` and a snippet the user can add to Hermes guidance. Do not write `~/.hermes/SOUL.md`, `~/.hermes/memories/*`, `~/.hermes/skills/*`, `~/.hermes/config.yaml`, or `~/.hermes/.env` unless explicitly requested. |
 
@@ -131,18 +131,20 @@ I will read Codex metadata and up to 30 recent session summaries across the top 
 
 ## Project Bootstrap
 
-When a TasteD or TasteDistill call happens inside a Git repository, compute a stable repo id as defined in `portable-profile.md`.
+When a TasteD or TasteDistill call happens inside a local project directory, compute a stable project id as defined in `portable-profile.md`.
+
+Use the Git repository root when available. If the current directory is not inside a Git repository, use the current working directory as a directory-backed project root. Non-Git project profiles are still created; only Git-specific features are skipped.
 
 Create or load:
 
-- `$HOME/.tastedistill/projects/<repo-id>/project.md`
-- `$HOME/.tastedistill/projects/<repo-id>/project.json`
-- `$HOME/.tastedistill/projects/<repo-id>/lessons.jsonl`
-- `$HOME/.tastedistill/projects/<repo-id>/sources.json`
+- `$HOME/.tastedistill/projects/<project-id>/project.md`
+- `$HOME/.tastedistill/projects/<project-id>/project.json`
+- `$HOME/.tastedistill/projects/<project-id>/lessons.jsonl`
+- `$HOME/.tastedistill/projects/<project-id>/sources.json`
 
-The first project profile should be thin and evidence-based: repository identity, stack, likely entry points, known commands, instruction surfaces, validation surfaces, and boundaries. Do not turn a first-run orientation into a large project memory dump.
+The first project profile should be thin and evidence-based: repository or directory identity, stack, likely entry points, known commands, instruction surfaces, validation surfaces, and boundaries. Do not turn a first-run orientation into a large project memory dump.
 
-After project profile bootstrap, apply `codegraph.md` when CodeGraph tools are available. If the current host does not expose CodeGraph tools, skip CodeGraph and continue with normal repository search.
+After project profile bootstrap, apply `codegraph.md` only when the current project root is a Git repository and CodeGraph tools are available. If the current project is not a Git repository, report that project-level TasteDistill data was created or loaded but CodeGraph was skipped.
 
 ## Safety Boundaries
 
@@ -155,10 +157,10 @@ After project profile bootstrap, apply `codegraph.md` when CodeGraph tools are a
 
 ## Startup Order
 
-When a TasteD or TasteDistill call happens in a repository context:
+When a TasteD or TasteDistill call happens in a project context:
 
 1. Run `host-compatibility.md`.
 2. Run this personalization bootstrap check.
-3. Run `portable-profile.md` project profile bootstrap when inside a Git repository.
-4. Run `shared-rules/codegraph.md` bootstrap when CodeGraph tools are available.
+3. Run `portable-profile.md` project profile bootstrap for the current Git repository or non-Git project directory.
+4. Run `shared-rules/codegraph.md` bootstrap only when the current project root is a Git repository and CodeGraph tools are available.
 5. Then execute the selected stage skill.

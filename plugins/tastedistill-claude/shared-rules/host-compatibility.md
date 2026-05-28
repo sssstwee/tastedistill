@@ -8,7 +8,7 @@ TasteDistill is a portable engineering profile and harness layer. The host agent
 
 | Host | Native surface | TasteDistill behavior |
 |---|---|---|
-| Codex | `AGENTS.md`, Codex skills, MCP servers, sandbox and approval policy | Plugin adapter. Explicit TasteD or TasteDistill use may initialize `~/.tastedistill`, the current repo project profile, and the current repo CodeGraph index when CodeGraph tools are available. Do not rewrite Codex instruction files by default. |
+| Codex | `AGENTS.md`, Codex skills, MCP servers, sandbox and approval policy | Plugin adapter. Explicit TasteD or TasteDistill use may initialize `~/.tastedistill`, the current project profile, and the current repo CodeGraph index when inside a Git repository and CodeGraph tools are available. Do not rewrite Codex instruction files by default. |
 | Claude Code | `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, Claude auto memory | Reference adapter. Generate snippets that import or reference TasteDistill. Do not write Claude memory files unless the user explicitly asks. |
 | Hermes | `~/.hermes/SOUL.md`, `~/.hermes/memories/`, `~/.hermes/skills/`, `~/.hermes/config.yaml`, `~/.hermes/.env` | External profile adapter. Generate a TasteDistill reference. Do not change Hermes identity, memories, skills, config, or secrets unless the user explicitly asks. |
 
@@ -41,7 +41,7 @@ If the host is unclear, follow the safest common path: load or create `~/.tasted
 Codex may load TasteDistill through the plugin and skills. If the user asks for manual wiring, propose a short instruction instead of rewriting existing files automatically:
 
 ```text
-When TasteD or TasteDistill is explicitly invoked, load ~/.tastedistill/profile.md and ~/.tastedistill/harness.md. If working inside a Git repository and a matching TasteDistill project profile exists, load that project profile before running the selected TasteDistill workflow.
+When TasteD or TasteDistill is explicitly invoked, load ~/.tastedistill/profile.md and ~/.tastedistill/harness.md. If working inside a local project directory and a matching TasteDistill project profile exists, load that project profile before running the selected TasteDistill workflow.
 ```
 
 ### Claude Code
@@ -53,7 +53,7 @@ Generate this snippet unless the user asks to write it:
 
 When working with my projects, read @~/.tastedistill/profile.md and @~/.tastedistill/harness.md for my personal engineering preferences.
 
-If inside a Git repository, ask before loading the matching TasteDistill project profile from ~/.tastedistill/projects/.
+If inside a local project directory, ask before loading the matching TasteDistill project profile from ~/.tastedistill/projects/.
 Do not copy raw TasteDistill content into CLAUDE.md.
 ```
 

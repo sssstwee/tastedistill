@@ -1,6 +1,6 @@
 # CodeGraph
 
-Use this rule when a TasteD/TasteDistill plugin or skill is explicitly invoked in a repository context, and when CodeGraph MCP tools are available in the current agent session.
+Use this rule when a TasteD/TasteDistill plugin or skill is explicitly invoked in a Git repository context, and when CodeGraph MCP tools are available in the current agent session.
 
 In v1, the Codex plugin ships with CodeGraph MCP registration. CodeGraph itself is not Codex-specific: when the current host exposes compatible `codegraph_*` tools, TasteDistill may follow the same bootstrap and usage rules.
 
@@ -30,7 +30,7 @@ On explicit TasteD or TasteDistill use, perform the Index Bootstrap check before
 
 When a TasteD/TasteDistill plugin or skill is explicitly invoked in a host session where CodeGraph tools are available, treat that explicit use as permission to bootstrap CodeGraph for the current repository.
 
-Before broad repository work, first check whether the current directory is inside a Git worktree with `git rev-parse --show-toplevel`. If that fails, skip CodeGraph status and initialization, then fall back to normal search and targeted file reads. Report that the current directory is not a Git repository.
+Before broad repository work, first check whether the current directory is inside a Git worktree with `git rev-parse --show-toplevel`. If that fails, skip CodeGraph status and initialization, then continue with the directory-backed TasteDistill project profile plus normal search and targeted file reads. Report that the current directory is not a Git repository, so CodeGraph was skipped.
 
 If the current directory is inside a Git worktree, call `codegraph_status` for that repository root when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
 
@@ -41,7 +41,7 @@ If the current directory is inside a Git worktree, call `codegraph_status` for t
 
 This bootstrap is idempotent: if the repository is already initialized, continue without running init again.
 
-Do not initialize unrelated repositories, home directories, or parent folders. If the current directory is not a repository or the initialization command fails, fall back to normal search and targeted file reads, then report the fallback.
+Do not initialize unrelated repositories, home directories, or parent folders. If the current directory is not a repository or the initialization command fails, fall back to the TasteDistill project profile plus normal search and targeted file reads, then report the fallback.
 
 ## Fallbacks
 

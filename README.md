@@ -50,7 +50,7 @@ The profile stays on your own machine by default:
   profile.md      # your personal taste and working preferences
   harness.md      # how agents should verify, deliver, and distill lessons
   adapters/       # Codex, Claude Code, Hermes loading notes
-  projects/       # project-specific lessons outside the business repo
+  projects/       # project-specific lessons outside the business repo; Git is optional
 ```
 
 ## 🔁 How It Works
@@ -328,7 +328,7 @@ In simple terms: CodeGraph is a local map of your repository. It helps the agent
 - "What calls this function?"
 - "What might break if we change this file?"
 
-When you explicitly call TasteDistill inside a Git repository, it may initialize a local `.codegraph/` index for that repository and keep it out of Git.
+When you explicitly call TasteDistill inside a project directory, it may create a project profile under `~/.tastedistill/projects/`. Git is optional for this project-level memory. If the directory is also a Git repository, TasteDistill may initialize a local `.codegraph/` index for that repository and keep it out of Git.
 
 | Host | Does the TasteDistill plugin include CodeGraph MCP registration? |
 |---|---|
@@ -358,7 +358,7 @@ Then test it and start a new Hermes session:
 hermes mcp test codegraph
 ```
 
-For each project where you want CodeGraph indexing, initialize the local index once:
+For each Git repository where you want CodeGraph indexing, initialize the local index once:
 
 ```bash
 cd your-project

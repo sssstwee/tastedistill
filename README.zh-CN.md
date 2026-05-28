@@ -50,7 +50,7 @@ flowchart LR
   profile.md      # 你的个人偏好、审美、沟通方式、做事习惯
   harness.md      # agent 应该如何验证、交付、沉淀经验
   adapters/       # Codex、Claude Code、Hermes 的接入说明
-  projects/       # 项目级经验，放在业务仓库外面
+  projects/       # 项目级经验，放在业务仓库外面；不要求必须是 Git 仓库
 ```
 
 ## 🔁 工作方式
@@ -358,7 +358,9 @@ mcp_servers:
 hermes mcp test codegraph
 ```
 
-每个需要 CodeGraph 的项目，第一次使用前初始化一次本地索引：
+显式调用 TasteDistill 时，即使当前目录不是 Git 仓库，也可以在 `~/.tastedistill/projects/` 下生成项目级 profile。Git 不是项目级记忆的前提，只是 CodeGraph 的前提。
+
+每个需要 CodeGraph 的 Git 仓库，第一次使用前初始化一次本地索引：
 
 ```bash
 cd your-project

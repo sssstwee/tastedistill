@@ -23,7 +23,7 @@ TasteDistill stores portable user and project experience in `~/.tastedistill`. T
     claude.md
     hermes.md
   projects/
-    <repo-id>/
+    <project-id>/
       project.md
       project.json
       lessons.jsonl
@@ -43,20 +43,26 @@ TasteDistill stores portable user and project experience in `~/.tastedistill`. T
 | `imports/<host>/source-digest.md` | Optional host-specific synthesis created when a durable host experience document is missing or incomplete. |
 | `imports/<host>/source-digest.json` | Machine-readable inventory and extraction summary for the host-specific synthesis. |
 | `adapters/*.md` | Host-specific reference snippets. These are generated locally and are not automatically written into host memory. |
-| `projects/<repo-id>/project.md` | Human-readable project harness: repo identity, stack, entry points, commands, boundaries, validation surfaces. |
-| `projects/<repo-id>/project.json` | Machine-readable project index. |
-| `projects/<repo-id>/lessons.jsonl` | Append-only project lessons backed by evidence. |
-| `projects/<repo-id>/sources.json` | Project source inventory such as package manifests, instruction files, and docs. |
+| `projects/<project-id>/project.md` | Human-readable project harness: repo or directory identity, stack, entry points, commands, boundaries, validation surfaces. |
+| `projects/<project-id>/project.json` | Machine-readable project index. |
+| `projects/<project-id>/lessons.jsonl` | Append-only project lessons backed by evidence. |
+| `projects/<project-id>/sources.json` | Project source inventory such as package manifests, instruction files, and docs. |
 
-## repo-id
+## project-id
 
 When inside a Git repository, derive the project id from the repository root:
 
 ```text
-repo-id = safe-slug(repo-name) + "-" + first 10 hex chars of sha256(realpath(repo-root))
+project-id = safe-slug(repo-name) + "-" + first 10 hex chars of sha256(realpath(repo-root))
 ```
 
-Use a stable hash so same-named repositories do not collide and the full local path is not exposed in the directory name.
+When outside a Git repository but still inside a local project directory, derive the project id from the current working directory:
+
+```text
+project-id = safe-slug(directory-name) + "-" + first 10 hex chars of sha256(realpath(cwd))
+```
+
+Use a stable hash so same-named repositories or directories do not collide and the full local path is not exposed in the directory name.
 
 If hashing is not available, use a conservative safe slug and record the full path only inside local `project.json` if needed. Do not put full local paths in public plugin files.
 
@@ -66,7 +72,8 @@ If hashing is not available, use a conservative safe slug and record the full pa
 - Explicit TasteD/TasteDistill plugin or `tasted-*` skill use may create `~/.tastedistill`.
 - Explicit TasteD/TasteDistill use may perform local bootstrap automatically across supported hosts while respecting each host's write boundaries.
 - Claude Code and Hermes use reference adapters by default. Generate snippets and local adapter files; do not write host memory unless explicitly requested.
-- Project profiles may be created automatically when TasteD/TasteDistill is explicitly used inside a Git repository, but the first profile should be thin: stack, entry points, commands, instruction surfaces, known validation entry points, and boundaries.
+- Project profiles may be created automatically when TasteD/TasteDistill is explicitly used inside a Git repository or a non-Git local project directory, but the first profile should be thin: project identity, stack, entry points, commands, instruction surfaces, known validation entry points, and boundaries.
+- Non-Git project profiles are valid project-level memory. Mark them as directory-backed in `project.json` and skip Git-only features such as CodeGraph initialization.
 - Deep project lessons should be added by `tasted-distill` only when backed by task evidence.
 
 ## Existing Host Sources
