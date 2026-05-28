@@ -1,5 +1,5 @@
 ---
-name: tastedistill-debug
+name: tasted-debug
 description: Diagnose failures, broken behavior, regressions, test failures, runtime errors, stale state, rendering bugs, and repeated failed fixes. Use when something does not work, used to work, crashes, fails tests, or needs root-cause proof. Not for product planning or release readiness.
 ---
 
@@ -7,7 +7,9 @@ description: Diagnose failures, broken behavior, regressions, test failures, run
 
 Use this skill when the task starts from a symptom.
 
-Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteDistill invocations.
+Prefix your first response line with 🧩 inline, not as its own paragraph.
+
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations.
 
 ## Outcome Contract
 

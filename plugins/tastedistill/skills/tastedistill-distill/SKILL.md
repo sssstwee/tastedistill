@@ -1,5 +1,5 @@
 ---
-name: tastedistill-distill
+name: tasted-distill
 description: Extract reusable lessons from completed work, failed attempts, user corrections, logs, diffs, tests, project outcomes, local agent memory, and conversation history, then update durable skills or rules. Use when asked to learn from experience, personalize an agent from prior work, improve skills, refine agent behavior, audit skill health, or turn repeated mistakes into guidance.
 ---
 
@@ -7,7 +7,9 @@ description: Extract reusable lessons from completed work, failed attempts, user
 
 Use this skill after meaningful work has produced a lesson.
 
-Before the workflow, apply `../../shared-rules/host-compatibility.md`, `../../shared-rules/portable-profile.md`, and `../../shared-rules/personalization.md` for explicit TasteDistill invocations. If this skill is already running the Local Personalization Bootstrap, use those shared rules only as host-safety, idempotence, and destination policy.
+Prefix your first response line with ⚗️ inline, not as its own paragraph.
+
+Before the workflow, apply `../../shared-rules/host-compatibility.md`, `../../shared-rules/portable-profile.md`, and `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations. If this skill is already running the Local Personalization Bootstrap, use those shared rules only as host-safety, idempotence, and destination policy.
 
 ## Outcome Contract
 
@@ -27,7 +29,7 @@ Distillation is not a transcript summary. It turns repeated, verified behavior i
 
 Use this mode when the user asks to initialize these skills from their existing Codex or compatible agent memory, conversation history, logs, or prior task outcomes.
 
-Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. Explicitly invoking the TasteDistill plugin or any `tastedistill-*` skill should perform a one-time bootstrap check through `../../shared-rules/personalization.md`. If no local TasteDistill profile exists, run this bootstrap before continuing with the requested skill.
+Do not assume those sources are already loaded. Installing a skill does not automatically import a user's historical conversations or memories. Explicitly invoking the TasteD/TasteDistill plugin or any `tasted-*` skill should perform a one-time bootstrap check through `../../shared-rules/personalization.md`. If no local TasteDistill profile exists, run this bootstrap before continuing with the requested skill.
 
 v1 supports Codex, Claude Code, and Hermes. Codex can run as a full plugin adapter. Claude Code and Hermes use reference adapters by default: generate TasteDistill adapter snippets and local `~/.tastedistill/adapters/*.md` files, but do not write host memory or identity files unless the user explicitly asks.
 
@@ -36,18 +38,38 @@ Bootstrap flow:
 1. Identify available local memory/history sources in the current agent environment.
 2. Prefer existing summaries, registries, and indexed memories before broad raw transcript reads.
 3. Detect the host agent when possible: Codex, Claude Code, Hermes, or unknown.
-4. Create the portable TasteDistill profile under `$HOME/.tastedistill` according to `../../shared-rules/portable-profile.md`.
-5. Write `$HOME/.tastedistill/bootstrap.json` as the idempotence marker.
-6. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
-7. Generate host adapter snippets under `$HOME/.tastedistill/adapters/` when useful.
-8. Automatic local TasteDistill bootstrap is allowed after explicit TasteDistill use. For host memory integration, output the exact snippet to add unless the user explicitly requests host memory edits.
-9. Report what was loaded, what was skipped, what was written, and how future sessions will load the profile.
+4. For Codex, treat `$HOME/.codex/instructions/codex-experience-review.md` as optional. If it is missing, synthesize a TasteDistill-owned Codex digest from available Codex summaries and registries.
+5. Create the portable TasteDistill profile under `$HOME/.tastedistill` according to `../../shared-rules/portable-profile.md`.
+6. Write `$HOME/.tastedistill/bootstrap.json` as the idempotence marker.
+7. Summarize execution preferences, product taste, validation habits, reusable rules, project boundaries, and anti-patterns.
+8. Generate host adapter snippets under `$HOME/.tastedistill/adapters/` when useful.
+9. Automatic local TasteDistill bootstrap is allowed after explicit TasteD/TasteDistill use. For host memory integration, output the exact snippet to add unless the user explicitly requests host memory edits.
+10. Report what was loaded, what was skipped, what was written, and how future sessions will load the profile.
+
+Codex fallback flow:
+
+1. Inventory these Codex sources when available:
+   - `$HOME/.codex/instructions/codex-experience-review.md`
+   - `$HOME/.codex/memories/memory_summary.md`
+   - `$HOME/.codex/memories/MEMORY.md`
+   - targeted `$HOME/.codex/memories/rollout_summaries/*` files referenced by the memory registry
+   - `$HOME/.codex/config.toml` without copying secrets or volatile machine state
+2. If `codex-experience-review.md` exists, use it as the highest-signal source.
+3. If it is missing or incomplete, create:
+   - `$HOME/.tastedistill/imports/codex/source-digest.md`
+   - `$HOME/.tastedistill/imports/codex/source-digest.json`
+4. Use the digest to seed `profile.md` and `harness.md`.
+5. Record loaded, skipped, and missing sources in `sources.json` and `bootstrap.json`.
+6. Do not automatically write `codex-experience-review.md` back into `$HOME/.codex/instructions/`.
+7. Read raw Codex sessions, logs, or broad SQLite state only as an opt-in deep scan or bounded fallback when summary sources are insufficient. Follow `../../shared-rules/personalization.md#bounded-codex-history-scan`: metadata and indexes first, recent sessions default max 30, highest-frequency `cwd` groups default max 10, failures/fixes/user corrections prioritized, and scan scope reported before reading raw content.
+8. Follow `../../shared-rules/personalization.md#codex-source-precedence`: bounded scan results can fill gaps or flag contradictions, but must not silently override an existing TasteDistill profile, Codex experience document, or Codex summary-derived rule.
 
 Recommended output:
 
 - a private experience profile saved outside this public skill repository, preferably `$HOME/.tastedistill/profile.md`
 - a runtime contract saved at `$HOME/.tastedistill/harness.md`
 - a bootstrap marker, preferably `$HOME/.tastedistill/bootstrap.json`
+- a host source digest when needed, preferably `$HOME/.tastedistill/imports/<host>/source-digest.md`
 - host adapter snippets, preferably under `$HOME/.tastedistill/adapters/`
 - a host adapter file or a short instruction snippet the user can add to host instructions when automatic wiring is unavailable
 - a summary of what was distilled: execution habits, preferences, project rules, validation habits, and anti-patterns

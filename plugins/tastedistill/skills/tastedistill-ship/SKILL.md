@@ -1,5 +1,5 @@
 ---
-name: tastedistill-ship
+name: tasted-ship
 description: Review implemented work, verify acceptance criteria, prepare delivery, inspect release readiness, handle PR or issue follow-through, and confirm shipped state. Use when work is ready for review, merge, release, publish, push, or handoff. Not for root-cause debugging.
 ---
 
@@ -7,7 +7,9 @@ description: Review implemented work, verify acceptance criteria, prepare delive
 
 Use this skill when an artifact exists and needs a delivery decision.
 
-Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteDistill invocations.
+Prefix your first response line with 🚢 inline, not as its own paragraph.
+
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations.
 
 ## Outcome Contract
 

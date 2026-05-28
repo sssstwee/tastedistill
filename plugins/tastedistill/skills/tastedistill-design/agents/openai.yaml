@@ -1,5 +1,4 @@
 interface:
-  display_name: "TasteDistill Design"
+  display_name: "TasteD Design"
   short_description: "Product design, interaction principles, UI execution, and visual verification"
-  default_prompt: "Use $tastedistill-design to define the interface direction and execute UI work with visual verification."
-
+  default_prompt: "Use $tasted-design to define the interface direction and execute UI work with visual verification."

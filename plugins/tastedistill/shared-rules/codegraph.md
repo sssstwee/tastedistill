@@ -1,10 +1,10 @@
 # CodeGraph
 
-Use this rule when a TasteDistill plugin or skill is explicitly invoked in a repository context, and when CodeGraph MCP tools are available in the current agent session.
+Use this rule when a TasteD/TasteDistill plugin or skill is explicitly invoked in a repository context, and when CodeGraph MCP tools are available in the current agent session.
 
 In v1, the Codex plugin ships with CodeGraph MCP registration. CodeGraph itself is not Codex-specific: when the current host exposes compatible `codegraph_*` tools, TasteDistill may follow the same bootstrap and usage rules.
 
-On explicit TasteDistill use, perform the Index Bootstrap check before broad repository work. The user should not need to ask for CodeGraph initialization separately.
+On explicit TasteD or TasteDistill use, perform the Index Bootstrap check before broad repository work. The user should not need to ask for CodeGraph initialization separately.
 
 ## When To Use
 
@@ -28,7 +28,7 @@ On explicit TasteDistill use, perform the Index Bootstrap check before broad rep
 
 ## Index Bootstrap
 
-When a TasteDistill plugin or skill is explicitly invoked in a host session where CodeGraph tools are available, treat that explicit TasteDistill use as permission to bootstrap CodeGraph for the current repository.
+When a TasteD/TasteDistill plugin or skill is explicitly invoked in a host session where CodeGraph tools are available, treat that explicit use as permission to bootstrap CodeGraph for the current repository.
 
 Before broad repository work, call `codegraph_status` when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
 
@@ -45,7 +45,7 @@ Do not initialize unrelated repositories, home directories, or parent folders. I
 ## Fallbacks
 
 - If `codegraph_*` tools are not available, use normal repository search and targeted file reads.
-- If the user did not explicitly invoke TasteDistill and the project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`.
+- If the user did not explicitly invoke TasteD or TasteDistill and the project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`.
 - If CodeGraph reports stale or pending files, inspect `codegraph_status` and read the named files directly before editing.
 - For a precise user-provided file and line, read that file directly; CodeGraph is optional context, not a replacement.
 

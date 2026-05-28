@@ -12,6 +12,8 @@
 
 TasteDistill is a small local notebook for your coding agents. It keeps your taste, habits, project lessons, and delivery rules in one place so Codex, Claude Code, and Hermes can work in a more consistent way.
 
+The project and brand name is **TasteDistill**. The short plugin invocation name is **TasteD** / `tasted`.
+
 | 🧠 What it stores | 🤖 Who can read it | 🔒 Where it lives |
 |---|---|---|
 | Your product taste, UI preferences, coding habits, and lessons | Codex, Claude Code, Hermes | On your machine, under `~/.tastedistill/` |
@@ -83,25 +85,29 @@ flowchart LR
 In Codex, you can say:
 
 ```text
-@TasteDistill initialize my local profile
+@TasteD initialize my local profile
 ```
 
 Or use the distill skill:
 
 ```text
-Use tastedistill-distill to initialize my local TasteDistill profile.
+Use tasted-distill to initialize my local TasteDistill profile.
 ```
 
 TasteDistill will:
 
 - look for existing local agent memory or instruction files
+- create a TasteDistill-owned source digest from Codex memory summary / registry when Codex has no existing `codex-experience-review.md`
 - ask before reading broad personal history
 - create `~/.tastedistill/profile.md`
 - create `~/.tastedistill/harness.md`
+- create `~/.tastedistill/imports/codex/source-digest.md` when needed
 - generate adapter notes for Codex, Claude Code, and Hermes
 - report what it created and what it skipped
 
 It will not silently rewrite your host agent memory.
+
+You do not need to create `~/.codex/instructions/codex-experience-review.md` first. If that file exists, TasteDistill treats it as a high-signal source. If it does not exist, TasteDistill distills Codex `memory_summary.md`, `MEMORY.md`, and targeted rollout summaries into its own local digest instead of writing back into Codex instruction files.
 
 ## 🧭 Choose An Install Path
 
@@ -131,23 +137,23 @@ Git ref: main
 Sparse path: leave empty
 ```
 
-4. Install `TasteDistill`.
+4. Install `TasteD` (the plugin for the TasteDistill project).
 5. Restart Codex.
 6. In a project, call:
 
 ```text
-@TasteDistill analyze this repo
+@TasteD analyze this repo
 ```
 
 You can also call the individual skills:
 
 ```text
-tastedistill-learn
-tastedistill-think
-tastedistill-design
-tastedistill-debug
-tastedistill-ship
-tastedistill-distill
+tasted-learn
+tasted-think
+tasted-design
+tasted-debug
+tasted-ship
+tasted-distill
 ```
 
 ## <img src="./assets/icons/claude-code.png" width="24" height="24" alt="Claude Code"> Install In Claude Code
@@ -165,24 +171,24 @@ Add the marketplace:
 Install the plugin:
 
 ```text
-/plugin install tastedistill@tastedistill
+/plugin install tasted@tastedistill
 ```
 
 If your Claude Code version expects the plugin name directly, use:
 
 ```text
-/plugin install tastedistill
+/plugin install tasted
 ```
 
 Then use:
 
 ```text
-/tastedistill:learn
-/tastedistill:think
-/tastedistill:design
-/tastedistill:debug
-/tastedistill:ship
-/tastedistill:distill
+/tasted:learn
+/tasted:think
+/tasted:design
+/tasted:debug
+/tasted:ship
+/tasted:distill
 ```
 
 TasteDistill does not automatically edit `CLAUDE.md`. It can generate a small adapter snippet, and you decide whether to add it.
@@ -199,21 +205,21 @@ hermes plugins install sssstwee/tastedistill --enable
 
 Restart Hermes after installing.
 
-The skills are available under the TasteDistill namespace:
+The skills are available under the TasteD namespace:
 
 ```text
-tastedistill:learn
-tastedistill:think
-tastedistill:design
-tastedistill:debug
-tastedistill:ship
-tastedistill:distill
+tasted:learn
+tasted:think
+tasted:design
+tasted:debug
+tasted:ship
+tasted:distill
 ```
 
 If you installed without `--enable`, enable it later:
 
 ```bash
-hermes plugins enable tastedistill
+hermes plugins enable tasted
 ```
 
 TasteDistill does not automatically edit `SOUL.md`, Hermes memories, config files, or `.env`.
@@ -227,16 +233,21 @@ git clone https://github.com/sssstwee/tastedistill.git
 cd tastedistill
 mkdir -p "$HOME/.codex/skills"
 
-for skill in tastedistill-learn tastedistill-think tastedistill-design tastedistill-debug tastedistill-ship tastedistill-distill; do
-  rm -f "$HOME/.codex/skills/$skill"
-  ln -s "$PWD/plugins/tastedistill/skills/$skill" "$HOME/.codex/skills/$skill"
+for phase in learn think design debug ship distill; do
+  rm -f "$HOME/.codex/skills/tasted-$phase"
+  ln -s "$PWD/plugins/tastedistill/skills/tastedistill-$phase" "$HOME/.codex/skills/tasted-$phase"
 done
 ```
 
-Restart Codex and type:
+Restart Codex and call the short skill names:
 
 ```text
-/tastedistill
+tasted-learn
+tasted-think
+tasted-design
+tasted-debug
+tasted-ship
+tasted-distill
 ```
 
 ## 🗺️ CodeGraph Support

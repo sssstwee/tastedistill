@@ -1,5 +1,4 @@
 interface:
-  display_name: "TasteDistill Learn"
+  display_name: "TasteD Learn"
   short_description: "Research, source synthesis, domain learning, and structured notes"
-  default_prompt: "Use $tastedistill-learn to research the topic, synthesize sources, and produce structured findings."
-
+  default_prompt: "Use $tasted-learn to research the topic, synthesize sources, and produce structured findings."

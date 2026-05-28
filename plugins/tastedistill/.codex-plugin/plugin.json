@@ -1,6 +1,6 @@
 {
-  "name": "tastedistill",
-  "version": "0.3.0",
+  "name": "tasted",
+  "version": "0.3.1",
   "description": "Portable taste distillation and engineering harness for Codex, Claude Code, and Hermes.",
   "author": {
     "name": "sssstwee",
@@ -21,9 +21,9 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "TasteDistill",
+    "displayName": "TasteD",
     "shortDescription": "Portable taste distillation for coding agents",
-    "longDescription": "TasteDistill provides a portable engineering profile and staged taste-distillation workflows for Codex, Claude Code, and Hermes. It keeps user and project experience under ~/.tastedistill, avoids overwriting host memory by default, and uses CodeGraph when the current host exposes compatible repository-intelligence tools.",
+    "longDescription": "TasteDistill provides a portable engineering profile and staged taste-distillation workflows for Codex, Claude Code, and Hermes. Use the short plugin name TasteD/tasted when invoking it. It keeps user and project experience under ~/.tastedistill, avoids overwriting host memory by default, and uses CodeGraph when the current host exposes compatible repository-intelligence tools.",
     "developerName": "sssstwee",
     "category": "Coding",
     "capabilities": [

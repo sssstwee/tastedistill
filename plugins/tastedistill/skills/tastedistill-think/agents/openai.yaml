@@ -1,5 +1,4 @@
 interface:
-  display_name: "TasteDistill Think"
+  display_name: "TasteD Think"
   short_description: "Decision making, architecture tradeoffs, planning, and risk framing"
-  default_prompt: "Use $tastedistill-think to turn this idea into a decision-ready plan with tradeoffs and verification."
-
+  default_prompt: "Use $tasted-think to turn this idea into a decision-ready plan with tradeoffs and verification."

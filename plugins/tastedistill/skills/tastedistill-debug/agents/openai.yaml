@@ -1,5 +1,4 @@
 interface:
-  display_name: "TasteDistill Debug"
+  display_name: "TasteD Debug"
   short_description: "Root-cause diagnosis, regressions, runtime evidence, and minimal fixes"
-  default_prompt: "Use $tastedistill-debug to reproduce the failure, prove root cause, apply a minimal fix, and verify it."
-
+  default_prompt: "Use $tasted-debug to reproduce the failure, prove root cause, apply a minimal fix, and verify it."

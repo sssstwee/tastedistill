@@ -12,6 +12,8 @@
 
 TasteDistill 可以理解成一个给 AI 用的“本地经验小本子”。它把你的审美、习惯、项目经验和交付规则放在同一个地方，让 Codex、Claude Code、Hermes 都能更稳定地按你的方式做事。
 
+项目和品牌名仍然是 **TasteDistill**。插件里的短调用名是 **TasteD** / `tasted`。
+
 | 🧠 它记什么 | 🤖 谁能读 | 🔒 存在哪里 |
 |---|---|---|
 | 产品审美、UI 偏好、编码习惯、踩坑经验 | Codex、Claude Code、Hermes | 你的本机：`~/.tastedistill/` |
@@ -83,25 +85,29 @@ flowchart LR
 在 Codex 里可以直接说：
 
 ```text
-@TasteDistill 初始化我的本地 profile
+@TasteD 初始化我的本地 profile
 ```
 
 也可以用 distill skill：
 
 ```text
-使用 tastedistill-distill 初始化我的本地 TasteDistill profile。
+使用 tasted-distill 初始化我的本地 TasteDistill profile。
 ```
 
 TasteDistill 会执行：
 
 - 查找你本机已有的 agent memory 或 instruction 文件
+- 如果 Codex 没有现成的 `codex-experience-review.md`，从 Codex memory summary / registry 生成 TasteDistill 自己的 source digest
 - 读取大范围个人历史前先问你
 - 创建 `~/.tastedistill/profile.md`
 - 创建 `~/.tastedistill/harness.md`
+- 必要时创建 `~/.tastedistill/imports/codex/source-digest.md`
 - 生成 Codex、Claude Code、Hermes 的 adapter 说明
 - 告诉你读取了什么、跳过了什么、保存到了哪里
 
 它不会偷偷改写宿主 agent 的 memory。
+
+你不需要先手动生成 `~/.codex/instructions/codex-experience-review.md`。如果这个文件存在，TasteDistill 会把它当作高质量来源；如果不存在，TasteDistill 会把 Codex 的 `memory_summary.md`、`MEMORY.md` 和相关 rollout summary 蒸馏成自己的本地 digest，而不是写回 Codex 的 instruction 文件。
 
 ## 🧭 选择安装方式
 
@@ -131,23 +137,23 @@ Git 引用：main
 稀疏路径：留空
 ```
 
-4. 安装 `TasteDistill`。
+4. 安装 `TasteD`（TasteDistill 项目的插件短名）。
 5. 重启 Codex。
 6. 在任意项目里调用：
 
 ```text
-@TasteDistill 分析这个项目
+@TasteD 分析这个项目
 ```
 
 也可以单独调用这些 skills：
 
 ```text
-tastedistill-learn
-tastedistill-think
-tastedistill-design
-tastedistill-debug
-tastedistill-ship
-tastedistill-distill
+tasted-learn
+tasted-think
+tasted-design
+tasted-debug
+tasted-ship
+tasted-distill
 ```
 
 ## <img src="./assets/icons/claude-code.png" width="24" height="24" alt="Claude Code"> 安装到 Claude Code
@@ -165,24 +171,24 @@ Claude Code 插件里也包含同一份 CodeGraph MCP 配置。Claude Code 可�
 安装 plugin：
 
 ```text
-/plugin install tastedistill@tastedistill
+/plugin install tasted@tastedistill
 ```
 
 如果你的 Claude Code 版本要求直接写插件名，可以用：
 
 ```text
-/plugin install tastedistill
+/plugin install tasted
 ```
 
 然后调用：
 
 ```text
-/tastedistill:learn
-/tastedistill:think
-/tastedistill:design
-/tastedistill:debug
-/tastedistill:ship
-/tastedistill:distill
+/tasted:learn
+/tasted:think
+/tasted:design
+/tasted:debug
+/tasted:ship
+/tasted:distill
 ```
 
 TasteDistill 默认不会自动修改 `CLAUDE.md`。它可以生成一段接入说明，由你决定要不要写进去。
@@ -199,21 +205,21 @@ hermes plugins install sssstwee/tastedistill --enable
 
 安装后重启 Hermes。
 
-skills 会以 TasteDistill 命名空间暴露：
+skills 会以 TasteD 命名空间暴露：
 
 ```text
-tastedistill:learn
-tastedistill:think
-tastedistill:design
-tastedistill:debug
-tastedistill:ship
-tastedistill:distill
+tasted:learn
+tasted:think
+tasted:design
+tasted:debug
+tasted:ship
+tasted:distill
 ```
 
 如果安装时没有加 `--enable`，之后可以手动启用：
 
 ```bash
-hermes plugins enable tastedistill
+hermes plugins enable tasted
 ```
 
 TasteDistill 默认不会改 `SOUL.md`、Hermes memories、配置文件或 `.env`。
@@ -227,16 +233,21 @@ git clone https://github.com/sssstwee/tastedistill.git
 cd tastedistill
 mkdir -p "$HOME/.codex/skills"
 
-for skill in tastedistill-learn tastedistill-think tastedistill-design tastedistill-debug tastedistill-ship tastedistill-distill; do
-  rm -f "$HOME/.codex/skills/$skill"
-  ln -s "$PWD/plugins/tastedistill/skills/$skill" "$HOME/.codex/skills/$skill"
+for phase in learn think design debug ship distill; do
+  rm -f "$HOME/.codex/skills/tasted-$phase"
+  ln -s "$PWD/plugins/tastedistill/skills/tastedistill-$phase" "$HOME/.codex/skills/tasted-$phase"
 done
 ```
 
-重启 Codex 后输入：
+重启 Codex 后调用短 skill 名：
 
 ```text
-/tastedistill
+tasted-learn
+tasted-think
+tasted-design
+tasted-debug
+tasted-ship
+tasted-distill
 ```
 
 ## 🗺️ CodeGraph 是什么

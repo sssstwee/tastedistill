@@ -14,6 +14,10 @@ TasteDistill stores portable user and project experience in `~/.tastedistill`. T
   harness.md
   bootstrap.json
   sources.json
+  imports/
+    codex/
+      source-digest.md
+      source-digest.json
   adapters/
     codex.md
     claude.md
@@ -36,6 +40,8 @@ TasteDistill stores portable user and project experience in `~/.tastedistill`. T
 | `harness.md` | Runtime contract: context loading, tool preferences, permission boundaries, verification, delivery, and distillation rules. |
 | `bootstrap.json` | Idempotence marker: initialization time, sources used, sources skipped, plugin version, and host adapter state. |
 | `sources.json` | Discovered host sources and import status. |
+| `imports/<host>/source-digest.md` | Optional host-specific synthesis created when a durable host experience document is missing or incomplete. |
+| `imports/<host>/source-digest.json` | Machine-readable inventory and extraction summary for the host-specific synthesis. |
 | `adapters/*.md` | Host-specific reference snippets. These are generated locally and are not automatically written into host memory. |
 | `projects/<repo-id>/project.md` | Human-readable project harness: repo identity, stack, entry points, commands, boundaries, validation surfaces. |
 | `projects/<repo-id>/project.json` | Machine-readable project index. |
@@ -57,11 +63,11 @@ If hashing is not available, use a conservative safe slug and record the full pa
 ## Initialization Policy
 
 - Plugin installation alone must not scan history or create user/project profiles.
-- Explicit TasteDistill plugin or `tastedistill-*` skill use may create `~/.tastedistill`.
-- Explicit TasteDistill use may perform local bootstrap automatically across supported hosts while respecting each host's write boundaries.
+- Explicit TasteD/TasteDistill plugin or `tasted-*` skill use may create `~/.tastedistill`.
+- Explicit TasteD/TasteDistill use may perform local bootstrap automatically across supported hosts while respecting each host's write boundaries.
 - Claude Code and Hermes use reference adapters by default. Generate snippets and local adapter files; do not write host memory unless explicitly requested.
-- Project profiles may be created automatically when TasteDistill is explicitly used inside a Git repository, but the first profile should be thin: stack, entry points, commands, instruction surfaces, known validation entry points, and boundaries.
-- Deep project lessons should be added by `tastedistill-distill` only when backed by task evidence.
+- Project profiles may be created automatically when TasteD/TasteDistill is explicitly used inside a Git repository, but the first profile should be thin: stack, entry points, commands, instruction surfaces, known validation entry points, and boundaries.
+- Deep project lessons should be added by `tasted-distill` only when backed by task evidence.
 
 ## Existing Host Sources
 
@@ -75,9 +81,12 @@ Examples:
 
 When an existing host profile already contains durable user preferences, merge or summarize it into `~/.tastedistill/profile.md` and record the source in `sources.json` and `bootstrap.json`. Do not re-run broad raw transcript sweeps just because the TasteDistill marker did not previously exist.
 
+If a durable host profile is missing, TasteDistill may create a host-owned source digest under `~/.tastedistill/imports/<host>/` from summary and registry sources. This digest is a TasteDistill cache, not a host memory file, and must not be written back into the host unless the user explicitly asks.
+
 ## Write Boundaries
 
 - Write automatically only under `~/.tastedistill` and, when CodeGraph bootstrap runs, the current repository's `.codegraph/` plus `.git/info/exclude`.
 - Do not write raw transcripts, secrets, local credentials, `.env` files, or token material.
+- Do not create or overwrite host experience documents such as `~/.codex/instructions/codex-experience-review.md`; create TasteDistill-owned digests instead.
 - Do not write public shared rules with private user facts or project-private details.
 - Prefer references over copies when integrating with host memory.

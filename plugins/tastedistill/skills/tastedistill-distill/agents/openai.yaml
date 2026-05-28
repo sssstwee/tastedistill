@@ -1,4 +1,4 @@
 interface:
-  display_name: "TasteDistill Distill"
+  display_name: "TasteD Distill"
   short_description: "Taste distillation loop, durable rule extraction, and skill health checks"
-  default_prompt: "Use $tastedistill-distill to convert this completed work into reusable rules that improve future agent runs."
+  default_prompt: "Use $tasted-distill to convert this completed work into reusable rules that improve future agent runs."

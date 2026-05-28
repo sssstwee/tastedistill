@@ -1,5 +1,5 @@
 ---
-name: tastedistill-learn
+name: tasted-learn
 description: Research unfamiliar domains, source materials, repositories, documents, or problem spaces and turn them into structured understanding before planning or implementation. Use when the task asks for deep research, source synthesis, domain learning, evidence mapping, or study notes. Not for one-off link fetching or simple copy editing.
 ---
 
@@ -7,7 +7,9 @@ description: Research unfamiliar domains, source materials, repositories, docume
 
 Use this skill before making recommendations in an unfamiliar domain.
 
-Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteDistill invocations.
+Prefix your first response line with 🔎 inline, not as its own paragraph.
+
+Before the workflow, apply `../../shared-rules/personalization.md` for explicit TasteD/TasteDistill invocations.
 
 ## Outcome Contract
 

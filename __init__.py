@@ -14,7 +14,7 @@ _SKILLS = {
 
 
 def register(ctx):
-    """Register TasteDistill skills with Hermes using short names."""
+    """Register TasteD skills with Hermes using short names."""
     skills_dir = Path(__file__).parent / "plugins" / "tastedistill" / "skills"
     for public_name, directory_name in _SKILLS.items():
         skill_md = skills_dir / directory_name / "SKILL.md"
