@@ -72,29 +72,25 @@ TasteDistill splits agent work into six easy stages:
 
 ## 🚀 First-Time Setup
 
-After installing TasteDistill, run it once to create your local profile.
+After installing TasteDistill, use it normally in a project. The first explicit TasteD call also creates the local profile when needed.
 
 ```mermaid
 flowchart LR
-    A["Install TasteDistill"] --> B["Run first setup"]
+    A["Install TasteDistill"] --> B["Call TasteD in a project"]
     B --> C["Create<br/>~/.tastedistill"]
     C --> D["Generate host adapters"]
     D --> E["Use it in future tasks"]
 ```
 
-In any supported host, ask TasteD to initialize. The wording does not need to be exact. Short examples:
+Use the same everyday request you would normally ask an agent:
 
 ```text
-Codex: @TasteD init
-Claude Code: /tasted:distill init
-Hermes: tasted:distill init
+Codex: @TasteD analyze this project
+Claude Code: /tasted:think analyze this project
+Hermes: tasted:think analyze this project
 ```
 
-Any equivalent request works, for example:
-
-```text
-Initialize TasteD
-```
+Just ask for the work you want done. On the first run, TasteD prepares your local profile automatically and then continues with that request.
 
 TasteDistill will:
 

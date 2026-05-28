@@ -72,29 +72,25 @@ TasteDistill 把 agent 工作拆成 6 个很容易理解的阶段：
 
 ## 🚀 第一次使用
 
-安装后，建议先做一次初始化。
+安装后，直接在项目里正常使用即可。第一次显式调用 TasteD 时，会在需要时顺手完成本地 profile 初始化。
 
 ```mermaid
 flowchart LR
-    A["安装 TasteDistill"] --> B["运行首次初始化"]
+    A["安装 TasteDistill"] --> B["在项目里调用 TasteD"]
     B --> C["创建<br/>~/.tastedistill"]
     C --> D["生成宿主 adapter"]
     D --> E["后续任务直接复用"]
 ```
 
-在任意支持的宿主里，让 TasteD 初始化即可。不需要逐字照抄，短例子：
+直接使用你平时会问 agent 的高频任务：
 
 ```text
-Codex: @TasteD init
-Claude Code: /tasted:distill init
-Hermes: tasted:distill init
+Codex: @TasteD 分析这个项目
+Claude Code: /tasted:think 分析这个项目
+Hermes: tasted:think 分析这个项目
 ```
 
-任何等价说法都可以，例如：
-
-```text
-初始化 TasteD
-```
+直接说你想做什么就可以。第一次使用时，TasteD 会自动准备本地档案，然后继续处理你的请求。
 
 TasteDistill 会执行：
 
