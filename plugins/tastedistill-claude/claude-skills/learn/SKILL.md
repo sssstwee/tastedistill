@@ -29,7 +29,7 @@ Apply `../../shared-rules/runtime-hygiene.md` when repository learning uses help
 
 ## CodeGraph
 
-When `codegraph_*` tools are available and the task is repository learning or architecture understanding, apply `../../shared-rules/codegraph.md`. Prefer `codegraph_context` and `codegraph_explore` before broad file reads. Fall back to normal search and targeted file reads when CodeGraph is unavailable.
+For repository learning or architecture understanding in a Git repository, `../../shared-rules/personalization.md` should already have ensured the local CodeGraph index. When `codegraph_*` tools are available, prefer `codegraph_context` and `codegraph_explore` before broad file reads. Fall back to normal search and targeted file reads only when CodeGraph query tools are unavailable.
 
 ## Do Not
 

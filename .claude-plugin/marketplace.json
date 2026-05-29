@@ -4,14 +4,14 @@
     "name": "sssstwee"
   },
   "description": "TasteDistill plugin marketplace for Claude Code.",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "plugins": [
     {
       "name": "tasted",
       "displayName": "TasteD",
       "source": "./plugins/tastedistill-claude",
       "description": "Portable taste distillation and engineering harness for Codex and Claude Code.",
-      "version": "0.0.15",
+      "version": "0.0.16",
       "author": {
         "name": "sssstwee"
       },

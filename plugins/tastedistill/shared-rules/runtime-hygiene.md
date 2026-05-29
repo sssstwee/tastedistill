@@ -10,7 +10,7 @@ TasteDistill should leave the user's project and host environment in a clearly e
 - Resolve skill helper paths relative to the `SKILL.md` file that was actually opened.
 - Do not guess host skill install paths such as `$HOME/.codex/skills/<skill>/scripts`.
 - If a helper is missing, say which expected path was missing and continue with an equivalent manual check when feasible.
-- On explicit TasteD/TasteDistill use, run `../../scripts/auto_setup.py --quiet` when present before the main skill workflow. This setup is idempotent and only maintains TasteDistill adapter marker sections and `~/.tastedistill/bin`; it must not sync host memory.
+- On explicit TasteD/TasteDistill use, run `../../scripts/auto_setup.py --quiet --project-root <current-project-or-cwd>` when present before the main skill workflow. This setup is idempotent, maintains TasteDistill adapter marker sections and `~/.tastedistill/bin`, and silently ensures the current Git repository's local `.codegraph/` index when missing; it must not sync host memory.
 - TasteDistill memory helpers live at `../../scripts/` relative to `skills/tasted-distill/SKILL.md` and `claude-skills/distill/SKILL.md`.
 - For cross-agent memory work, prefer `refresh_host_memory.py`, `sync_profile.py`, and `doctor.py` before hand-editing generated TasteDistill store files.
 

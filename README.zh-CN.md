@@ -149,7 +149,7 @@ scripts/refresh_host_memory.py  # 写入 imports/<host>/effective-memory.*
 scripts/sync_profile.py         # 把稳定规则追加到 rules.jsonl
 scripts/doctor.py               # 检查 profile/imports/adapters 是否过期
 scripts/check_memory_freshness.py # 只比较时间戳，发现过期时提示是否同步
-scripts/auto_setup.py           # 插件加载后自动刷新 adapter 与 ~/.tastedistill/bin
+scripts/auto_setup.py           # 插件加载后自动刷新 adapter、~/.tastedistill/bin，并确保当前 Git repo 的 CodeGraph 索引
 scripts/install_adapters.py      # 写入 TasteDistill adapter 片段
 ```
 
@@ -157,14 +157,15 @@ scripts/install_adapters.py      # 写入 TasteDistill adapter 片段
 
 这样新的宿主纠偏不会被旧的 TasteDistill profile 遮住。
 
-更新到新版本后，用户不需要手动运行安装脚本。TasteD 被加载或任一 `tasted-*` skill 被使用时，会自动运行 idempotent setup：刷新 `~/.tastedistill/bin`，并维护 Codex/Claude 宿主指令文件里的 TasteDistill marker section。这个 setup 只写 TasteDistill 自己管理的片段，不会改写其他宿主指令。
+更新到新版本后，用户不需要手动运行安装脚本。TasteD 被加载或任一 `tasted-*` skill 被使用时，会自动运行 idempotent setup：刷新 `~/.tastedistill/bin`，维护 Codex/Claude 宿主指令文件里的 TasteDistill marker section，并在当前目录属于 Git 仓库时静默确保本地 `.codegraph/` 索引存在。这个 setup 只写 TasteDistill 自己管理的片段、当前仓库的 `.codegraph/` 和 `.gitignore`，不会改写其他宿主指令。
 
 自动写入的片段会让宿主默认只读取 `profile.md`、`harness.md` 和 `rules.jsonl`；原始宿主历史仍然只在明确 refresh/sync 时读取。
 
-安装后的 adapter 还会使用 `~/.tastedistill/bin/check_memory_freshness.py` 做轻量预检。预检只比较 Codex/Claude 记忆来源和 `rules.jsonl` 的更新时间；如果发现宿主记忆更新，会提示：
+安装后的 adapter 还会使用 `~/.tastedistill/bin/check_memory_freshness.py` 做轻量预检。预检只比较 Codex/Claude 记忆来源和 `rules.jsonl` 的更新时间；如果发现宿主记忆更新，会按具体对象提示，例如：
 
 ```text
-发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？
+发现 Codex 的 memory 比 TasteD rules 更新，是否同步？
+发现 Claude Code 的 memory 比 TasteD rules 更新，是否同步？
 ```
 
 只有用户确认后，agent 才应该继续运行 refresh/sync 命令。
@@ -326,7 +327,7 @@ TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph)
 - “谁调用了这个函数？”
 - “改这个文件可能影响哪里？”
 
-当你在 Git 仓库里明确调用 TasteDistill 时，它可以为当前仓库初始化本地 `.codegraph/` 索引，并且避免把它提交进 Git。
+当你在 Git 仓库里明确调用 TasteDistill 时，它会为当前仓库静默确保本地 `.codegraph/` 索引存在，并且避免把它提交进 Git。
 
 | 宿主 | TasteDistill plugin 是否内置 CodeGraph MCP 注册 |
 |---|---|
@@ -340,7 +341,7 @@ TasteDistill 可以配合 [CodeGraph](https://github.com/colbymchenry/codegraph)
 
 显式调用 TasteDistill 时，即使当前目录不是 Git 仓库，也可以在 `~/.tastedistill/projects/` 下生成项目级 profile。Git 不是项目级记忆的前提，只是 CodeGraph 的前提。
 
-每个需要 CodeGraph 的 Git 仓库，第一次使用前初始化一次本地索引：
+每个 Git 仓库第一次显式使用 TasteDistill 时会自动初始化一次本地索引；也可以手动运行：
 
 ```bash
 cd your-project
@@ -358,6 +359,7 @@ TasteDistill 默认比较克制。
 - 把原始私人对话复制进仓库
 - 读取 `.env` 密钥
 - 上传或公开你的个人 profile
+- 把 `.codegraph/` 写入 Git 提交
 
 你的个人档案默认留在本机。
 

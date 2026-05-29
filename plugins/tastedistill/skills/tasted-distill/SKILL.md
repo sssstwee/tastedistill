@@ -81,7 +81,7 @@ Use these helpers when available. Resolve paths relative to this `SKILL.md`; do 
 
 To import Claude Code memory while running from Codex, use the same helpers with `--host claude --project-root <path>`. To import Codex memory while running from Claude Code, use `--host codex`.
 
-During ordinary work, preflight checks may be automatic, but refresh/sync is not automatic. If the preflight says host memory is newer, ask: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Continue only after explicit confirmation.
+During ordinary work, preflight checks may be automatic, but refresh/sync is not automatic. If the preflight says host memory is newer, ask the specific confirmation prompt printed by the checker, such as "发现 Codex 的 memory 比 TasteD rules 更新，是否同步？" or "发现 Claude Code 的 memory 比 TasteD rules 更新，是否同步？" Continue only after explicit confirmation.
 
 Default sequence for "refresh/sync my memory":
 

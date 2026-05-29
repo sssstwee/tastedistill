@@ -39,7 +39,7 @@ For fixes, apply `../../shared-rules/coding-guardrails.md`:
 
 ## CodeGraph
 
-For root-cause analysis, apply `../../shared-rules/codegraph.md` when `codegraph_*` tools are available. Prefer `codegraph_trace` for "how does X reach Y", `codegraph_callers` / `codegraph_callees` for one-hop flow, `codegraph_context` for nearby implementation context, and direct file reads before editing.
+For root-cause analysis in a Git repository, `../../shared-rules/personalization.md` should already have ensured the local CodeGraph index. When `codegraph_*` tools are available, prefer `codegraph_trace` for "how does X reach Y", `codegraph_callers` / `codegraph_callees` for one-hop flow, and `codegraph_context` for nearby implementation context. Read target files directly before editing.
 
 ## Stop Rules
 

@@ -8,7 +8,7 @@ TasteDistill is a portable engineering profile and harness layer. The host agent
 
 | Host | Native surface | TasteDistill behavior |
 |---|---|---|
-| Codex | `AGENTS.md`, Codex skills, MCP servers, sandbox and approval policy | Plugin adapter. Explicit TasteD or TasteDistill use may initialize `~/.tastedistill`, the current project profile, the bounded TasteDistill section in `~/.codex/AGENTS.md`, and the current repo CodeGraph index when inside a Git repository and CodeGraph tools are available. |
+| Codex | `AGENTS.md`, Codex skills, MCP servers, sandbox and approval policy | Plugin adapter. Explicit TasteD or TasteDistill use may initialize `~/.tastedistill`, the current project profile, the bounded TasteDistill section in `~/.codex/AGENTS.md`, and the current repo CodeGraph index when inside a Git repository. CodeGraph MCP tools affect query usage, not local index creation. |
 | Claude Code | `~/.claude/CLAUDE.md`, project `CLAUDE.md`, `.claude/CLAUDE.md`, Claude auto memory | Reference adapter. Auto setup may maintain the bounded TasteDistill section in `~/.claude/CLAUDE.md`. Do not write project memory files or Claude auto memory unless the user explicitly asks. |
 
 ## Non-Override Rules
@@ -46,7 +46,7 @@ At the start of ordinary work, lightly read ~/.tastedistill/profile.md, ~/.taste
 
 Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
 
-After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
+After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with `--project-root` set to the current project root. If it reports `SYNC_NEEDED`, ask the specific confirmation prompt printed by the checker, such as "发现 Codex 的 memory 比 TasteD rules 更新，是否同步？" or "发现 Claude Code 的 memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
 
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 ```
@@ -62,7 +62,7 @@ At the start of ordinary work, lightly read @~/.tastedistill/profile.md, @~/.tas
 
 Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
 
-After the light read, if @~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
+After the light read, if @~/.tastedistill/bin/check_memory_freshness.py exists, run it once with `--project-root` set to the current project root. If it reports `SYNC_NEEDED`, ask the specific confirmation prompt printed by the checker, such as "发现 Codex 的 memory 比 TasteD rules 更新，是否同步？" or "发现 Claude Code 的 memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
 
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 Do not copy raw TasteDistill content into CLAUDE.md.

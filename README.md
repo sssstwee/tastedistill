@@ -149,7 +149,7 @@ scripts/refresh_host_memory.py  # write imports/<host>/effective-memory.*
 scripts/sync_profile.py         # append stable rules to rules.jsonl
 scripts/doctor.py               # report stale profile/imports/adapters
 scripts/check_memory_freshness.py # compare mtimes and prompt before syncing
-scripts/auto_setup.py           # refresh adapters and ~/.tastedistill/bin after plugin load
+scripts/auto_setup.py           # refresh adapters and ~/.tastedistill/bin after plugin load, and ensure the current Git repo's CodeGraph index
 scripts/install_adapters.py      # write TasteDistill adapter snippets
 ```
 
@@ -157,14 +157,15 @@ Use `--host codex` in Codex and `--host claude` in Claude Code.
 
 This keeps newer host corrections from being hidden behind an older TasteDistill profile.
 
-After updating to a new version, users do not need to run the adapter install script manually. When TasteD is loaded or any `tasted-*` skill is used, it runs an idempotent setup: refresh `~/.tastedistill/bin` and maintain the TasteDistill marker section in Codex/Claude host instruction files. This setup only writes the TasteDistill-managed section and does not rewrite unrelated host instructions.
+After updating to a new version, users do not need to run the adapter install script manually. When TasteD is loaded or any `tasted-*` skill is used, it runs an idempotent setup: refresh `~/.tastedistill/bin`, maintain the TasteDistill marker section in Codex/Claude host instruction files, and silently ensure the local `.codegraph/` index when the current directory is inside a Git repository. This setup only writes the TasteDistill-managed section, the current repository's `.codegraph/`, and `.gitignore`; it does not rewrite unrelated host instructions.
 
 The automatic section tells the host to read only `profile.md`, `harness.md`, and `rules.jsonl` by default; raw host histories are still read only during explicit refresh/sync.
 
-The installed adapter also uses `~/.tastedistill/bin/check_memory_freshness.py` as a lightweight preflight. It only compares the mtimes of Codex/Claude memory sources with `rules.jsonl`. If host memory is newer, it prompts:
+The installed adapter also uses `~/.tastedistill/bin/check_memory_freshness.py` as a lightweight preflight. It only compares the mtimes of Codex/Claude memory sources with `rules.jsonl`. If host memory is newer, it prompts with the specific stale object, for example:
 
 ```text
-发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？
+发现 Codex 的 memory 比 TasteD rules 更新，是否同步？
+发现 Claude Code 的 memory 比 TasteD rules 更新，是否同步？
 ```
 
 The agent should run refresh/sync commands only after the user confirms.
@@ -326,7 +327,7 @@ In simple terms: CodeGraph is a local map of your repository. It helps the agent
 - "What calls this function?"
 - "What might break if we change this file?"
 
-When you explicitly call TasteDistill inside a project directory, it may create a project profile under `~/.tastedistill/projects/`. Git is optional for this project-level memory. If the directory is also a Git repository, TasteDistill may initialize a local `.codegraph/` index for that repository and keep it out of Git.
+When you explicitly call TasteDistill inside a project directory, it may create a project profile under `~/.tastedistill/projects/`. Git is optional for this project-level memory. If the directory is also a Git repository, TasteDistill silently ensures a local `.codegraph/` index for that repository and keeps it out of Git.
 
 | Host | Does the TasteDistill plugin include CodeGraph MCP registration? |
 |---|---|
@@ -338,7 +339,7 @@ So "CodeGraph support" means two different things:
 
 **Codex Desktop / Codex CLI / Claude Code**: the plugin ships the MCP registration and can start CodeGraph through `npx` when the host enables it.
 
-For each Git repository where you want CodeGraph indexing, initialize the local index once:
+Each Git repository initializes its local index automatically on explicit TasteDistill use. You can also initialize it manually:
 
 ```bash
 cd your-project
@@ -356,6 +357,7 @@ It will not automatically:
 - copy raw private conversations into the repository
 - read `.env` secrets
 - publish or upload your personal profile
+- commit `.codegraph/` into Git
 
 Your local profile is meant to stay local unless you choose otherwise.
 

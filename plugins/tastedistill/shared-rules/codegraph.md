@@ -1,10 +1,10 @@
 # CodeGraph
 
-Use this rule when a TasteD/TasteDistill plugin or skill is explicitly invoked in a Git repository context, and when CodeGraph MCP tools are available in the current agent session.
+Use this rule when a TasteD/TasteDistill plugin or skill is explicitly invoked in a Git repository context.
 
-In v1, the Codex plugin ships with CodeGraph MCP registration. CodeGraph itself is not Codex-specific: when the current host exposes compatible `codegraph_*` tools, TasteDistill may follow the same bootstrap and usage rules.
+In v1, the Codex plugin ships with CodeGraph MCP registration. CodeGraph itself is not Codex-specific: when the current host exposes compatible `codegraph_*` tools, TasteDistill may follow the same usage rules.
 
-On explicit TasteD or TasteDistill use, perform the Index Bootstrap check before broad repository work. The user should not need to ask for CodeGraph initialization separately.
+On explicit TasteD or TasteDistill use, `scripts/auto_setup.py` should silently ensure a local CodeGraph index for the current Git repository before the skill workflow. The user should not need to ask for CodeGraph initialization separately. CodeGraph MCP tool availability affects whether the agent can query the index in-session; it must not block local index creation.
 
 ## When To Use
 
@@ -28,15 +28,15 @@ On explicit TasteD or TasteDistill use, perform the Index Bootstrap check before
 
 ## Index Bootstrap
 
-When a TasteD/TasteDistill plugin or skill is explicitly invoked in a host session where CodeGraph tools are available, treat that explicit use as permission to bootstrap CodeGraph for the current repository.
+When a TasteD/TasteDistill plugin or skill is explicitly invoked, treat that explicit use as permission to bootstrap CodeGraph for the current repository.
 
 Before broad repository work, first check whether the current directory is inside a Git worktree with `git rev-parse --show-toplevel`. If that fails, skip CodeGraph status and initialization, then continue with the directory-backed TasteDistill project profile plus normal search and targeted file reads. Report that the current directory is not a Git repository, so CodeGraph was skipped.
 
-If the current directory is inside a Git worktree, call `codegraph_status` for that repository root when available. If CodeGraph reports that the current project is not initialized, or if `codegraph_*` tools are available but cannot serve the current repository because the local index is missing:
+If the current directory is inside a Git worktree, ensure `.codegraph/codegraph.db` exists. This is done silently by `scripts/auto_setup.py`; if doing it manually:
 
 1. Run `npx -y @colbymchenry/codegraph init -i` from that repository root.
-2. Keep the generated index local by adding `.codegraph/` to `.git/info/exclude` if the repository has a `.git` directory and the entry is not already present.
-3. Re-check `codegraph_status` or retry the intended `codegraph_*` lookup.
+2. Keep the generated index local by adding `.codegraph/` to `.gitignore` if the entry is not already present, and remove any already-tracked `.codegraph/` files from Git tracking with `git rm -r --cached -- .codegraph` while keeping the local files.
+3. Re-check `codegraph_status` when available, or continue knowing the local index exists.
 4. Report that CodeGraph was initialized for the current repository.
 
 This bootstrap is idempotent: if the repository is already initialized, continue without running init again.
@@ -45,7 +45,7 @@ Do not initialize unrelated repositories, home directories, or parent folders. I
 
 ## Fallbacks
 
-- If `codegraph_*` tools are not available, use normal repository search and targeted file reads.
+- If `codegraph_*` tools are not available after the local index exists, use normal repository search and targeted file reads for this run, but do not treat missing active MCP tools as a reason to skip index creation.
 - If the user did not explicitly invoke TasteD or TasteDistill and the project is not initialized, ask before running `npx -y @colbymchenry/codegraph init -i`.
 - If CodeGraph reports stale or pending files, inspect `codegraph_status` and read the named files directly before editing.
 - For a precise user-provided file and line, read that file directly; CodeGraph is optional context, not a replacement.

@@ -100,7 +100,7 @@ If a durable host profile is missing, TasteDistill may create a host-owned sourc
 
 ## Write Boundaries
 
-- Write automatically only under `~/.tastedistill` and, when CodeGraph bootstrap runs, the current repository's `.codegraph/` plus `.git/info/exclude`.
+- Write automatically only under `~/.tastedistill` and, when CodeGraph bootstrap runs, the current repository's `.codegraph/` plus `.gitignore`.
 - Do not write raw transcripts, secrets, local credentials, `.env` files, or token material.
 - Do not create or overwrite host experience documents such as `~/.codex/instructions/codex-experience-review.md`; create TasteDistill-owned digests instead.
 - Do not write public shared rules with private user facts or project-private details.

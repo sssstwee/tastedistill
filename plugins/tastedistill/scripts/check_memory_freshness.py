@@ -11,6 +11,10 @@ from typing import Any
 
 
 HOSTS = ("codex", "claude")
+HOST_LABELS = {
+    "codex": "Codex",
+    "claude": "Claude Code",
+}
 
 
 def fmt_ts(value: float) -> str:
@@ -66,6 +70,17 @@ def sync_commands(tasted_home: Path, host: str, project_root: Path) -> list[str]
     return commands
 
 
+def format_stale_hosts(statuses: list[dict[str, Any]]) -> str:
+    names = [HOST_LABELS.get(status["host"], status["host"]) for status in statuses]
+    if len(names) <= 1:
+        return names[0] if names else "host"
+    return "、".join(names[:-1]) + " 和 " + names[-1]
+
+
+def sync_prompt(statuses: list[dict[str, Any]]) -> str:
+    return f"发现 {format_stale_hosts(statuses)} 的 memory 比 TasteD rules 更新，是否同步？"
+
+
 def host_status(host: str, home: Path, tasted_home: Path, project_root: Path) -> dict[str, Any]:
     rules = tasted_home / "rules.jsonl"
     rules_ts = rules.stat().st_mtime if rules.exists() else 0.0
@@ -89,9 +104,8 @@ def print_human(statuses: list[dict[str, Any]]) -> None:
             print(f"- {status['host']}: newest={status['newestSource'] or 'missing'} ({status['newestSourceMtime']}), rules={status['rulesMtime']}")
         return
 
-    names = "/".join(status["host"].title() for status in stale)
     print("SYNC_NEEDED")
-    print(f"发现 {names} memory 比 TasteD rules 更新，是否同步？")
+    print(sync_prompt(stale))
     for status in stale:
         print(f"- {status['host']}: newest={status['newestSource']} ({status['newestSourceMtime']}), rules={status['rulesMtime']}")
     print("")

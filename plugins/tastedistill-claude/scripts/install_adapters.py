@@ -17,7 +17,7 @@ At the start of ordinary work, lightly read these files when present:
 
 Use them as distilled cross-agent preferences and rules. Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
 
-After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
+After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with `--project-root` set to the current project root. If it reports `SYNC_NEEDED`, ask the specific confirmation prompt printed by the checker, such as "发现 Codex 的 memory 比 TasteD rules 更新，是否同步？" or "发现 Claude Code 的 memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
 
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 """
@@ -32,7 +32,7 @@ At the start of ordinary work, lightly read these files when present:
 
 Use them as distilled cross-agent preferences and rules. Do not read raw Codex/Claude histories during ordinary work. Only refresh host memory when the user asks to sync, refresh, import, or distill memory.
 
-After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with the current project root. If it reports `SYNC_NEEDED`, ask the user: "发现 Claude memory/Codex memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
+After the light read, if ~/.tastedistill/bin/check_memory_freshness.py exists, run it once with `--project-root` set to the current project root. If it reports `SYNC_NEEDED`, ask the specific confirmation prompt printed by the checker, such as "发现 Codex 的 memory 比 TasteD rules 更新，是否同步？" or "发现 Claude Code 的 memory 比 TasteD rules 更新，是否同步？" Do not run refresh/sync commands unless the user confirms.
 
 For project work, if a matching ~/.tastedistill/projects/<project-id>/project.md exists, load it lightly. Do not bulk-read lessons.jsonl unless the task needs project history.
 Do not copy raw TasteDistill content into CLAUDE.md.

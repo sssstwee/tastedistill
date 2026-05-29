@@ -8,12 +8,13 @@ Apply `host-compatibility.md` and `portable-profile.md` with this rule. TasteDis
 
 ## Automatic Adapter Setup
 
-Before the selected skill begins its main workflow, run `../../scripts/auto_setup.py --quiet` when that helper exists. Resolve it relative to the loaded skill file, not from a guessed host path.
+Before the selected skill begins its main workflow, run `../../scripts/auto_setup.py --quiet --project-root <current-project-or-cwd>` when that helper exists. Resolve it relative to the loaded skill file, not from a guessed host path.
 
 The auto setup is intentionally narrower than memory sync:
 
 - It may install or refresh TasteDistill-managed marker sections in `~/.codex/AGENTS.md` and `~/.claude/CLAUDE.md`.
 - It may copy helper scripts into `~/.tastedistill/bin/`.
+- It should silently initialize the current Git repository's local `.codegraph/` index when missing, add `.codegraph/` to that repository's `.gitignore`, and remove already-tracked `.codegraph/` files from Git tracking without deleting local files.
 - It must be idempotent and version-aware, so updating the plugin is enough for the next TasteD load to refresh adapters.
 - It must not refresh, import, or sync host memory without the user's confirmation.
 
@@ -25,7 +26,7 @@ v1 supports two host agents:
 
 | Host | Bootstrap behavior |
 |---|---|
-| Codex | Plugin adapter. Explicit TasteD or TasteDistill use may create or update `~/.tastedistill`, create or update the current project profile, and initialize the current repo CodeGraph index through `codegraph.md` when CodeGraph tools are available. |
+| Codex | Plugin adapter. Explicit TasteD or TasteDistill use may create or update `~/.tastedistill`, create or update the current project profile, and silently initialize the current repo CodeGraph index. CodeGraph MCP tool availability controls query usage, not local index creation. |
 | Claude Code | Reference adapter. Auto setup may maintain the TasteDistill-managed marker section in `~/.claude/CLAUDE.md` and generate `~/.tastedistill/adapters/claude.md`. Do not write project `CLAUDE.md`, project `.claude/CLAUDE.md`, or Claude auto memory unless explicitly requested. |
 
 If the host is unknown, use the safest common path: create or load `~/.tastedistill`, generate adapter snippets, and do not write host memory.
@@ -181,7 +182,7 @@ Create or load:
 
 The first project profile should be thin and evidence-based: repository or directory identity, stack, likely entry points, known commands, instruction surfaces, validation surfaces, and boundaries. Do not turn a first-run orientation into a large project memory dump.
 
-After project profile bootstrap, apply `codegraph.md` only when the current project root is a Git repository and CodeGraph tools are available. If the current project is not a Git repository, report that project-level TasteDistill data was created or loaded but CodeGraph was skipped.
+After project profile bootstrap, apply `codegraph.md` when the current project root is a Git repository. If the current project is not a Git repository, report that project-level TasteDistill data was created or loaded but CodeGraph was skipped.
 
 ## Safety Boundaries
 
@@ -199,5 +200,5 @@ When a TasteD or TasteDistill call happens in a project context:
 1. Run `host-compatibility.md`.
 2. Run this personalization bootstrap check.
 3. Run `portable-profile.md` project profile bootstrap for the current Git repository or non-Git project directory.
-4. Run `shared-rules/codegraph.md` bootstrap only when the current project root is a Git repository and CodeGraph tools are available.
+4. Run `shared-rules/codegraph.md` bootstrap when the current project root is a Git repository. Do not require active `codegraph_*` MCP tools for local index creation.
 5. Then execute the selected stage skill.

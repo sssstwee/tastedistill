@@ -48,7 +48,7 @@ For review and delivery, apply `../../shared-rules/coding-guardrails.md`:
 
 ## CodeGraph
 
-For review and delivery, apply `../../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_impact`, callers/callees, or trace output as risk evidence for non-trivial diffs, not as a substitute for tests, artifacts, CI, or remote-state checks.
+For review and delivery in a Git repository, `../../shared-rules/personalization.md` should already have ensured the local CodeGraph index. When `codegraph_*` tools are available, use `codegraph_impact`, callers/callees, or trace output as risk evidence for non-trivial diffs, not as a substitute for tests, artifacts, CI, or remote-state checks.
 
 ## Review Output
 

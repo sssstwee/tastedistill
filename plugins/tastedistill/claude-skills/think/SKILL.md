@@ -37,7 +37,7 @@ For implementation plans, apply `../../shared-rules/coding-guardrails.md`:
 
 ## CodeGraph
 
-For plans that change existing code, apply `../../shared-rules/codegraph.md` when `codegraph_*` tools are available. Use `codegraph_context` to inspect current patterns and `codegraph_impact` for symbols likely to change before recommending architecture, file targets, or risk level.
+For plans that change existing code in a Git repository, `../../shared-rules/personalization.md` should already have ensured the local CodeGraph index. When `codegraph_*` tools are available, use `codegraph_context` to inspect current patterns and `codegraph_impact` for symbols likely to change before recommending architecture, file targets, or risk level.
 
 ## Output Shape
 
