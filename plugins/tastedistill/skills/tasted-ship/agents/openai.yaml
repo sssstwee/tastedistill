@@ -1,6 +1,6 @@
 interface:
   display_name: "TasteD Ship"
-  icon: "../../../assets/distill-icon.svg"
-  composer_icon: "../../../assets/distill-icon.svg"
+  icon: "./assets/distill-icon.svg"
+  composer_icon: "./assets/distill-icon.svg"
   short_description: "Delivery preflight, acceptance verification, release readiness, and follow-through"
   default_prompt: "Use $tasted-ship to review readiness, verify acceptance, and prepare or complete delivery."
