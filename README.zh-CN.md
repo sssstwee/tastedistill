@@ -187,8 +187,8 @@ flowchart TD
     A["你主要用哪个宿主?"] --> B["Codex Desktop"]
     A --> C["Codex CLI"]
     A --> D["Claude Code<br/>命令行或桌面端"]
-    B --> F["安装 marketplace plugin"]
-    C --> G["安装 marketplace plugin"]
+    B --> F["运行 Codex 安装器"]
+    C --> G["运行 Codex 安装器"]
     D --> H["使用 /plugin 命令"]
 ```
 
@@ -196,19 +196,16 @@ flowchart TD
 
 如果你主要用 Codex，推荐用这个方式。它会同时安装 skills，并带上 CodeGraph MCP 注册配置。
 
-1. 打开 Codex Desktop。
-2. 进入插件市场管理。
-3. 添加这个仓库作为插件市场：
+推荐的 Codex 安装器会使用 Codex 隐式发现的个人 marketplace：`~/.agents/plugins/marketplace.json`。这比把 Git marketplace 写进 `~/.codex/config.toml` 更稳，因为 Codex Desktop 已经运行时可能会重写这个配置文件。
 
-```text
-来源：sssstwee/tastedistill
-Git 引用：main
-稀疏路径：留空
+```bash
+git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
+python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
 ```
 
-4. 安装 `TasteD`（TasteDistill 项目的插件短名）。
-5. 重启 Codex。
-6. 打开一个项目后调用：
+如果安装时 Codex Desktop 已经打开，安装后重启 Codex Desktop，或者至少新开一个线程再测试 TasteD。
+
+打开一个项目后调用：
 
 ```text
 @TasteD 分析这个项目
@@ -229,16 +226,17 @@ tasted-distill
 
 如果你在终端里使用 Codex，用这个方式安装。
 
-添加 marketplace：
+使用同一个稳定安装器：
 
 ```bash
-codex plugin marketplace add sssstwee/tastedistill --ref main
+git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
+python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
 ```
 
-安装 plugin：
+如果你已经 clone 了仓库，直接从当前 checkout 运行：
 
 ```bash
-codex plugin add tasted@tastedistill
+python3 plugins/tastedistill/scripts/install_codex.py
 ```
 
 打开新的 Codex 会话后调用：

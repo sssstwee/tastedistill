@@ -187,8 +187,8 @@ flowchart TD
     A["Which host do you use?"] --> B["Codex Desktop"]
     A --> C["Codex CLI"]
     A --> D["Claude Code<br/>CLI or desktop"]
-    B --> F["Install marketplace plugin"]
-    C --> G["Install marketplace plugin"]
+    B --> F["Run Codex installer"]
+    C --> G["Run Codex installer"]
     D --> H["Use /plugin commands"]
 ```
 
@@ -196,19 +196,16 @@ flowchart TD
 
 Use this if you want the easiest Codex experience with bundled skills and bundled CodeGraph MCP registration.
 
-1. Open Codex Desktop.
-2. Go to plugin marketplace management.
-3. Add this repository as a marketplace:
+The recommended Codex installer uses Codex's implicit personal marketplace at `~/.agents/plugins/marketplace.json`. This is more stable than a Git marketplace entry in `~/.codex/config.toml`, because Codex Desktop may rewrite that config while it is already running.
 
-```text
-Source: sssstwee/tastedistill
-Git ref: main
-Sparse path: leave empty
+```bash
+git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
+python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
 ```
 
-4. Install `TasteD` (the plugin for the TasteDistill project).
-5. Restart Codex.
-6. Open a project, then call:
+If Codex Desktop was already open while installing, restart Codex Desktop or start a new thread before testing TasteD.
+
+Open a project, then call:
 
 ```text
 @TasteD analyze this repo
@@ -229,16 +226,17 @@ tasted-distill
 
 Use this if you run Codex from the terminal.
 
-Add the marketplace:
+Use the same stable installer:
 
 ```bash
-codex plugin marketplace add sssstwee/tastedistill --ref main
+git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
+python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
 ```
 
-Install the plugin:
+If you already cloned the repo, run the script from that checkout instead:
 
 ```bash
-codex plugin add tasted@tastedistill
+python3 plugins/tastedistill/scripts/install_codex.py
 ```
 
 Start a new Codex session, then call:
