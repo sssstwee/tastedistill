@@ -43,7 +43,6 @@ BIN_SCRIPTS = (
     "auto_setup.py",
     "check_memory_freshness.py",
     "doctor.py",
-    "install_codex.py",
     "install_adapters.py",
     "refresh_host_memory.py",
     "sync_profile.py",

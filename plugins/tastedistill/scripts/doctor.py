@@ -5,9 +5,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
-import json
 from pathlib import Path
-from typing import Any
 
 
 def mtime(path: Path) -> float:
@@ -52,64 +50,6 @@ def status_line(ok: bool, label: str, detail: str) -> str:
     return f"{'OK' if ok else 'WARN'} {label}: {detail}"
 
 
-def read_json(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {}
-    try:
-        payload = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError:
-        return {}
-    return payload if isinstance(payload, dict) else {}
-
-
-def personal_marketplace_has_tasted(home: Path) -> bool:
-    payload = read_json(home / ".agents" / "plugins" / "marketplace.json")
-    plugins = payload.get("plugins")
-    if not isinstance(plugins, list):
-        return False
-    for entry in plugins:
-        if not isinstance(entry, dict) or entry.get("name") != "tasted":
-            continue
-        source = entry.get("source")
-        return isinstance(source, dict) and source.get("source") == "local" and source.get("path") == "./plugins/tasted"
-    return False
-
-
-def codex_config_has_tasted(home: Path) -> bool:
-    config = home / ".codex" / "config.toml"
-    if not config.exists():
-        return False
-    text = config.read_text(encoding="utf-8")
-    return "[plugins.\"tasted@" in text or "[plugins.'tasted@" in text
-
-
-def codex_plugin_source_ok(home: Path) -> bool:
-    manifest = read_json(home / "plugins" / "tasted" / ".codex-plugin" / "plugin.json")
-    return manifest.get("name") == "tasted"
-
-
-def codex_cache_has_tasted(home: Path) -> bool:
-    cache = home / ".codex" / "plugins" / "cache"
-    return any(cache.glob("*/tasted/*/.codex-plugin/plugin.json")) if cache.exists() else False
-
-
-def collect_codex_plugin_status(home: Path) -> list[str]:
-    marketplace_ok = personal_marketplace_has_tasted(home)
-    source_ok = codex_plugin_source_ok(home)
-    config_ok = codex_config_has_tasted(home)
-    cache_ok = codex_cache_has_tasted(home)
-    lines = [
-        status_line(marketplace_ok, "codex-personal-marketplace", str(home / ".agents" / "plugins" / "marketplace.json")),
-        status_line(source_ok, "codex-personal-plugin-source", str(home / "plugins" / "tasted")),
-        status_line(config_ok, "codex-plugin-config", str(home / ".codex" / "config.toml")),
-    ]
-    if cache_ok and not config_ok:
-        lines.append("ACTION run python3 ~/.tastedistill/bin/install_codex.py to repair a stale Codex plugin config")
-    elif not marketplace_ok or not source_ok:
-        lines.append("ACTION run plugins/tastedistill/scripts/install_codex.py from the TasteDistill repo")
-    return lines
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--host", default="codex", choices=["codex", "claude"], help="Host adapter to check.")
@@ -143,9 +83,6 @@ def main() -> int:
         status_line(adapter.exists(), "adapter", str(adapter)),
         status_line(preflight.exists(), "preflight", str(preflight)),
     ]
-    if args.host == "codex":
-        lines.extend(collect_codex_plugin_status(home))
-
     if newest_source:
         stale_effective = newest_source_ts > effective_ts
         stale_profile = newest_source_ts > max(profile_ts, rules_ts)

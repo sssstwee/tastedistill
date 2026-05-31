@@ -187,8 +187,8 @@ flowchart TD
     A["Which host do you use?"] --> B["Codex Desktop"]
     A --> C["Codex CLI"]
     A --> D["Claude Code<br/>CLI or desktop"]
-    B --> F["Run Codex installer"]
-    C --> G["Run Codex installer"]
+    B --> F["Add marketplace and install plugin"]
+    C --> G["Add marketplace and install plugin"]
     D --> H["Use /plugin commands"]
 ```
 
@@ -196,11 +196,13 @@ flowchart TD
 
 Use this if you want the easiest Codex experience with bundled skills and bundled CodeGraph MCP registration.
 
-The recommended Codex installer uses Codex's implicit personal marketplace at `~/.agents/plugins/marketplace.json`. This is more stable than a Git marketplace entry in `~/.codex/config.toml`, because Codex Desktop may rewrite that config while it is already running.
+Use Codex's plugin marketplace flow:
 
-```bash
-git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
-python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
+```text
+Marketplace source: sssstwee/tastedistill
+Git ref: main
+Sparse path: leave empty
+Plugin: tasted@tastedistill
 ```
 
 If Codex Desktop was already open while installing, restart Codex Desktop or start a new thread before testing TasteD.
@@ -226,17 +228,16 @@ tasted-distill
 
 Use this if you run Codex from the terminal.
 
-Use the same stable installer:
+Add the marketplace:
 
 ```bash
-git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
-python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
+codex plugin marketplace add sssstwee/tastedistill --ref main
 ```
 
-If you already cloned the repo, run the script from that checkout instead:
+Install the plugin:
 
 ```bash
-python3 plugins/tastedistill/scripts/install_codex.py
+codex plugin add tasted@tastedistill
 ```
 
 Start a new Codex session, then call:
@@ -305,8 +306,8 @@ If you installed from `main`, update TasteD from the same host where you use it:
 
 | Host | Update command |
 | --- | --- |
-| Codex Desktop | Restart Codex Desktop so the installed marketplace plugin refreshes from `main`. |
-| Codex CLI | Run `codex plugin marketplace upgrade tastedistill`, then open a new Codex session. |
+| Codex Desktop | Use plugin marketplace update/upgrade for `tastedistill`, then restart Codex Desktop. |
+| Codex CLI | Run `codex plugin marketplace upgrade tastedistill`, then `codex plugin add tasted@tastedistill`, then open a new Codex session. |
 | Claude Code CLI or desktop | In Claude Code, type `/plugin update tasted` into the chat input and press Enter. Then restart Claude Code. |
 
 Claude Code terminal equivalent:

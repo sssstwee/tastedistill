@@ -187,8 +187,8 @@ flowchart TD
     A["你主要用哪个宿主?"] --> B["Codex Desktop"]
     A --> C["Codex CLI"]
     A --> D["Claude Code<br/>命令行或桌面端"]
-    B --> F["运行 Codex 安装器"]
-    C --> G["运行 Codex 安装器"]
+    B --> F["添加 marketplace 并安装 plugin"]
+    C --> G["添加 marketplace 并安装 plugin"]
     D --> H["使用 /plugin 命令"]
 ```
 
@@ -196,11 +196,13 @@ flowchart TD
 
 如果你主要用 Codex，推荐用这个方式。它会同时安装 skills，并带上 CodeGraph MCP 注册配置。
 
-推荐的 Codex 安装器会使用 Codex 隐式发现的个人 marketplace：`~/.agents/plugins/marketplace.json`。这比把 Git marketplace 写进 `~/.codex/config.toml` 更稳，因为 Codex Desktop 已经运行时可能会重写这个配置文件。
+使用 Codex 自带的插件市场流程：
 
-```bash
-git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
-python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
+```text
+Marketplace source: sssstwee/tastedistill
+Git ref: main
+Sparse path: 留空
+Plugin: tasted@tastedistill
 ```
 
 如果安装时 Codex Desktop 已经打开，安装后重启 Codex Desktop，或者至少新开一个线程再测试 TasteD。
@@ -226,17 +228,16 @@ tasted-distill
 
 如果你在终端里使用 Codex，用这个方式安装。
 
-使用同一个稳定安装器：
+添加 marketplace：
 
 ```bash
-git clone https://github.com/sssstwee/tastedistill.git ~/.local/share/tastedistill
-python3 ~/.local/share/tastedistill/plugins/tastedistill/scripts/install_codex.py
+codex plugin marketplace add sssstwee/tastedistill --ref main
 ```
 
-如果你已经 clone 了仓库，直接从当前 checkout 运行：
+安装 plugin：
 
 ```bash
-python3 plugins/tastedistill/scripts/install_codex.py
+codex plugin add tasted@tastedistill
 ```
 
 打开新的 Codex 会话后调用：
@@ -305,8 +306,8 @@ TasteDistill 被加载后可以自动维护 `CLAUDE.md` 里属于自己的 bound
 
 | 宿主 | 更新方式 |
 | --- | --- |
-| Codex Desktop | 重启 Codex Desktop，让已安装的 marketplace plugin 从 `main` 刷新。 |
-| Codex CLI | 执行 `codex plugin marketplace upgrade tastedistill`，然后打开新的 Codex 会话。 |
+| Codex Desktop | 在插件市场里更新/刷新 `tastedistill`，然后重启 Codex Desktop。 |
+| Codex CLI | 执行 `codex plugin marketplace upgrade tastedistill`，再执行 `codex plugin add tasted@tastedistill`，然后打开新的 Codex 会话。 |
 | Claude Code 命令行或桌面端 | 在 Claude Code 的聊天输入框里输入 `/plugin update tasted` 并回车，然后重启 Claude Code。 |
 
 Claude Code 也可以在终端里执行：
